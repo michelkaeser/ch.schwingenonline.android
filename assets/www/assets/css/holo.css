@@ -32,16 +32,16 @@ body {
 }
 
 
-.layout-with-actionbar--top { padding-top: XYrem }
-.layout-with-actionbar--bottom { padding-bottom: XYrem }
+.layout-with-actionbar--top { padding-top: 48px }
+.layout-with-actionbar--bottom { padding-bottom: 48px }
 
 
 [class*="actionbar--"] {
-	height: 96px;
-	padding-left: 32px;
-	padding-right: 50px;
-	font-size: 36px;
-	line-height: 96px;
+	height: 48px;
+	padding-left: 16px;
+	padding-right: 25px;
+	font-size: 18px;
+	line-height: 48px;
 	letter-spacing: 1px;
 	position: fixed;
 	right: 0;

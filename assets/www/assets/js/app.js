@@ -3,7 +3,7 @@
  *****************************************************************************/
 
 function onLoad() {
-	// add cordova eventlistener for deviceReady
+	// add cordova eventListener for deviceReady
     document.addEventListener('deviceready', onDeviceReady, false);
 
     // QuoJS default ajax settings
@@ -20,6 +20,7 @@ function onLoad() {
  *****************************************************************************/
 
 function onDeviceReady() {
+    // add various cardova eventListeners
     document.addEventListener('backbutton', onBackKeyDown, false);
     document.addEventListener('menubutton', onMenuKeyDown, false);
     document.addEventListener('online', onOnline, false);

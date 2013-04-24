@@ -132,9 +132,9 @@ a {
 
 
 
-.menu {	display: none }
+.actionbar-menu { display: none }
 
-.menu ul {
+.actionbar-menu ul {
 	width: 60%;
 	margin: 0;
 	padding: 0;
@@ -144,13 +144,13 @@ a {
 	box-shadow: 0 3px 10px #888;
 }
 
-.menu--top ul {	top: 48px }
-.menu--bottom ul { bottom: 48px }
+.actionbar-menu--top ul {	top: 48px }
+.actionbar-menu--bottom ul { bottom: 48px }
 
-.menu--light ul { border: 1px solid #e6e6e6 }
-.menu--dark ul { border: 1px solid #3d3d3d }
+.actionbar-menu--light ul { border: 1px solid #e6e6e6 }
+.actionbar-menu--dark ul { border: 1px solid #3d3d3d }
 
-.menu--top ul::before {
+.actionbar-menu--top ul::before {
 	height: 5px;
 	position: absolute;
 	top: -3px;
@@ -160,7 +160,7 @@ a {
 	content: '';
 }
 
-.menu--bottom ul::after {
+.actionbar-menu--bottom ul::after {
 	height: 5px;
 	position: absolute;
 	bottom: -3px;
@@ -170,10 +170,10 @@ a {
 	content: '';
 }
 
-.menu--light ul::before { background-color: #eee }
-.menu--dark ul::before { background-color: #333 }
+.actionbar-menu--light ul::before { background-color: #eee }
+.actionbar-menu--dark ul::before { background-color: #333 }
 
-.menu a {
+.actionbar-menu a {
 	padding-right: 14px;
 	padding-left: 14px;
 	font-size: 18px;
@@ -181,19 +181,19 @@ a {
 	display: block;
 }
 
-.menu--light a {
+.actionbar-menu--light a {
 	background-color: #efefef;
 	border-bottom: 1px solid #d7d7d7;
 	color: #000;
 }
 
-.menu--dark a {
+.actionbar-menu--dark a {
 	background-color: #303030;
 	border-bottom: 1px solid #4f4f4f;
 	color: #fff;
 }
 
-.menu--top li:first-child a::before {
+.actionbar-menu--top li:first-child a::before {
 	height: 1px;
 	position: absolute;
 	top: -2px;
@@ -203,7 +203,7 @@ a {
 	content: '';
 }
 
-.menu--light li:first-child a::before {	background-color: #bfbfbf }
-.menu--dark li:first-child a::before { background-color: #292929 }
+.actionbar-menu--light li:first-child a::before { background-color: #bfbfbf }
+.actionbar-menu--dark li:first-child a::before { background-color: #292929 }
 
-.menu li:last-child a {	border-bottom: none }
+.actionbar-menu li:last-child a { border-bottom: none }

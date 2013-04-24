@@ -34,7 +34,7 @@ function onDeviceReady() {
 
 Zepto(function($) {
 
-    $('@actionbar-menu').click(function(e) {
+    $('@actionbar-menu--toggler').click(function(e) {
         var target = $(this).data('target');
         $(this).toggleClass('active');
         $('*[data-name="'+ target +'"]').toggle();

@@ -32,11 +32,11 @@ body {
 }
 
 
-.layout-with-actionbar--top { padding-top: 48px }
-.layout-with-actionbar--bottom { padding-bottom: 48px }
+.with-actionbar--top { padding-top: 48px }
+.with-actionbar--bottom { padding-bottom: 48px }
 
 
-[class*="actionbar--"] {
+.actionbar {
 	height: 48px;
 	padding-left: 16px;
 	padding-right: 25px;
@@ -46,20 +46,58 @@ body {
 	position: fixed;
 	right: 0;
 	left: 0;
+	z-index: 800;
 	box-shadow: 0 2px 5px #d1d1d1;
 }
 
-[class*="actionbar--"].actionbar--top {	top: 0 }
-[class*="actionbar--"].actionbar--bottom { bottom: 0 }
+.actionbar--inner { position: relative }
+
+.actionbar--top {	top: 0 }
+.actionbar--bottom { bottom: 0 }
 
 .actionbar--light {
 	background-color: #eee;
 	border-bottom: 1px solid #bfbfbf;
 	color: #000;
 }
-
 .actionbar--dark {
 	background-color: #333;
 	border-bottom: 1px solid #292929;
 	color: #fff;
 }
+
+
+.actionbar--dark .actionbar-icon,
+.actionbar--dark .actionbar-icon:before,
+.actionbar--dark .actionbar-icon:after { background-color: #d6d6d6 }
+
+.actionbar--light .actionbar-icon,
+.actionbar--light .actionbar-icon:before,
+.actionbar--light .actionbar-icon:after { background-color: #7e7e7e }
+
+.actionbar-icon,
+.actionbar-icon:before,
+.actionbar-icon:after {	position: absolute }
+
+.actionbar-icon:hover,
+.actionbar-icon:hover:before,
+.actionbar-icon:hover:after { background-color: #33b5e5 }
+
+.actionbar-icon {
+	right: 0;
+	z-index: 805;
+}
+
+.actionbar-icon:before,
+.actionbar-icon:after { content: '' }
+
+.actionbar-icon--menu,
+.actionbar-icon--menu:before,
+.actionbar-icon--menu:after {
+	width: 5px;
+	height: 5px;
+}
+
+.actionbar-icon--menu { top: 21px }
+.actionbar-icon--menu:before { top: -9px }
+.actionbar-icon--menu:after { bottom: -9px }

@@ -3,7 +3,15 @@
  *****************************************************************************/
 
 function onLoad() {
+	// add cordova eventlistener for deviceReady
     document.addEventListener('deviceready', onDeviceReady, false);
+
+    // QuoJS default ajax settings
+    $$.ajaxSettings = {
+    	dataType: 'json',
+        async: true,
+        timeout: 3
+    };
 }
 
 
@@ -17,3 +25,10 @@ function onDeviceReady() {
     document.addEventListener('online', onOnline, false);
     document.addEventListener('offline', onOffline, false);
 }
+
+
+/*
+ * Zepto 'ready()' - when the DOM + Zepto are ready
+ *****************************************************************************/
+
+Zepto(function($) {});

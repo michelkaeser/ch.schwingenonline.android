@@ -10,6 +10,17 @@
 <script src="assets/js/libs/quo-2.3.1.min.js"></script>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/events.js"></script>
+<script>
+var ajaxCall = function(callback) {
+	var url = '<URL>?callback=?';
+
+	$$.ajax({
+	    url: url,
+	    success: function(data) {},
+	    error: function(xhr, type) {}
+	});
+};
+</script>
 <!-- JS -->
 </head>
 

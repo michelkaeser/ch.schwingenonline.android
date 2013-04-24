@@ -33,11 +33,13 @@ function onDeviceReady() {
  *****************************************************************************/
 
 Zepto(function($) {
+    // we hide default content until Zepto is ready
+    $('@modal-box--loading').hide();
 
+    // clickEvent for actiobar-menu--togglers
     $('@actionbar-menu--toggler').click(function(e) {
         var target = $(this).data('target');
         $(this).toggleClass('active');
         $('*[data-name="'+ target +'"]').toggle();
     });
-
 });

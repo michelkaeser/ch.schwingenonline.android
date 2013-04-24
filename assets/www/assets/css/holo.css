@@ -3,3 +3,12 @@
  *****************************************************************************/
 
 @import url('http://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic');
+
+/*
+ * globals - document-wide styles
+ *****************************************************************************/
+
+body {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+}

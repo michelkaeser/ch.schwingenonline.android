@@ -31,16 +31,35 @@ body {
 	font-weight: 400;
 }
 
+
+.layout-with-actionbar--top { padding-top: XYrem }
+.layout-with-actionbar--bottom { padding-bottom: XYrem }
+
+
 [class*="actionbar--"] {
+	height: 96px;
+	padding-left: 32px;
+	padding-right: 50px;
 	font-size: 36px;
+	line-height: 96px;
+	letter-spacing: 1px;
+	position: fixed;
+	right: 0;
+	left: 0;
+	box-shadow: 0 2px 5px #d1d1d1;
 }
+
+[class*="actionbar--"].actionbar--top {	top: 0 }
+[class*="actionbar--"].actionbar--bottom { bottom: 0 }
 
 .actionbar--light {
 	background-color: #eee;
+	border-bottom: 1px solid #bfbfbf;
 	color: #000;
 }
 
 .actionbar--dark {
 	background-color: #333;
+	border-bottom: 1px solid #292929;
 	color: #fff;
 }

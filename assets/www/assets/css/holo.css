@@ -5,10 +5,42 @@
 @import url('http://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic');
 
 /*
+ * actionbar: #333; actionbar-light: #eeeeee;
+ * actionbar-actions: #d6d6d6; actionbar-actions-light: #7e7e7e;
+ * actionbar-bottom: #555555;
+ * actionbar-bottom-actions: #dddddd;
+ *
+ * blue-light: #33b5e5;
+ * red: #ff4444;
+ *
+ * input-light: #808080;
+ * input-light-active: #00bff3;
+ * input-border-light: #b4b4b4;
+ * input-border-active-light: #0099cc;
+ */
+
+
+/*
  * globals - document-wide styles
  *****************************************************************************/
+
+* { box-sizing: border-box }
 
 body {
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;
+}
+
+[class*="actionbar--"] {
+	font-size: 36px;
+}
+
+.actionbar--light {
+	background-color: #eee;
+	color: #000;
+}
+
+.actionbar--dark {
+	background-color: #333;
+	color: #fff;
 }

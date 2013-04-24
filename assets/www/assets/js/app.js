@@ -12,6 +12,9 @@ function onLoad() {
         async: true,
         timeout: 3
     };
+
+    // initialize some global variables
+    backButtonAction = null;
 }
 
 
@@ -41,5 +44,8 @@ Zepto(function($) {
         var target = $(this).data('target');
         $(this).toggleClass('active');
         $('*[data-name="'+ target +'"]').toggle();
+
+        $(this).data('back', 'true');
+        backButtonAction = ".click()";
     });
 });

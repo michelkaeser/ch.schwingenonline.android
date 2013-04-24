@@ -31,6 +31,10 @@ body {
 	font-weight: 400;
 }
 
+a {
+	text-decoration: none;
+}
+
 
 .with-actionbar--top { padding-top: 48px }
 .with-actionbar--bottom { padding-bottom: 48px }
@@ -47,7 +51,6 @@ body {
 	right: 0;
 	left: 0;
 	z-index: 800;
-	box-shadow: 0 0 5px #d1d1d1;
 }
 
 .actionbar--inner { position: relative }
@@ -59,11 +62,13 @@ body {
 	background-color: #eee;
 	border-bottom: 1px solid #bfbfbf;
 	color: #000;
+	box-shadow: 0 0 5px #d1d1d1;
 }
 .actionbar--dark {
 	background-color: #333;
 	border-bottom: 1px solid #292929;
 	color: #fff;
+	box-shadow: 0 0 5px #1a1a1a;
 }
 
 
@@ -74,7 +79,8 @@ body {
 .actionbar-icon::before,
 .actionbar-icon::after { position: absolute }
 
-.actionbar-icon:hover { background-color: #33b5e5 }
+.actionbar-icon:hover,
+.actionbar-icon.active { background-color: #33b5e5 }
 
 .actionbar-icon {
 	right: 0;
@@ -110,7 +116,8 @@ body {
 	padding: 20px;
 }
 
-.actionbar-icon--menu:hover::before {
+.actionbar-icon--menu:hover::before,
+.actionbar-icon--menu.active::before {
 	border-top: 5px solid #33b5e5;
 	border-bottom: 5px solid #33b5e5;
 }
@@ -121,3 +128,82 @@ body {
 	top: -20px;
 	left: -20px;
 }
+
+
+
+
+.menu {	display: none }
+
+.menu ul {
+	width: 60%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	position: absolute;
+	right: 10px;
+	box-shadow: 0 3px 10px #888;
+}
+
+.menu--top ul {	top: 48px }
+.menu--bottom ul { bottom: 48px }
+
+.menu--light ul { border: 1px solid #e6e6e6 }
+.menu--dark ul { border: 1px solid #3d3d3d }
+
+.menu--top ul::before {
+	height: 5px;
+	position: absolute;
+	top: -3px;
+	right: 0;
+	left: 0;
+	z-index: 895;
+	content: '';
+}
+
+.menu--bottom ul::after {
+	height: 5px;
+	position: absolute;
+	bottom: -3px;
+	right: 0;
+	left: 0;
+	z-index: 895;
+	content: '';
+}
+
+.menu--light ul::before { background-color: #eee }
+.menu--dark ul::before { background-color: #333 }
+
+.menu a {
+	padding-right: 14px;
+	padding-left: 14px;
+	font-size: 18px;
+	line-height: 48px;
+	display: block;
+}
+
+.menu--light a {
+	background-color: #efefef;
+	border-bottom: 1px solid #d7d7d7;
+	color: #000;
+}
+
+.menu--dark a {
+	background-color: #303030;
+	border-bottom: 1px solid #4f4f4f;
+	color: #fff;
+}
+
+.menu--top li:first-child a::before {
+	height: 1px;
+	position: absolute;
+	top: -2px;
+	right: 0;
+	left: 0;
+	z-index: 896;
+	content: '';
+}
+
+.menu--light li:first-child a::before {	background-color: #bfbfbf }
+.menu--dark li:first-child a::before { background-color: #292929 }
+
+.menu li:last-child a {	border-bottom: none }

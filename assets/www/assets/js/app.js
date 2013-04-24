@@ -32,4 +32,12 @@ function onDeviceReady() {
  * Zepto 'ready()' - when the DOM + Zepto are ready
  *****************************************************************************/
 
-Zepto(function($) {});
+Zepto(function($) {
+
+    $('@actionbar-menu').click(function(e) {
+        var target = $(this).data('target');
+        $(this).toggleClass('active');
+        $('*[data-name="'+ target +'"]').toggle();
+    });
+
+});

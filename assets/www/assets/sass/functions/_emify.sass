@@ -1,0 +1,28 @@
+/////////////////////////////////////////////////////////
+// # EMIFY
+// functions for px to em conversions
+// src: https://github.com/fffunction/sassaparilla/blob/master/assets/css/libs/_settings.scss
+/////////////////////////////////////////////////////////
+
+@function emify($target, $context)
+	@if $target == 0
+		@return 0
+	@return $target / $context + 0em
+
+
+// -- EM-FONT
+// make px to ems using baseFontSize
+// usg: font-size: em-font(#px)
+/////////////////////////////////////////////////////////
+
+@function em-font($target, $context: $baseFontSize)
+	@return emify($target, $context)
+
+
+// -- EM-BASE
+// make px to ems using baseLineHeight
+// usg: font-size: em-base(#px)
+/////////////////////////////////////////////////////////
+
+@function em-base($target, $context: $baseLineHeight)
+	@return emify($target, $context)

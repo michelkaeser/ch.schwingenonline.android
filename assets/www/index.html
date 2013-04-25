@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title></title>
+<!-- CSS -->
+<link href="assets/css/holo.css" rel="stylesheet">
+<link href="assets/css/app.css" rel="stylesheet">
+<!-- CSS -->
+<!-- JS -->
+<script src="assets/js/libs/cordova-2.6.0.min.js" defer async></script>
+<script src="assets/js/libs/zepto-1.0.1.min.js"></script>
+<script src="assets/js/libs/role-f81de6c.min.js"></script>
+<script src="assets/js/libs/ICanHaz-0.10.2.min.js"></script>
+<script src="assets/js/libs/quo-2.3.1.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/events.js"></script>
+<script>
+var ajaxCall = function(callback) {
+	var url = '<URL>?callback=?';
+
+	$$.ajax({
+	    url: url,
+	    success: function(data) {},
+	    error: function(xhr, type) {}
+	});
+};
+</script>
+<!-- JS -->
+</head>
+
+<body onload="onLoad()" class="with-actionbar--top">
+
+	<!-- actionbar sticky on top // place anywhere -->
+	<div class="actionbar actionbar--dark actionbar--top">
+		<div class="actionbar--inner">
+			Screen Title
+			<!-- actionbar-icon / actionbar-menu-\-toogler // place within actionbar, include role + data-target -->
+			<i class="actionbar-icon actionbar-icon--dark actionbar-icon--menu" role="actionbar-menu--toggler" data-target="actionbar-menu--demo"></i>
+		</div>
+	</div>
+
+	<!-- actionbar-menu displayed right next/below the actionbar // place anywhere, include data-name -->
+	<div class="actionbar-menu actionbar-menu--top actionbar-menu--dark" data-name="actionbar-menu--demo">
+		<ul>
+			<li><a href="">Option 1</a></li>
+			<li><a href="">Option 2</a></li>
+			<li><a href="">Option 3</a></li>
+		</ul>
+	</div>
+
+	<div class="modal-box modal-box--dark">
+		<h6>Loading</h6>
+		<p>Do you want to uninstall this app?</p>
+		<div class="btn-group btn-group--modal btn-group--dark">
+			<a href="" class="btn btn--modal btn--dark">Cancel</a>
+			<a href="" class="btn btn--modal btn--dark">OK</a>
+		</div>
+	</div>
+
+</body>
+</html>

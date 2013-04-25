@@ -34,8 +34,8 @@ body {
 a {	text-decoration: none }
 
 
-.with-actionbar--top { padding-top: 48px }
-.with-actionbar--bottom { padding-bottom: 48px }
+.layout-actionbar--top { padding-top: 48px }
+.layout-actionbar--bottom { padding-bottom: 48px }
 
 
 .actionbar {

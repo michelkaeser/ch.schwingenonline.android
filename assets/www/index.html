@@ -31,16 +31,16 @@ var ajaxCall = function(callback) {
 <body onload="onLoad()" class="with-actionbar--top">
 
 	<!-- actionbar sticky on top // place anywhere -->
-	<div class="actionbar actionbar--light actionbar--top">
+	<div class="actionbar actionbar--dark actionbar--top">
 		<div class="actionbar--inner">
 			Screen Title
 			<!-- actionbar-icon / actionbar-menu-\-toogler // place within actionbar, include role + data-target -->
-			<i class="actionbar-icon actionbar-icon--menu" role="actionbar-menu--toggler" data-target="actionbar-menu--demo"></i>
+			<i class="actionbar-icon actionbar-icon--dark actionbar-icon--menu" role="actionbar-menu--toggler" data-target="actionbar-menu--demo"></i>
 		</div>
 	</div>
 
 	<!-- actionbar-menu displayed right next/below the actionbar // place anywhere, include data-name -->
-	<div class="actionbar-menu actionbar-menu--top actionbar-menu--light" data-name="actionbar-menu--demo">
+	<div class="actionbar-menu actionbar-menu--top actionbar-menu--dark" data-name="actionbar-menu--demo">
 		<ul>
 			<li><a href="">Option 1</a></li>
 			<li><a href="">Option 2</a></li>
@@ -48,9 +48,13 @@ var ajaxCall = function(callback) {
 		</ul>
 	</div>
 
-	<!-- modal-box-\-loading until page is ready // place anywhere -->
-	<div class="modal-box modal-box--dark modal-box--loading" role="modal-box--loading">
+	<div class="modal-box modal-box--dark">
 		<h6>Loading</h6>
+		<p>Do you want to uninstall this app?</p>
+		<div class="btn-group btn-group--modal btn-group--dark">
+			<a href="" class="btn btn--modal btn--dark">Cancel</a>
+			<a href="" class="btn btn--modal btn--dark">OK</a>
+		</div>
 	</div>
 
 </body>

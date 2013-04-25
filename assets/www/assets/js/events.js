@@ -6,11 +6,11 @@ function onBackKeyDown() {
 	// check if we can undo an action/event
 	if (backButtonAction != null) {
 		eval("$('*[data-back=\"true\"]')" + backButtonAction);
-		
+
 		$('*[data-back=\"true\"]').data('back', 'false');
 		backButtonAction = null;
 	} else {
-		navigator.app.backHistory();
+		navigator.app.backHistory;
 	}
 }
 

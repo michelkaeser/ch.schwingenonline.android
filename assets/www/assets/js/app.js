@@ -6,13 +6,6 @@ function onLoad() {
 	// add cordova eventListener for deviceReady
     document.addEventListener('deviceready', onDeviceReady, false);
 
-    // QuoJS default ajax settings
-    $$.ajaxSettings = {
-    	dataType: 'json',
-        async: true,
-        timeout: 3
-    };
-
     // initialize some global variables
     backButtonAction = null;
 }
@@ -32,11 +25,11 @@ function onDeviceReady() {
 
 
 /*
- * Zepto 'ready()' - when the DOM + Zepto are ready
+ * jQuery document ready
  *****************************************************************************/
 
-Zepto(function($) {
-    // we hide default content until Zepto is ready
+ $(document).ready(function() {
+    // we hide default content until jQuery is ready
     $('@modal-box--loading').hide();
 
     // clickEvent for actiobar-menu--togglers

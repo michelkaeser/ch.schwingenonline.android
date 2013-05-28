@@ -18,15 +18,15 @@
        under the License.
 -->
 <cordova>
-    <access origin="http://127.0.0.1*"/ >
+    <access origin="http://127.0.0.1*" />
     <access origin=".*" />
 
     <content src="index.html" />
 
     <preference name="useBrowserHistory" value="true" />
-    <preference name="exit-on-suspend" value="false" />
+    <preference name="exit-on-suspend" value="true" />
     <preference name="splash-screen-duration" value="3000" />
-    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="show-splash-screen-spinner" value="false" />
     <preference name="auto-hide-splash-screen" value="true" />
 
 	<plugins>

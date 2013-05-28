@@ -108,3 +108,10 @@ a:focus,
 .input-text:focus {
 	border-color: #b2d249;
 }
+
+
+.actions.pull-right {
+	position: absolute;
+	top: 0;
+	right: 0;
+}

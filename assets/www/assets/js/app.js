@@ -6,6 +6,7 @@
  */
 jQuery(document).ready(function($) {
 
+	var _tpl;
 	var _data;
 
 	if (!store.has('recent_posts')) {
@@ -37,9 +38,13 @@ jQuery(document).ready(function($) {
 
 function load_templates() {
     var templates = [
-    	'recent_posts',
     	'categories',
-    	'post'
+    	'news',
+    	'post',
+    	'search',
+    	'search_results',
+    	'settings',
+    	'videos'
     ];
 
     $.each(templates, function(i, e) {

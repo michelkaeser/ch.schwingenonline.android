@@ -15,13 +15,14 @@
 
 		<!-- ACTIONBAR -->
 		<header class="action-bar fixed-top">
-			<a href="#" class="app-icon action">
+			<a href="recent" data-ajax="true" data-href-type="news" data-href-tpl="news" class="app-icon action">
+				<i class="chevron" style="display: none"></i>
 				<i class="icon-schwingenonline"></i>
 			</a>
 			<h1 class="title">schwingenonline.ch</h1>
 			<ul class="actions pull-right">
 				<!--<li><a href="#" class="action" title="Suche"><i class="icon-search"></i></a></li>-->
-				<li><a href="#" class="action" title="Einstellungen"><i class="icon-settings"></i></a></li>
+				<li><a href="#" data-href-type="app" data-href-tpl="settings" class="action" title="Einstellungen"><i class="icon-settings"></i></a></li>
 			</ul>
 		</header>
 		<!-- ACTIONBAR -->
@@ -29,9 +30,9 @@
 		<!-- TABS -->
 		<nav class="tab-fixed">
 			<ul class="tab-inner">
-				<li class="active"><a href="#">News</a></li>
-				<li><a href="#">Videos</a></li>
-				<li><a href="#">Kategorien</a></li>
+				<li class="active"><a href="recent" data-ajax="true" data-href-type="news" data-href-tpl="news" class="tab">News</a></li>
+				<!--<li><a href="#" data-href-type="videos" data-href-tpl="videos">Videos</a></li>-->
+				<li><a href="tab" data-ajax="true" data-href-type="categories" data-href-tpl="categories" class="tab">Kategorien</a></li>
 			</ul>
 		</nav>
 		<!-- TABS -->
@@ -40,9 +41,13 @@
 		<div id="main" class="content inset"></div>
 		<!-- CONTENT -->
 
+		<!-- LOADER -->
+		<div id="loader"></div>
+		<!-- LOADER -->
+
 	</div>
 	<!-- JS -->
-	<script src="assets/js/libs/cordova-2.7.0.min.js"></script>
+	<!--<script src="assets/js/libs/cordova-2.7.0.min.js"></script>-->
 	<script src="assets/js/libs/jquery-2.0.1.min.js"></script>
 	<script src="assets/js/libs/quo-2.3.1.min.js"></script>
 	<script src="assets/js/libs/mustache-0be4e2b9446ccac052a8e74e57fe6d7444dcc231.min.js"></script>

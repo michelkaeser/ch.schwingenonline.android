@@ -33,3 +33,23 @@ jQuery(document).ready(function($) {
 	$('#main').html(output);
 
 });
+
+
+function load_templates() {
+    var templates = [
+    	'recent_posts',
+    	'categories',
+    	'post'
+    ];
+
+    $.each(templates, function(i, e) {
+        $.ajax({
+            url: 'tpl/' + e + '.mustache',
+            success: function(data) {
+                tpl[e] = data;
+            },
+            async: false,
+            dataType: 'html'
+        });
+    });
+}

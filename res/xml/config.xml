@@ -31,6 +31,7 @@
 
 	<plugins>
     	<plugin name="App" value="org.apache.cordova.App" />
+      <plugin name="Device" value="org.apache.cordova.Device" />
     	<plugin name="File" value="org.apache.cordova.FileUtils" />
     	<plugin name="NetworkStatus" value="org.apache.cordova.NetworkManager" />
     	<plugin name="Storage" value="org.apache.cordova.Storage" />

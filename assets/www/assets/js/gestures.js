@@ -1,0 +1,1 @@
+Quo(document).ready(function($) {});

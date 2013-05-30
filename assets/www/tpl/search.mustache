@@ -1,0 +1,27 @@
+{{{}}}
+<script>
+$('#search').focus();
+
+function validate() {
+	store.clear('search_results');
+
+	if ($('#search').val() == '') {
+		$('#search').focus();
+	} else {
+		store.set('search_value', $('#search').val());
+		$('#submit').click();
+	}
+}
+</script>
+{{{}}}
+
+<form id="form" action="javascript:void(0)" onsubmit="validate()">
+	<label>Suche</label>
+    <input id="search" type="text" name="search" placeholder="Suchbegriff" class="input-text">
+
+    <div class="form-actions">
+	    <input type="button" class="btn btn-block" value="Absenden" onclick="validate()">
+        <a data-tab="news" data-type="news" data-page="recent" data-tpl="news" class="btn btn-block" style="text-align: center">Abbruch</a>
+        <a id="submit" data-type="search" data-page="results" data-tpl="search_results"></a>
+    </div>
+</form>

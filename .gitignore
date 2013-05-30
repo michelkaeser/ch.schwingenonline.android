@@ -1,3 +1,7 @@
 # Cordova build
 bin/
 gen/
+
+project.properties
+.classpath
+.project

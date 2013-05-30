@@ -1,30 +1,102 @@
-/////////////////////////////////////////////////////////
-// # IMPORTER
-// imports libraries, variables and addons
-/////////////////////////////////////////////////////////
+$blue: #33b5e5
 
-@import "importer"
+// GLOBALS
+html
+	overflow-x: hidden
+	overflow-y: scroll
+
+body
+	word-wrap: break-word
+
+//
+//
+#loader
+	background: url('../../img/ajax-loader.gif') center center no-repeat #101010
+	position: fixed
+	top: 96px
+	right: 0
+	bottom: 0
+	left: 0
+	z-index: 9999
+
+//
+//
+.app-icon
+	margin-right: 10px
+
+.icon-schwingenonline
+	background-image: url('../../img/actionbar-icon.png')
+	@media (-webkit-min-device-pixel-ratio: 1.5)
+		background-image: url('../../img/actionbar-icon@2x.png')
+		background-size: 100%
+
+//
+//
+.actions
+	&.pull-right
+		position: absolute
+		top: 0
+		right: 0
 
 
-/////////////////////////////////////////////////////////
-// # BOOTSTRAP
-// bootstrap-sass is bootstrap for Sass, ready to roll
-/////////////////////////////////////////////////////////
+//
+//
+img,
+.jwplayer
+	height: auto
+	max-width: 100%
 
-@import "libs/holo/holo"
+table
+	width: auto !important
 
+a
+	display: block
 
-/////////////////////////////////////////////////////////
-// # PARTIALS
-// partials are optional. they include helpful predefined classes
-/////////////////////////////////////////////////////////
+.jwplayer
+	max-height: 200px
+	background-color: #101010 !important
 
-@import "partials/**/*"
+//
+//
+.list-item-multi-line
+	h3
+		height: auto
+		padding: 6px 0
+		line-height: 23px
+	p
+		font-size: 14px
+		line-height: 1.35em
 
+.post
+	padding: 5px
 
-/////////////////////////////////////////////////////////
-// # LAYOUTS
-// the layout files are custom per project, the site's look and feel
-/////////////////////////////////////////////////////////
+.post-date
+	margin: 0 -5px 5px
+	border-top: 0
+	border-bottom: 2px solid #595959
+	line-height: 18px
+	font-size: 11px
+	font-weight: bold
+	text-transform: uppercase
+	padding: 5px 5px 3px
+	color: #CCC
 
-//@import "layouts/**/*"
+.post-title
+	padding: 6px 0 10px
+	font-size: 16px
+	font-weight: normal
+	color: $blue
+	line-height: 23px
+
+.post-content
+	font-size: 14px
+	p
+		margin: 15px 0
+
+.post-img
+	margin-bottom: 2px
+
+.related_post_title,
+.related-clear,
+.related_post
+	display: none

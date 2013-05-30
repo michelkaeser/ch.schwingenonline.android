@@ -1,61 +1,79 @@
 <!DOCTYPE html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title></title>
+<meta charset="utf-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+<title>schwingenonline.ch</title>
 <!-- CSS -->
-<link href="assets/css/holo.css" rel="stylesheet">
-<link href="assets/css/app.css" rel="stylesheet">
+<link href="assets/css/libs/fries-1.0.0.min.css" rel="stylesheet">
+<link href="assets/css/main.css" rel="stylesheet" >
 <!-- CSS -->
-<!-- JS -->
-<script src="assets/js/libs/cordova-2.6.0.min.js" defer async></script>
-<script src="assets/js/libs/zepto-1.0.1.min.js"></script>
-<script src="assets/js/libs/role-f81de6c.min.js"></script>
-<script src="assets/js/libs/ICanHaz-0.10.2.min.js"></script>
-<script src="assets/js/libs/quo-2.3.1.min.js"></script>
-<script src="assets/js/app.js"></script>
-<script src="assets/js/events.js"></script>
-<script>
-var ajaxCall = function(callback) {
-	var url = '<URL>?callback=?';
-
-	$$.ajax({
-	    url: url,
-	    success: function(data) {},
-	    error: function(xhr, type) {}
-	});
-};
-</script>
-<!-- JS -->
 </head>
 
-<body onload="onLoad()" class="with-actionbar--top">
+<body onload="onLoad()">
+	<div class="page">
 
-	<!-- actionbar sticky on top // place anywhere -->
-	<div class="actionbar actionbar--dark actionbar--top">
-		<div class="actionbar--inner">
-			Screen Title
-			<!-- actionbar-icon / actionbar-menu-\-toogler // place within actionbar, include role + data-target -->
-			<i class="actionbar-icon actionbar-icon--dark actionbar-icon--menu" role="actionbar-menu--toggler" data-target="actionbar-menu--demo"></i>
-		</div>
+		<!-- ACTIONBAR -->
+		<header class="action-bar fixed-top">
+			<a data-tab="news" data-type="news" data-page="recent" data-tpl="news" class="app-icon action" disabled>
+				<i class="chevron" style="display: none"></i>
+				<i class="icon-schwingenonline"></i>
+			</a>
+			<h1 class="title">schwingenonline.ch</h1>
+			<ul class="actions pull-right">
+				<li><a data-type="search" data-page="form" data-tpl="search" class="action"><i class="icon-search"></i></a></li>
+			</ul>
+		</header>
+		<!-- ACTIONBAR -->
+
+		<!-- TABS -->
+		<nav class="tab-fixed">
+			<ul class="tab-inner">
+				<li id="news" class="active"><a data-tab="news" data-type="news" data-page="recent" data-tpl="news" class="tab">News</a></li>
+				<li id="categories"><a data-tab="categories" data-type="categories" data-page="overview" data-tpl="categories" class="tab">Kategorien</a></li>
+			</ul>
+		</nav>
+		<!-- TABS -->
+
+		<!-- CONTENT -->
+		<div id="main" class="content inset"></div>
+		<!-- CONTENT -->
+
+		<!-- LOADER -->
+		<div id="loader"></div>
+		<!-- LOADER -->
+
 	</div>
+	<!-- JS -->
+	<script src="assets/js/libs/jquery-2.0.1.min.js"></script>
 
-	<!-- actionbar-menu displayed right next/below the actionbar // place anywhere, include data-name -->
-	<div class="actionbar-menu actionbar-menu--top actionbar-menu--dark" data-name="actionbar-menu--demo">
-		<ul>
-			<li><a href="">Option 1</a></li>
-			<li><a href="">Option 2</a></li>
-			<li><a href="">Option 3</a></li>
-		</ul>
-	</div>
+	<!-- // TPL JS -->
+	<script src="assets/js/libs/mustache-0be4e2b9446ccac052a8e74e57fe6d7444dcc231.min.js"></script>
 
-	<div class="modal-box modal-box--dark">
-		<h6>Loading</h6>
-		<p>Do you want to uninstall this app?</p>
-		<div class="btn-group btn-group--modal btn-group--dark">
-			<a href="" class="btn btn--modal btn--dark">Cancel</a>
-			<a href="" class="btn btn--modal btn--dark">OK</a>
-		</div>
-	</div>
+	<!-- // STORAGE JS -->
+	<script src="assets/js/libs/store-2.1.1.min.js"></script>
+	<script src="assets/js/libs/store.cache-8cda560b7b37f54ef436feafee4758defd3c237b.min.js"></script>
 
+	<!-- // APP JS -->
+	<script src="assets/js/events.js"></script>
+	<script src="assets/js/app.js"></script>
+
+	<!-- // JWPLAYER -->
+	<script src="http://p.jwpcdn.com/6/4/jwplayer.js?ver=3.4.2"></script>
+	<script>jwplayer.defaults = { "ph": 2 };</script>
+
+	<!-- // ANALYTICS -->
+	<script>
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-41330288-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+	<!-- JS -->
 </body>
 </html>

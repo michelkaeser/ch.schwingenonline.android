@@ -2,6 +2,10 @@
 bin/
 gen/
 
+# Android SDK
+local.properties
+
+# Eclipse
 project.properties
 .classpath
 .project

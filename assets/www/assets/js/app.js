@@ -15,16 +15,6 @@ var _tpl = {};
 
 
 /**
- * Event that gets raised when jQuery is ready.
- * This event should be used to do initial operations as it's only fired once (since we're using ajax).
- */
-jQuery(document).ready(function() {
-	load_templates(function() {
-		init_app();
-	});
-});
-
-/**
  * Loads the templates.
  * Loads every template file defined in templates into _tpl array for direct access.
  * @param callback - callback function
@@ -66,7 +56,7 @@ function load_templates(callback) {
 function init_app() {
 	$(document).on('click', 'a:not([href])', function(e) {
 	    e.preventDefault();
-	    $('#loader').show();
+	    navigator.notification.activityStart("Inhalt wird geladen", "Laden...");
 
 	    var tab = $(this).data('tab');
 	    var type = $(this).data('type');
@@ -74,6 +64,7 @@ function init_app() {
 	    var tpl = $(this).data('tpl');
 
 	    process_click(tab, type, page, tpl, hide_loader());
+	});
 
 
 	process_click('news', 'news', 'recent', 'news', hide_loader());
@@ -183,7 +174,9 @@ function render_tpl(tpl, data, callback) {
 	var output = Mustache.render(_tpl[tpl], data);
 	$('#main').html(output);
 
-	callback();
+	$('body').imagesLoaded(function(instance) {
+		callback();
+	});
 }
 
 /**
@@ -216,6 +209,9 @@ function fetch_json(uri, url, callback) {
  * Hides the loader and scrolls back to top to reset previous scolling position.
  */
 function hide_loader() {
-	$('#loader').hide();
-	$('html, body').scrollTop(96);
+	$('html, body').scrollTop(0);
+
+	setTimeout(function activity_stop() {
+		navigator.notification.activityStop();
+	}, 1250);
 }

@@ -6,6 +6,13 @@ function validate() {
 	store.clear('search_results');
 
 	if ($('#search').val() == '') {
+		navigator.notification.alert(
+		    'Der Suchbegriff darf nicht leer sein.',
+		    function() {},
+		    'Leere Suche',
+		    'OK'
+		);
+
 		$('#search').focus();
 	} else {
 		store.set('search_value', $('#search').val());

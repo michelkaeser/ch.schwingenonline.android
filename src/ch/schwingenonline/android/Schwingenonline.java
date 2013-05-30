@@ -31,7 +31,7 @@ public class Schwingenonline extends DroidGap
         super.loadUrl(Config.getStartUrl());
 
         super.setIntegerProperty("splashscreen", R.drawable.splash);
-        super.loadUrl("file:///android_asset/www/index.html", 3000);
+        super.loadUrl("file:///android_asset/www/index.html", 2000);
     }
 }
 

@@ -3,6 +3,10 @@
  */
 function onLoad() {
     document.addEventListener('deviceready', onDeviceReady, false);
+
+    load_templates(function() {
+    	init_app();
+    });
 }
 
 /**
@@ -33,9 +37,9 @@ function onBackKeyDown() {
  * Event that gets raised after menu button press.
  */
 function onMenuKeyDown() {
-	navigator.notification.prompt(
+	navigator.notification.alert(
 	    'Diese Funktion wurde noch nicht implementiert.',
-	    function () {},
+	    function() {},
 	    'Nicht implementiert',
 	    'OK'
 	);

@@ -6,6 +6,5 @@ gen/
 local.properties
 
 # Eclipse
-project.properties
 .classpath
 .project

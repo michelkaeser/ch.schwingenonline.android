@@ -174,9 +174,7 @@ function render_tpl(tpl, data, callback) {
 	var output = Mustache.render(_tpl[tpl], data);
 	$('#main').html(output);
 
-	$('body').imagesLoaded(function(instance) {
-		callback();
-	});
+	callback();
 }
 
 /**

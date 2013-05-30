@@ -11,7 +11,7 @@ function onLoad() {
  * The Cordova framework can add various listeners to the application.
  * We have to wait until it's loaded before we can add them though. */
 function onDeviceReady() {
-    document.addEventListener('backbutton', onBackKeyDown, false);
+    /*document.addEventListener('backbutton', onBackKeyDown, false);
     document.addEventListener('menubutton', onMenuKeyDown, false);
     document.addEventListener('searchbutton', onSearchKeyDown, false);
 
@@ -19,7 +19,7 @@ function onDeviceReady() {
     document.addEventListener('volumedownbutton', onVolumeDownKeyDown, false);
 
     document.addEventListener('online', onOnline, false);
-    document.addEventListener('offline', onOffline, false);
+    document.addEventListener('offline', onOffline, false);*/
 }
 
 /**

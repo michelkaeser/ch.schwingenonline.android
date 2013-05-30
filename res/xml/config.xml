@@ -31,14 +31,10 @@
 
 	<plugins>
     	<plugin name="App" value="org.apache.cordova.App" />
-    	<plugin name="Device" value="org.apache.cordova.Device" />
     	<plugin name="File" value="org.apache.cordova.FileUtils" />
     	<plugin name="NetworkStatus" value="org.apache.cordova.NetworkManager" />
     	<plugin name="Storage" value="org.apache.cordova.Storage" />
-    	<plugin name="FileTransfer" value="org.apache.cordova.FileTransfer" />
     	<plugin name="SplashScreen" value="org.apache.cordova.SplashScreen" />
-    	<plugin name="Echo" value="org.apache.cordova.Echo" />
-    	<plugin name="Globalization" value="org.apache.cordova.Globalization" />
     	<plugin name="InAppBrowser" value="org.apache.cordova.InAppBrowser" />
 	</plugins>
 </cordova>

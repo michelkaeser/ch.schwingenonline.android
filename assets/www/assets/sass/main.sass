@@ -2,7 +2,8 @@ $blue: #33b5e5
 
 // GLOBALS
 html
-	overflow: hidden
+	overflow-x: hidden
+	overflow-y: scroll
 
 body
 	word-wrap: break-word
@@ -16,6 +17,7 @@ body
 	right: 0
 	bottom: 0
 	left: 0
+	z-index: 9999
 
 //
 //
@@ -39,9 +41,20 @@ body
 
 //
 //
-img
+img,
+.jwplayer
 	height: auto
 	max-width: 100%
+
+table
+	width: auto !important
+
+a
+	display: block
+
+.jwplayer
+	max-height: 200px
+	background-color: #101010 !important
 
 //
 //
@@ -77,6 +90,13 @@ img
 
 .post-content
 	font-size: 14px
+	p
+		margin: 15px 0
 
 .post-img
 	margin-bottom: 2px
+
+.related_post_title,
+.related-clear,
+.related_post
+	display: none

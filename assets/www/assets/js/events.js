@@ -1,20 +1,15 @@
 /**
- * Function/event that is fired as soon as the DOM is loaded.
- *
- * @method onLoad
+ * Event that gets raised as soon as the DOM is loaded.
  */
 function onLoad() {
     document.addEventListener('deviceready', onDeviceReady, false);
 }
 
 /**
- * Function/event that is fired as soon as Cordova (PhoneGap) is ready.
+ * Event that gets raised when Cordova (PhoneGap) is ready.
  *
  * The Cordova framework can add various listeners to the application.
- * We have to wait until it's loaded before we can add them though.
- *
- * @event onDeviceReady
- */
+ * We have to wait until it's loaded before we can add them though. */
 function onDeviceReady() {
     document.addEventListener('backbutton', onBackKeyDown, false);
     document.addEventListener('menubutton', onMenuKeyDown, false);
@@ -29,8 +24,6 @@ function onDeviceReady() {
 
 /**
  * Event that gets raised after back button press.
- *
- * @event onBackKeyDown
  */
 function onBackKeyDown() {
 	navigator.app.backHistory;
@@ -38,42 +31,30 @@ function onBackKeyDown() {
 
 /**
  * Event that gets raised after menu button press.
- *
- * @event onMenuKeyDown
  */
 function onMenuKeyDown() {}
 
 /**
  * Event that gets raised after search button press.
- *
- * @event onSearchKeyDown
  */
 function onSearchKeyDown() {}
 
 /**
  * Event that gets raised after volume up button press.
- *
- * @event onVolumeUpKeyDown
  */
 function onVolumeUpKeyDown() {}
 
 /**
  * Event that gets raised after volume down button press.
- *
- * @event onVolumeDownKeyDown
  */
 function onVolumeDownKeyDown() {}
 
 /**
  * Event that gets raised when the device goes online.
- *
- * @event onOnline
  */
 function onOnline() {}
 
 /**
  * Event that gets raised when the device goes offline.
- *
- * @event onOnline
  */
 function onOffline() {}

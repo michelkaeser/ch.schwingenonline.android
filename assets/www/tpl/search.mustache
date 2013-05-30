@@ -1,0 +1,26 @@
+{{{}}}
+<script>
+function validate() {
+	if ($('#search').is(':empty')) {
+		navigator.notification.alert(
+		    'Bitte geben Sie einen Suchbegriff ein',
+		    null,
+		    'Leere Suche',
+			'OK'
+		);
+	} else {
+		$('#form').submit();
+	}
+}
+</script>
+{{{}}}
+
+<form id="form">
+	<label>Suche</label>
+    <input id="search" type="text" name="search" placeholder="Suchbegriff" class="input-text">
+
+    <div class="form-actions">
+	    <input type="button" class="btn btn-block" value="Absenden" onclick="validate()">
+        <button type="button" class="btn btn-block" onclick="onBackKeyDown()">Abbruch</button>
+    </div>
+</form>

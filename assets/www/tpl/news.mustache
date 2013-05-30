@@ -1,8 +1,8 @@
 <ul class="list">
-	<li class="list-divider">Aktuellste News</li>
+	<li class="list-divider">{{ title }}</li>
 	{{# posts }}
 		<li class="list-item-multi-line">
-			<h3><a href="{{ id }}" data-ajax="true" data-href-type="post" data-href-tpl="post">{{ title_plain }}</a></h3>
+			<h3><a data-tab="news" data-type="post" data-page="{{ id }}" data-tpl="post">{{ title_plain }}</a></h3>
 			<p>{{ excerpt }}</p>
 		</li>
 	{{/ posts }}

@@ -1,15 +1,23 @@
+/* Stores the app's base URL.
+ * @var string
+ */
+var _base = 'http://www.schwingenonline.ch';
+
 /* Stores the landing page uri.
- * @var string */
+ * @var string
+ */
 var _home = 'news_recent';
 
 /* Stores the loaded templates.
- * @var array */
+ * @var array
+ */
 var _tpl = {};
 
 
 /**
  * Event that gets raised when jQuery is ready.
- * */
+ * This event should be used to do initial operations as it's only fired once (since we're using ajax).
+ */
 jQuery(document).ready(function() {
 	load_templates(function() {
 		init_app();
@@ -18,7 +26,9 @@ jQuery(document).ready(function() {
 
 /**
  * Loads the templates.
- * Loads every template file defined in templates into _tpl array for direct access. */
+ * Loads every template file defined in templates into _tpl array for direct access.
+ * @param callback - callback function
+ */
 function load_templates(callback) {
     var templates = [
     	'categories',
@@ -52,7 +62,7 @@ function load_templates(callback) {
 
 /**
  * Initializes the application.
- *  */
+ */
 function init_app() {
 	$(document).on('click', 'a:not([href])', function(e) {
 	    e.preventDefault();
@@ -79,7 +89,14 @@ function init_app() {
 
 /**
  * Processes click events.
- * Every time a link gets clicked a 'click' event is raised. */
+ * Every time a link gets clicked a 'click' event is raised.
+ *
+ * @param tab - tab to activate
+ * @param type - type of the target page
+ * @param page - target page (id)
+ * @param tpl - template to render
+ * @param callback - callback function
+ */
 function process_click(tab, type, page, tpl, callback) {
 	update_ui(tab, type, page);
 
@@ -98,7 +115,12 @@ function process_click(tab, type, page, tpl, callback) {
 
 /**
  * Updates the UI.
- * Adds and removes classes and states of UI elements. */
+ * Adds and removes classes and states of UI elements.
+ *
+ * @param tab - tab to activate
+ * @param type - type of the target page
+ * @param page - target page (id)
+ */
 function update_ui(tab, type, page) {
 	var uri = type + '_' + page;
 
@@ -115,8 +137,13 @@ function update_ui(tab, type, page) {
 }
 
 /**
+ * Returns the data for given URI.
+ * Fetchs and returns the data for the given URI and proceeds with callback.
  *
- * */
+ * @param type - type of the target page
+ * @param page - target page (id)
+ * @param callback - callback function
+ */
 function get_data(type, page, callback) {
 	var uri = type + '_' + page;
 
@@ -127,19 +154,19 @@ function get_data(type, page, callback) {
 
 		switch (type) {
 			case 'news':
-				source = "http://www.schwingenonline.ch/api/json/get_recent_posts/?callback=?";
+				source = _base + "/api/json/get_recent_posts/?callback=?";
 				break;
 			case 'categories':
-				source = "http://www.schwingenonline.ch/api/json/get_category_index/?callback=?";
+				source = _base + "/api/json/get_category_index/?callback=?";
 				break;
 			case 'category':
-				source = "http://www.schwingenonline.ch/api/json/get_category_posts/?id=" + page + "&callback=?";
+				source = _base + "/api/json/get_category_posts/?id=" + page + "&callback=?";
 				break;
 			case 'post':
-				source = "http://www.schwingenonline.ch/api/json/get_post/?id=" + page + "&callback=?";
+				source = _base + "/api/json/get_post/?id=" + page + "&callback=?";
 				break;
 			case 'search':
-				source = "http://www.schwingenonline.ch/api/json/get_search_results/?search=" + store.get('search_value') + "&callback=?";
+				source = _base + "/api/json/get_search_results/?search=" + store.get('search_value') + "&callback=?";
 				break;
 			default:
 		}
@@ -152,7 +179,12 @@ function get_data(type, page, callback) {
 }
 
 /**
+ * Renders the template.
+ * Renders the data with given mustache template.
  *
+ * @param tpl - template to render
+ * @param data - data to render
+ * @param callback - callback function
  */
 function render_tpl(tpl, data, callback) {
 	var output = Mustache.render(_tpl[tpl], data);
@@ -162,7 +194,12 @@ function render_tpl(tpl, data, callback) {
 }
 
 /**
+ * Fetchs a JSON from given remove URL.
+ * Receivces and fetchs JSON from remote URL and proceeds with callback.
  *
+ * @param uri - internal page URI
+ * @param url - remote origin URL
+ * @param callback - callback function
  */
 function fetch_json(uri, url, callback) {
 	var api = url;

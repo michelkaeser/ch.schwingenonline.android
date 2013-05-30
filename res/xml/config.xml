@@ -35,7 +35,7 @@
     	<plugin name="NetworkStatus" value="org.apache.cordova.NetworkManager" />
     	<plugin name="Storage" value="org.apache.cordova.Storage" />
     	<plugin name="SplashScreen" value="org.apache.cordova.SplashScreen" />
-    	<plugin name="InAppBrowser" value="org.apache.cordova.InAppBrowser" />
+      <plugin name="Notification" value="org.apache.cordova.Notification" />
 	</plugins>
 </cordova>
 

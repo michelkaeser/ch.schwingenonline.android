@@ -73,17 +73,10 @@ function init_app() {
 	    var page = $(this).data('page');
 	    var tpl = $(this).data('tpl');
 
-	    process_click(tab, type, page, tpl, function() {
-	    	$('#loader').hide();
-	    	$('html, body').scrollTop(96);
-	    });
-	});
+	    process_click(tab, type, page, tpl, hide_loader());
 
 
-	process_click('news', 'news', 'recent', 'news', function() {
-		$('#loader').hide();
-		$('html, body').scrollTop(96);
-	});
+	process_click('news', 'news', 'recent', 'news', hide_loader());
 }
 
 
@@ -216,4 +209,13 @@ function fetch_json(uri, url, callback) {
 	});
 
 	return false;
+}
+
+/**
+ * Hides the loading animation.
+ * Hides the loader and scrolls back to top to reset previous scolling position.
+ */
+function hide_loader() {
+	$('#loader').hide();
+	$('html, body').scrollTop(96);
 }

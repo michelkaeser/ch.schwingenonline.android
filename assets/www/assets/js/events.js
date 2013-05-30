@@ -11,11 +11,11 @@ function onLoad() {
  * The Cordova framework can add various listeners to the application.
  * We have to wait until it's loaded before we can add them though. */
 function onDeviceReady() {
-    /*document.addEventListener('backbutton', onBackKeyDown, false);
+    //document.addEventListener('backbutton', onBackKeyDown, false);
     document.addEventListener('menubutton', onMenuKeyDown, false);
     document.addEventListener('searchbutton', onSearchKeyDown, false);
 
-    document.addEventListener('volumeupbutton', onVolumeUpKeyDown, false);
+    /*document.addEventListener('volumeupbutton', onVolumeUpKeyDown, false);
     document.addEventListener('volumedownbutton', onVolumeDownKeyDown, false);
 
     document.addEventListener('online', onOnline, false);
@@ -32,12 +32,21 @@ function onBackKeyDown() {
 /**
  * Event that gets raised after menu button press.
  */
-function onMenuKeyDown() {}
+function onMenuKeyDown() {
+	navigator.notification.prompt(
+	    'Diese Funktion wurde noch nicht implementiert.',
+	    function () {},
+	    'Nicht implementiert',
+	    'OK'
+	);
+}
 
 /**
  * Event that gets raised after search button press.
  */
-function onSearchKeyDown() {}
+function onSearchKeyDown() {
+	process_click('', 'search', 'form', 'search', hide_loader());
+}
 
 /**
  * Event that gets raised after volume up button press.

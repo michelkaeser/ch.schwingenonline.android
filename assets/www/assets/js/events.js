@@ -39,11 +39,19 @@ function onBackKeyDown() {
  * Event that gets raised after menu button press.
  */
 function onMenuKeyDown() {
-	navigator.notification.alert(
-	    "Schwingenonline.ch Android App\nVersion: 2.2.1\nQuellcode: https://github.com/MaddinXx/ch.schwingenonline.android",
-	    function() {},
-	    'Info',
-	    'OK'
+	navigator.notification.confirm(
+	    "Möchten Sie die Anwendung wirklich beenden?",
+	    function(btn) {
+            if (btn === 1) {
+                if (navigator.app){
+                    navigator.app.exitApp();
+                } else if (navigator.device) {
+                    navigator.device.exitApp();
+                }
+            }
+        },
+	    'Beenden',
+	    'Ja,Abbruch'
 	);
 }
 

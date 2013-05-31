@@ -205,6 +205,7 @@ function fetch_json(uri, url, callback) {
 			$.parseJSON({
 				'error': true
 			});
+
 			calback(data);
 		}
 	});
@@ -217,7 +218,9 @@ function fetch_json(uri, url, callback) {
  * Hides the loader and scrolls back to top to reset previous scolling position.
  */
 function hide_loader() {
-	window.scrollTo(0,0);
+	window.scrollTo(0, 0);
+	$(window).scrollTop(0);
+	$('html, body').scrollTop(0);
 
 	setTimeout(function activity_stop() {
 		navigator.notification.activityStop();

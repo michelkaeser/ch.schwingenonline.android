@@ -69,6 +69,11 @@ function init_app() {
 		});
 	});
 
+	iscroll = new iScroll('iscroll', {
+		hScroll: false,
+		hScrollbar: false
+	});
+
 	$('#news').find('.tab').click();
 }
 
@@ -177,7 +182,7 @@ function render_tpl(tpl, data, callback) {
 	var output = Mustache.to_html(_tpl[tpl], data, {
 		'error': _tpl['error']
 	});
-	$('#main').html(output);
+	$('#iscroll').html(output);
 
 	return( callback() );
 }
@@ -219,9 +224,9 @@ function fetch_json(uri, url, callback) {
  * Hides the loader and scrolls back to top to reset previous scolling position.
  */
 function hide_loader() {
-	window.scrollTo(0, 0);
-	$(window).scrollTop(0);
-	$('html, body').scrollTop(0);
+	setTimeout(function () {
+		iscroll.refresh();
+	}, 0);
 
 	setTimeout(function activity_stop() {
 		navigator.notification.activityStop();

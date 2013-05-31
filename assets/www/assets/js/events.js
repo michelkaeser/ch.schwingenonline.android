@@ -4,8 +4,8 @@
 function onLoad() {
     document.addEventListener('deviceready', onDeviceReady, false);
 
-    load_templates(function() {
-    	init_app();
+     load_templates(function() {
+        init_app();
     });
 }
 
@@ -49,7 +49,7 @@ function onMenuKeyDown() {
  * Event that gets raised after search button press.
  */
 function onSearchKeyDown() {
-	process_click('', 'search', 'form', 'search', hide_loader());
+    $('#search').click();
 }
 
 /**

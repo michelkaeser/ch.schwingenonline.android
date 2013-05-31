@@ -1,11 +1,13 @@
+{{> error }}
+
 {{{}}}
 <script>
-$('#search').focus();
+$('#input').focus();
 
 function validate() {
 	store.clear('search_results');
 
-	if ($('#search').val() == '') {
+	if ($('#input').val() == '') {
 		navigator.notification.alert(
 		    'Der Suchbegriff darf nicht leer sein.',
 		    function() {},
@@ -13,9 +15,9 @@ function validate() {
 		    'OK'
 		);
 
-		$('#search').focus();
+		$('#input').focus();
 	} else {
-		store.set('search_value', $('#search').val());
+		store.set('search_value', $('#input').val());
 		$('#submit').click();
 	}
 }
@@ -24,7 +26,7 @@ function validate() {
 
 <form id="form" action="javascript:void(0)" onsubmit="validate()">
 	<label>Suche</label>
-    <input id="search" type="text" name="search" placeholder="Suchbegriff" class="input-text">
+    <input id="input" type="text" name="search" placeholder="Suchbegriff" class="input-text">
 
     <div class="form-actions">
 	    <input type="button" class="btn btn-block" value="Absenden" onclick="validate()">

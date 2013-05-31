@@ -22,6 +22,7 @@ var _tpl = {};
 function load_templates(callback) {
     var templates = [
     	'categories',
+    	'error',
     	'news',
     	'post',
     	'search',
@@ -47,7 +48,7 @@ function load_templates(callback) {
 	    }
     });
 
-    callback();
+    return( callback() );
 }
 
 /**
@@ -63,11 +64,12 @@ function init_app() {
 	    var page = $(this).data('page');
 	    var tpl = $(this).data('tpl');
 
-	    process_click(tab, type, page, tpl, hide_loader());
+	    process_click(tab, type, page, tpl, function() {
+			hide_loader();
+		});
 	});
 
-
-	process_click('news', 'news', 'recent', 'news', hide_loader());
+	$('#news').click();
 }
 
 
@@ -86,12 +88,12 @@ function process_click(tab, type, page, tpl, callback) {
 
 	if (type == 'search' && page == 'form') {
 		render_tpl(tpl, '', function() {
-			callback();
+			return( callback() );
 		});
 	} else {
 		get_data(type, page, function(respond) {
 			render_tpl(tpl, respond, function() {
-				callback();
+				return( callback() );
 			});
 		});
 	}
@@ -132,7 +134,7 @@ function get_data(type, page, callback) {
 	var uri = type + '_' + page;
 
 	if (store.has(uri)) {
-		callback(store.get(uri));
+		return( callback(store.get(uri)) );
 	} else {
 		var source;
 
@@ -156,8 +158,8 @@ function get_data(type, page, callback) {
 		}
 
 		fetch_json(uri, source, function(respond) {
-			store.set(uri, respond, 10);
-			callback(respond);
+			store.set(uri, respond, 5);
+			return( callback(respond) );
 		});
 	}
 }
@@ -171,10 +173,12 @@ function get_data(type, page, callback) {
  * @param callback - callback function
  */
 function render_tpl(tpl, data, callback) {
-	var output = Mustache.render(_tpl[tpl], data);
+	var output = Mustache.to_html(_tpl[tpl], data, {
+		'error': _tpl['error']
+	});
 	$('#main').html(output);
 
-	callback();
+	return( callback() );
 }
 
 /**
@@ -196,6 +200,12 @@ function fetch_json(uri, url, callback) {
 		cache: true,
 		success: function(data) {
 			callback(data);
+		},
+		error: function() {
+			$.parseJSON({
+				'error': true
+			});
+			calback();
 		}
 	});
 
@@ -207,9 +217,9 @@ function fetch_json(uri, url, callback) {
  * Hides the loader and scrolls back to top to reset previous scolling position.
  */
 function hide_loader() {
-	$('html, body').scrollTop(0);
+	window.scrollTo(0,0);
 
 	setTimeout(function activity_stop() {
 		navigator.notification.activityStop();
-	}, 1250);
+	}, 750);
 }

@@ -224,11 +224,11 @@ function fetch_json(uri, url, callback) {
  * Hides the loader and scrolls back to top to reset previous scolling position.
  */
 function hide_loader() {
-	setTimeout(function () {
-		iscroll.refresh();
-	}, 0);
-
 	setTimeout(function activity_stop() {
 		navigator.notification.activityStop();
 	}, 750);
+
+	$('#main').waitForImages(function() {
+	    iscroll.refresh();
+	});
 }

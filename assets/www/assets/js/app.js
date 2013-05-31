@@ -8,11 +8,6 @@ var _base = 'http://www.schwingenonline.ch';
  */
 var _home = 'news_recent';
 
-/* Stores the DB connection.
- * @var object
- */
-var _db;
-
 /* Stores the loaded templates.
  * @var array
  */
@@ -23,27 +18,6 @@ var _tpl = {};
 */
 var _data = {};
 
-
-/**
- * Initializes the SQLite DB.
- */
-function init_db(callback) {
-	/*_db = window.sqlitePlugin.openDatabase({
-		name: 'schwingenonline'
-	});
-
-	_db.transaction(function(db) {
-		db.executeSql('DROP TABLE IF EXISTS tpl');
-		//db.executeSql('CREATE TABLE IF NOT EXISTS tpl (id integer primary key, name text, mustache blob)');
-		db.executeSql('CREATE TABLE IF NOT EXISTS data (id integer primary key, identifier text, json blob)');
-	}, function() {
-		return( callback() );
-	}, function() {
-		// error
-	});*/
-
-	return( callback() );
-}
 
 /**
  * Loads the templates.

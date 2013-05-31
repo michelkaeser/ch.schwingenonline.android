@@ -18,7 +18,7 @@
        under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:windowSoftInputMode="adjustPan"
-      package="ch.schwingenonline.android" android:versionName="2.1.1" android:versionCode="6" android:hardwareAccelerated="true">
+      package="ch.schwingenonline.android" android:versionName="2.2.0" android:versionCode="7" android:hardwareAccelerated="true">
 
     <supports-screens
         android:largeScreens="true"

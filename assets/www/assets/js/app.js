@@ -1,27 +1,59 @@
+/* Stores the app's base URL.
+ * @var string
+ */
+var _base = 'http://www.schwingenonline.ch';
+
 /* Stores the landing page uri.
- * @var string */
+ * @var string
+ */
 var _home = 'news_recent';
 
+/* Stores the DB connection.
+ * @var object
+ */
+var _db;
+
 /* Stores the loaded templates.
- * @var array */
+ * @var array
+ */
 var _tpl = {};
+
+/* Stores some application data.
+* @var array
+*/
+var _data = {};
 
 
 /**
- * Event that gets raised when jQuery is ready.
- * */
-jQuery(document).ready(function() {
-	load_templates(function() {
-		init_app();
+ * Initializes the SQLite DB.
+ */
+function init_db(callback) {
+	/*_db = window.sqlitePlugin.openDatabase({
+		name: 'schwingenonline'
 	});
-});
+
+	_db.transaction(function(db) {
+		db.executeSql('DROP TABLE IF EXISTS tpl');
+		//db.executeSql('CREATE TABLE IF NOT EXISTS tpl (id integer primary key, name text, mustache blob)');
+		db.executeSql('CREATE TABLE IF NOT EXISTS data (id integer primary key, identifier text, json blob)');
+	}, function() {
+		return( callback() );
+	}, function() {
+		// error
+	});*/
+
+	return( callback() );
+}
 
 /**
  * Loads the templates.
- * Loads every template file defined in templates into _tpl array for direct access. */
+ * Loads every template file defined in templates into _tpl array for direct access.
+ * @param callback - callback function
+ */
 function load_templates(callback) {
     var templates = [
     	'categories',
+    	'error',
     	'news',
     	'post',
     	'search',
@@ -29,85 +61,99 @@ function load_templates(callback) {
     ];
 
     $.each(templates, function(i, e) {
-    	var tpl = '_tpl[' + e + ']';
-
-    	if (store.has(tpl)) {
-    		_tpl[e] = store.get(tpl);
-    	} else {
-	    	$.ajax({
-	    		url: 'tpl/' + e + '.mustache',
-	    		dataType: 'html',
-	    		cache: true
-	    	})
-	    	.done(function(data, status, xhr) {
-	    		_tpl[e] = data;
-	    		store.set(tpl, data, 60);
-	    	})
-	    	.fail(function(xhr, status, error) {});
-	    }
+    	$.ajax({
+	    	url: 'tpl/' + e + '.mustache',
+	    	dataType: 'html',
+	    	cache: true
+	    })
+	    .done(function(data, status, xhr) {
+	    	_tpl[e] = data;
+    	})
+    	.fail(function(xhr, status, error) {});
     });
 
-    callback();
+    return( callback() );
 }
 
 /**
  * Initializes the application.
- *  */
+ */
 function init_app() {
 	$(document).on('click', 'a:not([href])', function(e) {
 	    e.preventDefault();
-	    $('#loader').show();
+	    navigator.notification.activityStart("Inhalt wird geladen", "Laden...");
 
 	    var tab = $(this).data('tab');
 	    var type = $(this).data('type');
 	    var page = $(this).data('page');
 	    var tpl = $(this).data('tpl');
 
-	    process_click(tab, type, page, tpl, function() {
-	    	$('#loader').hide();
-	    	$('html, body').scrollTop(96);
-	    });
+	    process_click(tab, type, page, tpl, hide_loader);
 	});
 
+	setTimeout(function () {
+		$('#news').find('.tab').click();
 
-	process_click('news', 'news', 'recent', 'news', function() {
-		$('#loader').hide();
-		$('html, body').scrollTop(96);
-	});
+		iscroll = new iScroll('iscroll', {
+			hScroll: false,
+			hScrollbar: false,
+			bounce: false,
+			momentum: false
+		});
+	}, 750);
 }
-
 
 /**
  * Processes click events.
- * Every time a link gets clicked a 'click' event is raised. */
+ * Every time a link gets clicked a 'click' event is raised.
+ *
+ * @param tab - tab to activate
+ * @param type - type of the target page
+ * @param page - target page (id)
+ * @param tpl - template to render
+ * @param callback - callback function
+ */
 function process_click(tab, type, page, tpl, callback) {
 	update_ui(tab, type, page);
 
 	if (type == 'search' && page == 'form') {
+
 		render_tpl(tpl, '', function() {
-			callback();
+			return( callback() );
 		});
+
 	} else {
+
 		get_data(type, page, function(respond) {
 			render_tpl(tpl, respond, function() {
-				callback();
+				return( callback() );
 			});
 		});
+
 	}
 }
 
 /**
  * Updates the UI.
- * Adds and removes classes and states of UI elements. */
+ * Adds and removes classes and states of UI elements.
+ *
+ * @param tab - tab to activate
+ * @param type - type of the target page
+ * @param page - target page (id)
+ */
 function update_ui(tab, type, page) {
 	var uri = type + '_' + page;
 
 	if (uri == _home) {
+
 		$('.app-icon').removeClass('up').attr('disabled', 'disabled');
 		$('.chevron').hide();
+
 	} else {
+
 		$('.app-icon').addClass('up').removeAttr('disabled');
 		$('.chevron').show();
+
 	}
 
 	$('.tab').parent().removeClass('active');
@@ -115,54 +161,82 @@ function update_ui(tab, type, page) {
 }
 
 /**
+ * Returns the data for given URI.
+ * Fetchs and returns the data for the given URI and proceeds with callback.
  *
- * */
+ * @param type - type of the target page
+ * @param page - target page (id)
+ * @param callback - callback function
+ */
 function get_data(type, page, callback) {
 	var uri = type + '_' + page;
 
-	if (store.has(uri)) {
-		callback(store.get(uri));
-	} else {
+	/*if (db_has_entry('data', 'identifier', uri)) {
+
+		_db.transaction(function(db) {
+			db.executeSql('SELECT json FROM data WHERE identifier = ' + uri, [], function(db, respond) {
+				return( callback(respond) );
+			}, function(db, respond) {
+				alert("Query error in get_data SELECT");
+			});
+		});
+
+	} else {*/
+
 		var source;
 
 		switch (type) {
 			case 'news':
-				source = "http://www.schwingenonline.ch/api/json/get_recent_posts/?callback=?";
+				source = _base + "/api/json/get_recent_posts/?callback=?";
 				break;
 			case 'categories':
-				source = "http://www.schwingenonline.ch/api/json/get_category_index/?callback=?";
+				source = _base + "/api/json/get_category_index/?callback=?";
 				break;
 			case 'category':
-				source = "http://www.schwingenonline.ch/api/json/get_category_posts/?id=" + page + "&callback=?";
+				source = _base + "/api/json/get_category_posts/?id=" + page + "&callback=?";
 				break;
 			case 'post':
-				source = "http://www.schwingenonline.ch/api/json/get_post/?id=" + page + "&callback=?";
+				source = _base + "/api/json/get_post/?id=" + page + "&callback=?";
 				break;
 			case 'search':
-				source = "http://www.schwingenonline.ch/api/json/get_search_results/?search=" + store.get('search_value') + "&callback=?";
+				source = _base + "/api/json/get_search_results/?search=" + _data['search_query'] + "&callback=?";
 				break;
 			default:
+				break;
 		}
 
 		fetch_json(uri, source, function(respond) {
-			store.set(uri, respond, 10);
-			callback(respond);
+			return( callback(respond) );
 		});
-	}
+
+	//}
 }
 
 /**
+ * Renders the template.
+ * Renders the data with given mustache template.
  *
+ * @param tpl - template to render
+ * @param data - data to render
+ * @param callback - callback function
  */
 function render_tpl(tpl, data, callback) {
-	var output = Mustache.render(_tpl[tpl], data);
-	$('#main').html(output);
+	var output = Mustache.to_html(_tpl[tpl], data, {
+		'error': _tpl['error']
+	});
 
-	callback();
+	$('#iscroll').html(output);
+
+	return( callback() );
 }
 
 /**
+ * Fetchs a JSON from given remove URL.
+ * Receivces and fetchs JSON from remote URL and proceeds with callback.
  *
+ * @param uri - internal page URI
+ * @param url - remote origin URL
+ * @param callback - callback function
  */
 function fetch_json(uri, url, callback) {
 	var api = url;
@@ -175,8 +249,35 @@ function fetch_json(uri, url, callback) {
 		cache: true,
 		success: function(data) {
 			callback(data);
+		},
+		error: function() {
+			$.parseJSON({
+				'error': true
+			});
+
+			callback(data);
 		}
 	});
 
 	return false;
+}
+
+/**
+ * Hides the loading animation.
+ * Hides the loader and scrolls back to top to reset previous scolling position.
+ */
+function hide_loader() {
+	setTimeout(function() {
+		navigator.notification.activityStop();
+	}, 750);
+
+	setTimeout(function() {
+		iscroll.refresh();
+		iscroll.scrollTo(0, 0, 0, false);
+	}, 0);
+
+	$('#iscroll').waitForImages(function() {
+	    iscroll.refresh();
+	    iscroll.scrollTo(0, 0, 0, false);
+	});
 }

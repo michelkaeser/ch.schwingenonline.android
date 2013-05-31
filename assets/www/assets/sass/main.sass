@@ -1,23 +1,29 @@
 $blue: #33b5e5
+$bg: #101010
 
-// GLOBALS
 html
-	overflow-x: hidden
-	overflow-y: scroll
+	padding-bottom: 0
+	background: #111
+	background-color: $bg
 
 body
+	margin-top: 96px
+	position: initial
 	word-wrap: break-word
 
-//
-//
-#loader
-	background: url('../../img/ajax-loader.gif') center center no-repeat #101010
+#iscroll
+	position: relative
+	background: $bg
+
+.page
+	position: initial
+
+.action-bar,
+.tab-fixed
 	position: fixed
-	top: 96px
-	right: 0
-	bottom: 0
-	left: 0
-	z-index: 9999
+
+.content
+	position: initial
 
 //
 //
@@ -54,7 +60,11 @@ a
 
 .jwplayer
 	max-height: 200px
-	background-color: #101010 !important
+	background-color: $bg !important
+
+//#main
+//	overflow: scroll
+//	-webkit-overflow-scrolling: touch
 
 //
 //
@@ -94,6 +104,7 @@ a
 		margin: 15px 0
 
 .post-img
+	min-height: 200px
 	margin-bottom: 2px
 
 .related_post_title,

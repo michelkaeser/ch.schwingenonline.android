@@ -19,23 +19,27 @@
 -->
 <cordova>
     <access origin="http://127.0.0.1*" />
-    <access origin=".*" />
+    <access origin="http://www.schwingenonline.ch*" />
+    <access origin="http://cdn.schwingenonline.ch.s3-eu-west-1.amazonaws.com*" />
+    <access origin="http://p.jwpcdn.com*" />
 
     <content src="index.html" />
 
     <preference name="useBrowserHistory" value="true" />
     <preference name="exit-on-suspend" value="true" />
-    <preference name="splash-screen-duration" value="3000" />
+    <preference name="splash-screen-duration" value="2000" />
     <preference name="show-splash-screen-spinner" value="false" />
     <preference name="auto-hide-splash-screen" value="true" />
 
 	<plugins>
     	<plugin name="App" value="org.apache.cordova.App" />
+      <plugin name="Device" value="org.apache.cordova.Device" />
+      <plugin name="SQLitePlugin" value="com.phonegap.plugin.sqlitePlugin.SQLitePlugin" />
     	<plugin name="File" value="org.apache.cordova.FileUtils" />
     	<plugin name="NetworkStatus" value="org.apache.cordova.NetworkManager" />
     	<plugin name="Storage" value="org.apache.cordova.Storage" />
     	<plugin name="SplashScreen" value="org.apache.cordova.SplashScreen" />
-    	<plugin name="InAppBrowser" value="org.apache.cordova.InAppBrowser" />
+      <plugin name="Notification" value="org.apache.cordova.Notification" />
 	</plugins>
 </cordova>
 

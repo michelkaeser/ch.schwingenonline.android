@@ -8,6 +8,11 @@ var _base = 'http://www.schwingenonline.ch';
  */
 var _home = 'news_recent';
 
+/* Stores the DB connection.
+ * @var object
+ */
+var _db;
+
 /* Stores the loaded templates.
  * @var array
  */
@@ -67,6 +72,10 @@ function init_app() {
 	    process_click(tab, type, page, tpl, function() {
 			hide_loader();
 		});
+	});
+
+	var db = window.sqlitePlugin.openDatabase({
+		name: 'ch.schwingenonline.android'
 	});
 
 	iscroll = new iScroll('iscroll', {

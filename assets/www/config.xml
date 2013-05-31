@@ -56,11 +56,11 @@
 	<!-- A list of available plugins are available at https://build.phonegap.com/docs/plugins -->
 
 	<!-- Define app icon for each platform. -->
-	<icon src="res/drawable/icon.png" />
-	<icon src="res/drawable-ldpi/icon.png"   		gap:platform="android"    gap:density="ldpi" />
-	<icon src="res/drawable-mdpi/icon.png"   		gap:platform="android"    gap:density="mdpi" />
-	<icon src="res/drawable-hdpi/icon.png"   		gap:platform="android"    gap:density="hdpi" />
-	<icon src="res/drawable-xhdpi/icon.png"  		gap:platform="android"    gap:density="xhdpi" />
+	<icon src="phonegap/android/icons/icon.png" />
+	<icon src="phonegap/android/icons/ldpi.png"   	gap:platform="android"    gap:density="ldpi" />
+	<icon src="phonegap/android/icons/mdpi.png"		gap:platform="android"    gap:density="mdpi" />
+	<icon src="phonegap/android/icons/hdpi.png"		gap:platform="android"    gap:density="hdpi" />
+	<icon src="phonegap/android/icons/xhdpi.png"		gap:platform="android"    gap:density="xhdpi" />
 	<icon src="res/icon/blackberry/icon-80.png"     gap:platform="blackberry" />
 	<icon src="res/icon/blackberry/icon-80.png"     gap:platform="blackberry" gap:state="hover"/>
 	<icon src="res/icon/ios/icon-57.png"            gap:platform="ios"        width="57" height="57" />
@@ -72,11 +72,11 @@
 	<icon src="res/icon/windows-phone/icon-173.png" gap:platform="winphone"   gap:role="background" />
 
 	<!-- Define app splash screen for each platform. -->
-	<gap:splash src="res/drawable/splash.png" />
-	<gap:splash src="res/drawable-ldpi/splash.png"  				gap:platform="android" gap:density="ldpi" />
-	<gap:splash src="res/drawable-mdpi/splash.png"					gap:platform="android" gap:density="mdpi" />
-	<gap:splash src="res/drawable-hdpi/splash.png"  				gap:platform="android" gap:density="hdpi" />
-	<gap:splash src="res/drawable-xhdpi/splash.png" 				gap:platform="android" gap:density="xhdpi" />
+	<gap:splash src="phonegap/android/splashs/splash.png" />
+	<gap:splash src="phonegap/android/splashs/ldpi.png"  			gap:platform="android" gap:density="ldpi" />
+	<gap:splash src="phonegap/android/splashs/mdpi.png"				gap:platform="android" gap:density="mdpi" />
+	<gap:splash src="phonegap/android/splashs/hdpi.png"  			gap:platform="android" gap:density="hdpi" />
+	<gap:splash src="phonegap/android/splashs/xhdpi.png" 			gap:platform="android" gap:density="xhdpi" />
 	<gap:splash src="res/screen/blackberry/screen-225.png"			gap:platform="blackberry" />
 	<gap:splash src="res/screen/ios/screen-iphone-portrait.png"		gap:platform="ios"     width="320" height="480" />
 	<gap:splash src="res/screen/ios/screen-iphone-portrait-2x.png"	gap:platform="ios"     width="640" height="960" />

@@ -92,6 +92,8 @@ function init_app() {
 	});
 
 	setTimeout(function () {
+		window.localStorage.clear();
+
 		$('#news').find('.tab').click();
 
 		iscroll = new iScroll('iscroll', {
@@ -117,19 +119,15 @@ function process_click(tab, type, page, tpl, callback) {
 	update_ui(tab, type, page);
 
 	if (type == 'search' && page == 'form') {
-
 		render_tpl(tpl, '', function() {
 			return( callback() );
 		});
-
 	} else {
-
 		get_data(type, page, function(respond) {
 			render_tpl(tpl, respond, function() {
 				return( callback() );
 			});
 		});
-
 	}
 }
 
@@ -145,15 +143,11 @@ function update_ui(tab, type, page) {
 	var uri = type + '_' + page;
 
 	if (uri == _home) {
-
 		$('.app-icon').removeClass('up').attr('disabled', 'disabled');
 		$('.chevron').hide();
-
 	} else {
-
 		$('.app-icon').addClass('up').removeAttr('disabled');
 		$('.chevron').show();
-
 	}
 
 	$('.tab').parent().removeClass('active');
@@ -170,19 +164,12 @@ function update_ui(tab, type, page) {
  */
 function get_data(type, page, callback) {
 	var uri = type + '_' + page;
+	var storage = window.localStorage.getItem(uri);
 
-	/*if (db_has_entry('data', 'identifier', uri)) {
-
-		_db.transaction(function(db) {
-			db.executeSql('SELECT json FROM data WHERE identifier = ' + uri, [], function(db, respond) {
-				return( callback(respond) );
-			}, function(db, respond) {
-				alert("Query error in get_data SELECT");
-			});
-		});
-
-	} else {*/
-
+	if (storage != null) {
+		var json = $.parseJSON(storage)
+		return( callback(json) );
+	} else {
 		var source;
 
 		switch (type) {
@@ -205,11 +192,13 @@ function get_data(type, page, callback) {
 				break;
 		}
 
-		fetch_json(uri, source, function(respond) {
+		fetch_json(source, function(respond) {
+			var json = JSON.stringify(respond);
+			window.localStorage.setItem(uri, json);
+
 			return( callback(respond) );
 		});
-
-	//}
+	}
 }
 
 /**
@@ -234,11 +223,10 @@ function render_tpl(tpl, data, callback) {
  * Fetchs a JSON from given remove URL.
  * Receivces and fetchs JSON from remote URL and proceeds with callback.
  *
- * @param uri - internal page URI
  * @param url - remote origin URL
  * @param callback - callback function
  */
-function fetch_json(uri, url, callback) {
+function fetch_json(url, callback) {
 	var api = url;
 
 	$.ajax({
@@ -250,13 +238,7 @@ function fetch_json(uri, url, callback) {
 		success: function(data) {
 			callback(data);
 		},
-		error: function() {
-			$.parseJSON({
-				'error': true
-			});
-
-			callback(data);
-		}
+		error: function() {}
 	});
 
 	return false;

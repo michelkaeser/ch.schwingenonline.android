@@ -37,9 +37,18 @@ function load_templates(callback) {
     $.each(templates, function(i, e) {
     	var tpl = '_tpl[' + e + ']';
 
-    	if (store.has(tpl)) {
-    		_tpl[e] = store.get(tpl);
+    	if (db_has_entry('tpl', 'name', e)) {
+
+    		_db.transaction(function(db) {
+				db.executeSql('SELECT data FROM tpl WHERE name = ' e, [], function(db, respond) {
+					_tpl[e] = respond;
+				}, function(db, respond) {
+					alert("Query error in load_templates SELECT");
+				});
+			});
+
     	} else {
+
 	    	$.ajax({
 	    		url: 'tpl/' + e + '.mustache',
 	    		dataType: 'html',
@@ -47,9 +56,17 @@ function load_templates(callback) {
 	    	})
 	    	.done(function(data, status, xhr) {
 	    		_tpl[e] = data;
-	    		store.set(tpl, data, 60);
+
+	    		_db.transaction(function(db) {
+					db.executeSql('INSERT INTO tpl (name, data) VALUES (' + e + ',' +  data + ')', [], function(db, respond) {
+						// success
+					}, function(db, respond) {
+						alert("Query error in load_templates INSERT");
+					});
+				});
 	    	})
 	    	.fail(function(xhr, status, error) {});
+
 	    }
     });
 
@@ -60,6 +77,13 @@ function load_templates(callback) {
  * Initializes the application.
  */
 function init_app() {
+	init_db();
+
+	iscroll = new iScroll('iscroll', {
+		hScroll: false,
+		hScrollbar: false
+	});
+
 	$(document).on('click', 'a:not([href])', function(e) {
 	    e.preventDefault();
 	    navigator.notification.activityStart("Inhalt wird geladen", "Laden...");
@@ -74,18 +98,26 @@ function init_app() {
 		});
 	});
 
-	_db = window.sqlitePlugin.openDatabase({
-		name: 'ch.schwingenonline.android'
-	});
-
-	iscroll = new iScroll('iscroll', {
-		hScroll: false,
-		hScrollbar: false
-	});
-
 	$('#news').find('.tab').click();
 }
 
+/**
+ * Initializes the SQLite DB.
+ */
+function init_db() {
+	_db = window.sqlitePlugin.openDatabase({
+		name: 'schwingenonline'
+	});
+
+	_db.transaction(function(db) {
+		db.executeSql('CREATE TABLE IF NOT EXISTS tpl (id integer primary key, name text, data text)');
+		db.executeSql('CREATE TABLE IF NOT EXISTS data (id integer primary key, identifier text, json text)');
+	}, function() {
+		// success
+	}, function() {
+		alert("Query error in init_db CREATE");
+	});
+}
 
 /**
  * Processes click events.
@@ -101,15 +133,19 @@ function process_click(tab, type, page, tpl, callback) {
 	update_ui(tab, type, page);
 
 	if (type == 'search' && page == 'form') {
+
 		render_tpl(tpl, '', function() {
 			return( callback() );
 		});
+
 	} else {
+
 		get_data(type, page, function(respond) {
 			render_tpl(tpl, respond, function() {
 				return( callback() );
 			});
 		});
+
 	}
 }
 
@@ -125,11 +161,15 @@ function update_ui(tab, type, page) {
 	var uri = type + '_' + page;
 
 	if (uri == _home) {
+
 		$('.app-icon').removeClass('up').attr('disabled', 'disabled');
 		$('.chevron').hide();
+
 	} else {
+
 		$('.app-icon').addClass('up').removeAttr('disabled');
 		$('.chevron').show();
+
 	}
 
 	$('.tab').parent().removeClass('active');
@@ -147,10 +187,18 @@ function update_ui(tab, type, page) {
 function get_data(type, page, callback) {
 	var uri = type + '_' + page;
 
-	if (store.has(uri)) {
-		var data = store.get(uri);
-		return( callback(data) );
+	if (db_has_entry('data', 'identifier', uri)) {
+
+		_db.transaction(function(db) {
+			db.executeSql('SELECT json FROM data WHERE identifier = ' uri, [], function(db, respond) {
+				return( callback(respond) );
+			}, function(db, respond) {
+				alert("Query error in get_data SELECT");
+			});
+		});
+
 	} else {
+
 		var source;
 
 		switch (type) {
@@ -173,9 +221,15 @@ function get_data(type, page, callback) {
 		}
 
 		fetch_json(uri, source, function(respond) {
-			store.set(uri, respond, 5);
-			return( callback(respond) );
+			_db.transaction(function(db) {
+				db.executeSql('INSERT INTO data (identifier, json) VALUES (' + uri + ',' +  respond + ')', [], function(db, respond) {
+					return( callback(respond) );
+				}, function(db, respond) {
+					alert("Query error in get_data INSERT");
+				});
+			});
 		});
+
 	}
 }
 
@@ -191,6 +245,7 @@ function render_tpl(tpl, data, callback) {
 	var output = Mustache.to_html(_tpl[tpl], data, {
 		'error': _tpl['error']
 	});
+
 	$('#iscroll').html(output);
 
 	return( callback() );

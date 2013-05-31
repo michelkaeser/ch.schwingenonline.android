@@ -40,7 +40,7 @@ function onBackKeyDown() {
  */
 function onMenuKeyDown() {
 	navigator.notification.alert(
-	    "Schwingenonline.ch Android App\nVersion: 2.1.0\nQuellcode: https://github.com/MaddinXx/ch.schwingenonline.android",
+	    "Schwingenonline.ch Android App\nVersion: 2.2.1\nQuellcode: https://github.com/MaddinXx/ch.schwingenonline.android",
 	    function() {},
 	    'Info',
 	    'OK'

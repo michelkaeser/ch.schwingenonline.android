@@ -1,0 +1,11 @@
+{{> error }}
+
+<ul class="list">
+	<li class="list-divider">News</li>
+	{{# posts }}
+		<li class="list-item-multi-line">
+			<h3><a data-tab="news" data-type="post" data-page="{{ id }}" data-tpl="post">{{{ title_plain }}}</a></h3>
+			<p>{{{ excerpt }}}</p>
+		</li>
+	{{/ posts }}
+</ul>

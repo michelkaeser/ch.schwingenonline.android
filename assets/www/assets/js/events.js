@@ -1,36 +1,73 @@
-/*
- * onBackKeyDown() - fired each time backButton is pressed
- *****************************************************************************/
+/**
+ * Event that gets raised as soon as the DOM is loaded.
+ */
+function onLoad() {
+    document.addEventListener('deviceready', onDeviceReady, false);
 
-function onBackKeyDown() {
-	// check if we can undo an action/event
-	if (backButtonAction != null) {
-		eval("$('*[data-back=\"true\"]')" + backButtonAction);
-
-		$('*[data-back=\"true\"]').data('back', 'false');
-		backButtonAction = null;
-	} else {
-		navigator.app.backHistory;
-	}
+     load_templates(function() {
+        init_app();
+    });
 }
 
+/**
+ * Event that gets raised when Cordova (PhoneGap) is ready.
+ *
+ * The Cordova framework can add various listeners to the application.
+ * We have to wait until it's loaded before we can add them though. */
+function onDeviceReady() {
+    //document.addEventListener('backbutton', onBackKeyDown, false);
+    document.addEventListener('menubutton', onMenuKeyDown, false);
+    document.addEventListener('searchbutton', onSearchKeyDown, false);
 
-/*
- * onMenuKeyDown() - fired each time menuButton is pressed
- *****************************************************************************/
+    /*document.addEventListener('volumeupbutton', onVolumeUpKeyDown, false);
+    document.addEventListener('volumedownbutton', onVolumeDownKeyDown, false);
 
-function onMenuKeyDown() {}
+    document.addEventListener('online', onOnline, false);
+    document.addEventListener('offline', onOffline, false);*/
+}
 
+/**
+ * Event that gets raised after back button press.
+ */
+function onBackKeyDown() {
+	navigator.app.backHistory;
+}
 
-/*
- * onOnline() - fired each time the device is online/connected
- *****************************************************************************/
+/**
+ * Event that gets raised after menu button press.
+ */
+function onMenuKeyDown() {
+	navigator.notification.alert(
+	    "Schwingenonline.ch Android App\nVersion: 2.1.0\nQuellcode: https://github.com/MaddinXx/ch.schwingenonline.android",
+	    function() {},
+	    'Info',
+	    'OK'
+	);
+}
 
+/**
+ * Event that gets raised after search button press.
+ */
+function onSearchKeyDown() {
+    $('#search').click();
+}
+
+/**
+ * Event that gets raised after volume up button press.
+ */
+function onVolumeUpKeyDown() {}
+
+/**
+ * Event that gets raised after volume down button press.
+ */
+function onVolumeDownKeyDown() {}
+
+/**
+ * Event that gets raised when the device goes online.
+ */
 function onOnline() {}
 
-
-/*
- * onOffline() - fired each time the device is offline/disconnected
- *****************************************************************************/
-
+/**
+ * Event that gets raised when the device goes offline.
+ */
 function onOffline() {}

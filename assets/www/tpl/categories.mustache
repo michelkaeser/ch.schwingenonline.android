@@ -1,0 +1,8 @@
+{{> error }}
+
+<ul class="list">
+	<li class="list-divider">&Uuml;bersicht</li>
+	{{# categories }}
+		<li class="list-item-single-line"><a data-tab="news" data-type="category" data-page="{{ id }}" data-tpl="news">{{ title }}</a></li>
+	{{/ categories }}
+</ul>

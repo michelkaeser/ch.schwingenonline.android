@@ -1,3 +1,10 @@
 # Cordova build
 bin/
 gen/
+
+# Android SDK
+local.properties
+
+# Eclipse
+.classpath
+.project

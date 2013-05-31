@@ -23,20 +23,26 @@
 <script src="assets/js/libs/iscroll-lite-4.1.6.min.js"></script>
 <script src="assets/js/libs/jquery.waitforimages-1.4.2.min.js"></script>
 
+<!-- // JWPLAYER -->
+<script src="http://p.jwpcdn.com/6/4/jwplayer.js?ver=3.4.2"></script>
+<script>jwplayer.defaults = { "ph": 2 };</script>
+
 <!-- // APP JS -->
-<script src="assets/js/db.js"></script>
 <script src="assets/js/gestures.js"></script>
 <script src="assets/js/events.js"></script>
 <script src="assets/js/app.js"></script>
+
+<!-- // CORDOVA -->
+<script src="assets/js/libs/cordova-2.7.0.min.js"></script>
 <!-- JS -->
 </head>
 
-<body onload="onLoad()">
+<body>
 	<div class="page">
 
 		<!-- ACTIONBAR -->
 		<header class="action-bar fixed-top">
-			<a onclick="onBackKeyDown()" class="app-icon action" disabled>
+			<a data-tab="news" data-type="news" data-page="recent" data-tpl="news" class="app-icon action" disabled>
 				<i class="chevron" style="display: none"></i>
 				<i class="icon-schwingenonline"></i>
 			</a>
@@ -64,7 +70,6 @@
 
 	</div>
 
-	<!-- // CORDOVA -->
-	<script src="assets/js/libs/cordova-2.7.0.min.js"></script>
+	<script>onLoad();</script>
 </body>
 </html>

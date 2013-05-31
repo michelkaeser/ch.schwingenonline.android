@@ -5,8 +5,6 @@
 $('#input').focus();
 
 function validate() {
-	store.clear('search_results');
-
 	if ($('#input').val() == '') {
 		navigator.notification.alert(
 		    'Der Suchbegriff darf nicht leer sein.',
@@ -14,10 +12,9 @@ function validate() {
 		    'Leere Suche',
 		    'OK'
 		);
-
 		$('#input').focus();
 	} else {
-		store.set('search_value', $('#input').val());
+		_data['search_query'] = $('#input').val();
 		$('#submit').click();
 	}
 }

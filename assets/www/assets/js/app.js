@@ -18,6 +18,32 @@ var _db;
  */
 var _tpl = {};
 
+/* Stores some application data.
+* @var array
+*/
+var _data = {};
+
+
+/**
+ * Initializes the SQLite DB.
+ */
+function init_db(callback) {
+	/*_db = window.sqlitePlugin.openDatabase({
+		name: 'schwingenonline'
+	});
+
+	_db.transaction(function(db) {
+		db.executeSql('DROP TABLE IF EXISTS tpl');
+		//db.executeSql('CREATE TABLE IF NOT EXISTS tpl (id integer primary key, name text, mustache blob)');
+		db.executeSql('CREATE TABLE IF NOT EXISTS data (id integer primary key, identifier text, json blob)');
+	}, function() {
+		return( callback() );
+	}, function() {
+		// error
+	});*/
+
+	return( callback() );
+}
 
 /**
  * Loads the templates.
@@ -35,39 +61,15 @@ function load_templates(callback) {
     ];
 
     $.each(templates, function(i, e) {
-    	var tpl = '_tpl[' + e + ']';
-
-    	if (db_has_entry('tpl', 'name', e)) {
-
-    		_db.transaction(function(db) {
-				db.executeSql('SELECT data FROM tpl WHERE name = ' e, [], function(db, respond) {
-					_tpl[e] = respond;
-				}, function(db, respond) {
-					alert("Query error in load_templates SELECT");
-				});
-			});
-
-    	} else {
-
-	    	$.ajax({
-	    		url: 'tpl/' + e + '.mustache',
-	    		dataType: 'html',
-	    		cache: true
-	    	})
-	    	.done(function(data, status, xhr) {
-	    		_tpl[e] = data;
-
-	    		_db.transaction(function(db) {
-					db.executeSql('INSERT INTO tpl (name, data) VALUES (' + e + ',' +  data + ')', [], function(db, respond) {
-						// success
-					}, function(db, respond) {
-						alert("Query error in load_templates INSERT");
-					});
-				});
-	    	})
-	    	.fail(function(xhr, status, error) {});
-
-	    }
+    	$.ajax({
+	    	url: 'tpl/' + e + '.mustache',
+	    	dataType: 'html',
+	    	cache: true
+	    })
+	    .done(function(data, status, xhr) {
+	    	_tpl[e] = data;
+    	})
+    	.fail(function(xhr, status, error) {});
     });
 
     return( callback() );
@@ -77,13 +79,6 @@ function load_templates(callback) {
  * Initializes the application.
  */
 function init_app() {
-	init_db();
-
-	iscroll = new iScroll('iscroll', {
-		hScroll: false,
-		hScrollbar: false
-	});
-
 	$(document).on('click', 'a:not([href])', function(e) {
 	    e.preventDefault();
 	    navigator.notification.activityStart("Inhalt wird geladen", "Laden...");
@@ -93,30 +88,19 @@ function init_app() {
 	    var page = $(this).data('page');
 	    var tpl = $(this).data('tpl');
 
-	    process_click(tab, type, page, tpl, function() {
-			hide_loader();
+	    process_click(tab, type, page, tpl, hide_loader);
+	});
+
+	setTimeout(function () {
+		$('#news').find('.tab').click();
+
+		iscroll = new iScroll('iscroll', {
+			hScroll: false,
+			hScrollbar: false,
+			bounce: false,
+			momentum: false
 		});
-	});
-
-	$('#news').find('.tab').click();
-}
-
-/**
- * Initializes the SQLite DB.
- */
-function init_db() {
-	_db = window.sqlitePlugin.openDatabase({
-		name: 'schwingenonline'
-	});
-
-	_db.transaction(function(db) {
-		db.executeSql('CREATE TABLE IF NOT EXISTS tpl (id integer primary key, name text, data text)');
-		db.executeSql('CREATE TABLE IF NOT EXISTS data (id integer primary key, identifier text, json text)');
-	}, function() {
-		// success
-	}, function() {
-		alert("Query error in init_db CREATE");
-	});
+	}, 750);
 }
 
 /**
@@ -187,17 +171,17 @@ function update_ui(tab, type, page) {
 function get_data(type, page, callback) {
 	var uri = type + '_' + page;
 
-	if (db_has_entry('data', 'identifier', uri)) {
+	/*if (db_has_entry('data', 'identifier', uri)) {
 
 		_db.transaction(function(db) {
-			db.executeSql('SELECT json FROM data WHERE identifier = ' uri, [], function(db, respond) {
+			db.executeSql('SELECT json FROM data WHERE identifier = ' + uri, [], function(db, respond) {
 				return( callback(respond) );
 			}, function(db, respond) {
 				alert("Query error in get_data SELECT");
 			});
 		});
 
-	} else {
+	} else {*/
 
 		var source;
 
@@ -215,22 +199,17 @@ function get_data(type, page, callback) {
 				source = _base + "/api/json/get_post/?id=" + page + "&callback=?";
 				break;
 			case 'search':
-				source = _base + "/api/json/get_search_results/?search=" + store.get('search_value') + "&callback=?";
+				source = _base + "/api/json/get_search_results/?search=" + _data['search_query'] + "&callback=?";
 				break;
 			default:
+				break;
 		}
 
 		fetch_json(uri, source, function(respond) {
-			_db.transaction(function(db) {
-				db.executeSql('INSERT INTO data (identifier, json) VALUES (' + uri + ',' +  respond + ')', [], function(db, respond) {
-					return( callback(respond) );
-				}, function(db, respond) {
-					alert("Query error in get_data INSERT");
-				});
-			});
+			return( callback(respond) );
 		});
 
-	}
+	//}
 }
 
 /**
@@ -276,7 +255,7 @@ function fetch_json(uri, url, callback) {
 				'error': true
 			});
 
-			calback(data);
+			callback(data);
 		}
 	});
 
@@ -288,11 +267,17 @@ function fetch_json(uri, url, callback) {
  * Hides the loader and scrolls back to top to reset previous scolling position.
  */
 function hide_loader() {
-	setTimeout(function activity_stop() {
+	setTimeout(function() {
 		navigator.notification.activityStop();
 	}, 750);
 
-	$('#main').waitForImages(function() {
+	setTimeout(function() {
+		iscroll.refresh();
+		iscroll.scrollTo(0, 0, 0, false);
+	}, 0);
+
+	$('#iscroll').waitForImages(function() {
 	    iscroll.refresh();
+	    iscroll.scrollTo(0, 0, 0, false);
 	});
 }

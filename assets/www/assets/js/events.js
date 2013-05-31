@@ -4,8 +4,10 @@
 function onLoad() {
     document.addEventListener('deviceready', onDeviceReady, false);
 
-     load_templates(function() {
-        init_app();
+    init_db(function() {
+        load_templates(function() {
+            init_app();
+        });
     });
 }
 

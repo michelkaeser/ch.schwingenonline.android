@@ -69,7 +69,7 @@ function init_app() {
 		});
 	});
 
-	$('#news').click();
+	$('#news').find('.tab').click();
 }
 
 

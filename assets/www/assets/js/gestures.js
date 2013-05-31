@@ -18,8 +18,8 @@ function switch_tab() {
 	var active = $('.tab').parent('.active').attr('id');
 
 	if (active == 'news') {
-		$('#categories').click();
+		$('#categories').find('.tab').click();
 	} else {
-		$('#news').click();
+		$('#news').find('.tab').click();
 	}
 }

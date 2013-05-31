@@ -134,7 +134,8 @@ function get_data(type, page, callback) {
 	var uri = type + '_' + page;
 
 	if (store.has(uri)) {
-		return( callback(store.get(uri)) );
+		var data = store.get(uri);
+		return( callback(data) );
 	} else {
 		var source;
 

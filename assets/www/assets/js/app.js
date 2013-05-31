@@ -205,7 +205,7 @@ function fetch_json(uri, url, callback) {
 			$.parseJSON({
 				'error': true
 			});
-			calback();
+			calback(data);
 		}
 	});
 

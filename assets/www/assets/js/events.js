@@ -38,9 +38,9 @@ function onBackKeyDown() {
  */
 function onMenuKeyDown() {
 	navigator.notification.alert(
-	    'Diese Funktion wurde noch nicht implementiert.',
+	    "Schwingenonline.ch Android App\nVersion: 2.1.0\nQuellcode: https://github.com/MaddinXx/ch.schwingenonline.android",
 	    function() {},
-	    'Nicht implementiert',
+	    'Info',
 	    'OK'
 	);
 }

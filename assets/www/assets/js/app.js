@@ -74,7 +74,7 @@ function init_app() {
 		});
 	});
 
-	var db = window.sqlitePlugin.openDatabase({
+	_db = window.sqlitePlugin.openDatabase({
 		name: 'ch.schwingenonline.android'
 	});
 

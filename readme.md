@@ -14,6 +14,10 @@ Wordpress JSON API plugin: [http://wordpress.org/extend/plugins/json-api/](http:
 **Used for** getting the Holo look & feel.    
 [https://github.com/jaunesarmiento/fries/](https://github.com/jaunesarmiento/fries/)
 
+**iScroll**: Smooth scrolling for the web    
+**Used for** smooth and native-like scrolling.    
+[https://github.com/cubiq/iscroll](https://github.com/cubiq/iscroll)
+
 **jQuery**: jQuery JavaScript Library    
 **Used for** nearly everything.    
 [https://github.com/jquery/jquery](https://github.com/jquery/jquery)
@@ -21,10 +25,6 @@ Wordpress JSON API plugin: [http://wordpress.org/extend/plugins/json-api/](http:
 **mustache.js**: Minimal templating with {{mustaches}} in JavaScript    
 **Used for** rendering the views.    
 [https://github.com/janl/mustache.js](https://github.com/janl/mustache.js)
-
-**store**: A better way to use localStorage and sessionStorage    
-**Used for** storing JSON data in localStorage.    
-[https://github.com/nbubna/store](https://github.com/nbubna/store)
 
 **QuoJS**: Micro #JavaScript Library for Mobile Devices    
 **Used for** touch gestures.    

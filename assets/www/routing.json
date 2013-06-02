@@ -1,5 +1,5 @@
 {
-	"info": "info",
+	"info": "info?dev=0",
 
 	"post": {
 		"index": "get_posts/?include=id,title,excerpt",
@@ -13,27 +13,31 @@
 	},
 
 	"category": {
-		"index": "get_category_index",
+		"index": "get_category_index?dev=0",
 		"posts": "get_category_posts/?include=id,title,excerpt&id="
 	},
 
 	"tag": {
-		"index": "get_tag_index",
+		"index": "get_tag_index?dev=0",
 		"posts": "get_tag_posts/?include=id,title,excerpt&id="
 	},
 
 	"author": {
-		"index": "get_author_index",
+		"index": "get_author_index?dev=0",
 		"posts": "get_author_posts/?include=id,title,excerpt&id="
 	},
 
 	"page": {
-		"index": "get_page_index",
+		"index": "get_page_inde?dev=0x",
 		"id": "get_page/?include=title,content&id=",
 		"slug": "get_page/?include=title,content&slug="
 	},
 
 	"search": {
 		"results": "get_search_results/?include=id,title,excerpt&search="
+	},
+
+	"internal": {
+		"search_form": ""
 	}
 }

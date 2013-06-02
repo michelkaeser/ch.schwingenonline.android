@@ -33,6 +33,12 @@ var _routing = null;
 var _tpl = {};
 
 /*
+ * Stores the localStorage object.
+ * @var object
+ */
+var _storage = window.localStorage;
+
+/*
  * Stores various application data.
  * @var array
  */
@@ -122,7 +128,7 @@ function init_app() {
 	});
 
 	setTimeout(function () {
-		window.localStorage.clear();
+		_storage.clear();
 
 		$('#news').find('.tab').click();
 
@@ -204,7 +210,7 @@ function update_ui(routing, tab) {
  */
 function get_data(routing, identifier, callback) {
 	var uri = routing + "__" + identifier;
-	var storage = window.localStorage.getItem(uri);
+	var storage = _storage.getItem(uri);
 
 	if (storage !== null) {
 		var json = $.parseJSON(storage);
@@ -231,7 +237,7 @@ function get_data(routing, identifier, callback) {
 
 		fetch_json(source, function(json) {
 			var string = JSON.stringify(json);
-			window.localStorage.setItem(uri, string);
+			_storage.setItem(uri, string);
 
 			return( callback(json) );
 		});

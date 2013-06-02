@@ -4,6 +4,8 @@
 function onLoad() {
     document.addEventListener('deviceready', onDeviceReady, false);
 
+    // TODO: load routing + templates in parallel
+    load_routing();
     load_templates(function() {
         init_app();
     });
@@ -30,6 +32,7 @@ function onDeviceReady() {
  * Event that gets raised after back button press.
  */
 function onBackKeyDown() {
+    // TODO: back history (a la stack)
 	navigator.app.backHistory;
 }
 
@@ -49,7 +52,7 @@ function onMenuKeyDown() {
             }
         },
 	    'Beenden',
-	    'Ja,Abbruch'
+	    'Ja,Nein'
 	);
 }
 

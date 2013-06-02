@@ -2,19 +2,22 @@
 
 {{{}}}
 <script>
-$('#input').focus();
+var input = $('#input');
+
+input.focus();
 
 function validate() {
-	if ($('#input').val() == '') {
+	if (input.val() === '') {
 		navigator.notification.alert(
 		    'Der Suchbegriff darf nicht leer sein.',
 		    function() {},
 		    'Leere Suche',
 		    'OK'
 		);
-		$('#input').focus();
+		input.focus();
 	} else {
-		_data['search_query'] = $('#input').val();
+		var value = input.val();
+		$('#submit').data('identifier', value);
 		$('#submit').click();
 	}
 }
@@ -28,6 +31,6 @@ function validate() {
     <div class="form-actions">
 	    <input type="button" class="btn btn-block" value="Absenden" onclick="validate()">
         <a data-tab="news" data-type="news" data-page="recent" data-tpl="news" class="btn btn-block" style="text-align: center">Abbruch</a>
-        <a id="submit" data-type="search" data-page="results" data-tpl="search_results"></a>
+        <a id="submit" data-routing="search.results" data-identifier="" data-tab="news" data-tpl="search_results"></a>
     </div>
 </form>

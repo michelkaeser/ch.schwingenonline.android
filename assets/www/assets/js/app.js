@@ -1,28 +1,76 @@
-/* Stores the app's base URL.
+/*
+ * Stores the app's base URL.
  * @var string
  */
-var _base = 'http://www.schwingenonline.ch';
+var _base = "http://www.schwingenonline.ch";
 
-/* Stores the landing page uri.
+/*
+ * Stores the app's API path.
  * @var string
  */
-var _home = 'news_recent';
+var _api = "/api/json/";
 
-/* Stores the loaded templates.
+/*
+ * Stores the initial landing page.
+ * @var string
+ */
+var _home = 'news.recent';
+
+/******************************************************************************
+* CONFIGURATION END - DO NOT EDIT LINES BELOW
+******************************************************************************/
+
+/*
+ * Stores the routing table.
+ * @var json
+ */
+var _routing = null;
+
+/*
+ * Stores the loaded templates.
  * @var array
  */
 var _tpl = {};
 
-/* Stores some application data.
-* @var array
-*/
+/*
+ * Stores various application data.
+ * @var array
+ */
 var _data = {};
 
+/******************************************************************************
+* VARIABLE DECLARATIONS END
+******************************************************************************/
+
+/**
+ * Loads the routing table.
+ * Loads routing table from file 'routing.json' and stores in _routing for direct access.
+ * @param callback - callback function
+ *	-> called after successful loading
+ */
+function load_routing(callback) {
+    $.ajax({
+	    url: 'routing.json',
+	    dataType: 'json',
+	    cache: true
+	})
+	.done(function(data, status, xhr) {
+		_routing = data;
+
+		if (typeof(callback) == typeof(Function)) {
+			return( callback() );
+		}
+    })
+    .fail(function(xhr, status, error) {});
+
+    return false;
+}
 
 /**
  * Loads the templates.
  * Loads every template file defined in templates into _tpl array for direct access.
  * @param callback - callback function
+ *	-> called after successful loading all templates
  */
 function load_templates(callback) {
     var templates = [
@@ -46,8 +94,16 @@ function load_templates(callback) {
     	.fail(function(xhr, status, error) {});
     });
 
-    return( callback() );
+    if (typeof(callback) == typeof(Function)) {
+    	return( callback() );
+    }
+
+    return false;
 }
+
+/******************************************************************************
+* STATIC FILE LOADERS END
+******************************************************************************/
 
 /**
  * Initializes the application.
@@ -55,14 +111,14 @@ function load_templates(callback) {
 function init_app() {
 	$(document).on('click', 'a:not([href])', function(e) {
 	    e.preventDefault();
-	    navigator.notification.activityStart("Inhalt wird geladen", "Laden...");
+	    navigator.notification.activityStart("Laden", "Inhalt wird geladen...");
 
+	    var routing = $(this).data('routing');
+	    var identifier = $(this).data('identifier');
 	    var tab = $(this).data('tab');
-	    var type = $(this).data('type');
-	    var page = $(this).data('page');
 	    var tpl = $(this).data('tpl');
 
-	    process_click(tab, type, page, tpl, hide_loader);
+	    process_click(routing, identifier, tab, tpl, hide_loader);
 	});
 
 	setTimeout(function () {
@@ -72,107 +128,116 @@ function init_app() {
 
 		iscroll = new iScroll('iscroll', {
 			hScroll: false,
-			hScrollbar: false,
-			bounce: false,
-			momentum: false
+			hScrollbar: false
 		});
-	}, 750);
+	}, 500);
+
+	return false;
 }
 
 /**
  * Processes click events.
  * Every time a link gets clicked a 'click' event is raised.
  *
- * @param tab - tab to activate
- * @param type - type of the target page
- * @param page - target page (id)
+ * @param routing - routing information
+ * @param identifier - unique identifier
+ * @param tab - tab to activate/show content in
  * @param tpl - template to render
  * @param callback - callback function
+ *	-> called after successful processing the click
  */
-function process_click(tab, type, page, tpl, callback) {
-	update_ui(tab, type, page);
+function process_click(routing, identifier, tab, tpl, callback) {
+	update_ui(routing, tab);
 
-	if (type == 'search' && page == 'form') {
+	if (routing.substring(0, 8) == "internal") {
+		// TODO: internal routing handling
 		render_tpl(tpl, '', function() {
-			return( callback() );
+			if (typeof(callback) == typeof(Function)) {
+				return( callback() );
+			}
 		});
 	} else {
-		get_data(type, page, function(respond) {
-			render_tpl(tpl, respond, function() {
-				return( callback() );
+		get_data(routing, identifier, function(data) {
+			render_tpl(tpl, data, function() {
+				if (typeof(callback) == typeof(Function)) {
+					return( callback() );
+				}
 			});
 		});
 	}
+
+	return false;
 }
 
 /**
- * Updates the UI.
+ * Updates the UI components.
  * Adds and removes classes and states of UI elements.
  *
+ * @param routing - current routing state
  * @param tab - tab to activate
- * @param type - type of the target page
- * @param page - target page (id)
  */
-function update_ui(tab, type, page) {
-	var uri = type + '_' + page;
+function update_ui(routing, tab) {
+	setTimeout(function() {
+		if (routing == _home) {
+			$('.app-icon').removeClass('up').attr('disabled', 'disabled');
+			$('.chevron').hide();
+		} else {
+			$('.app-icon').addClass('up').removeAttr('disabled');
+			$('.chevron').show();
+		}
 
-	if (uri == _home) {
-		$('.app-icon').removeClass('up').attr('disabled', 'disabled');
-		$('.chevron').hide();
-	} else {
-		$('.app-icon').addClass('up').removeAttr('disabled');
-		$('.chevron').show();
-	}
+		$('.tab').parent().removeClass('active');
+		$('#' + tab).addClass('active');
+	}, 0);
 
-	$('.tab').parent().removeClass('active');
-	$('#' + tab).addClass('active');
+	return false;
 }
 
 /**
  * Returns the data for given URI.
  * Fetchs and returns the data for the given URI and proceeds with callback.
  *
- * @param type - type of the target page
- * @param page - target page (id)
+ * @param routing - routing information
+ * @param identifier - unique identifier
  * @param callback - callback function
+ *	-> called after data have been fetched
  */
-function get_data(type, page, callback) {
-	var uri = type + '_' + page;
+function get_data(routing, identifier, callback) {
+	var uri = routing + "__" + identifier;
 	var storage = window.localStorage.getItem(uri);
 
-	if (storage != null) {
-		var json = $.parseJSON(storage)
-		return( callback(json) );
-	} else {
-		var source;
+	if (storage !== null) {
+		var json = $.parseJSON(storage);
 
-		switch (type) {
-			case 'news':
-				source = _base + "/api/json/get_recent_posts/?callback=?";
-				break;
-			case 'categories':
-				source = _base + "/api/json/get_category_index/?callback=?";
-				break;
-			case 'category':
-				source = _base + "/api/json/get_category_posts/?id=" + page + "&callback=?";
-				break;
-			case 'post':
-				source = _base + "/api/json/get_post/?id=" + page + "&callback=?";
-				break;
-			case 'search':
-				source = _base + "/api/json/get_search_results/?search=" + _data['search_query'] + "&callback=?";
-				break;
-			default:
-				break;
+		if (typeof(callback) == typeof(Function)) {
+			return( callback(json) );
+		}
+	} else {
+		var api = _base + _api;
+
+		var route = routing.split('.');
+		var base = route[0];
+		var child = route[1];
+
+		var source = api + _routing[base][child];
+
+		if (identifier !== null) {
+			source += identifier;
 		}
 
-		fetch_json(source, function(respond) {
-			var json = JSON.stringify(respond);
-			window.localStorage.setItem(uri, json);
+		source += "&callback=?";
 
-			return( callback(respond) );
+		console.log(source);
+
+		fetch_json(source, function(json) {
+			var string = JSON.stringify(json);
+			window.localStorage.setItem(uri, string);
+
+			return( callback(json) );
 		});
 	}
+
+	return false;
 }
 
 /**
@@ -182,6 +247,7 @@ function get_data(type, page, callback) {
  * @param tpl - template to render
  * @param data - data to render
  * @param callback - callback function
+ *	-> called after templates has been rendered
  */
 function render_tpl(tpl, data, callback) {
 	var output = Mustache.to_html(_tpl[tpl], data, {
@@ -190,7 +256,11 @@ function render_tpl(tpl, data, callback) {
 
 	$('#iscroll').html(output);
 
-	return( callback() );
+	if (typeof(callback) == typeof(Function)) {
+		return( callback(data) );
+	}
+
+	return false;
 }
 
 /**
@@ -199,6 +269,7 @@ function render_tpl(tpl, data, callback) {
  *
  * @param url - remote origin URL
  * @param callback - callback function
+ *	-> called after JSON was fetched
  */
 function fetch_json(url, callback) {
 	var api = url;
@@ -208,12 +279,14 @@ function fetch_json(url, callback) {
 		type: 'GET',
 		dataType: 'json',
 		timeout: 5000,
-		cache: true,
-		success: function(data) {
-			callback(data);
-		},
-		error: function() {}
-	});
+		cache: true
+	})
+	.done(function(data, status, xhr) {
+		if (typeof(callback) == typeof(Function)) {
+			return( callback(data) );
+		}
+	})
+	.fail(function(xhr, status, error) {});
 
 	return false;
 }
@@ -223,6 +296,7 @@ function fetch_json(url, callback) {
  * Hides the loader and scrolls back to top to reset previous scolling position.
  */
 function hide_loader() {
+	// TODO: needs refactoring
 	setTimeout(function() {
 		navigator.notification.activityStop();
 	}, 750);
@@ -230,10 +304,9 @@ function hide_loader() {
 	setTimeout(function() {
 		iscroll.refresh();
 		iscroll.scrollTo(0, 0, 0, false);
-	}, 0);
+	}, 500);
 
 	$('#iscroll').waitForImages(function() {
 	    iscroll.refresh();
-	    iscroll.scrollTo(0, 0, 0, false);
 	});
 }

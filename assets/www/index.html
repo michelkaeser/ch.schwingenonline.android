@@ -25,7 +25,6 @@
 <script>jwplayer.defaults = { "ph": 2 };</script>
 
 <!-- // APP JS -->
-<script src="assets/js/gestures.js"></script>
 <script src="assets/js/events.js"></script>
 <script src="assets/js/app.js"></script>
 
@@ -39,13 +38,13 @@
 
 		<!-- ACTIONBAR -->
 		<header class="action-bar fixed-top">
-			<a data-tab="news" data-type="news" data-page="recent" data-tpl="news" class="app-icon action" disabled>
+			<a data-routing="news.recent" data-identifier="" data-tab="news" data-tpl="news" class="app-icon action" disabled>
 				<i class="chevron" style="display: none"></i>
 				<i class="icon-schwingenonline"></i>
 			</a>
 			<h1 class="title">schwingenonline.ch</h1>
 			<ul class="actions pull-right">
-				<li><a id="search" data-type="search" data-page="form" data-tpl="search" class="action" title="Suche"><i class="icon-search"></i></a></li>
+				<li><a id="search" data-routing="internal.search_form" data-identifier="" data-tab="" data-tpl="search" class="action" title="Suche"><i class="icon-search"></i></a></li>
 			</ul>
 		</header>
 		<!-- ACTIONBAR -->
@@ -53,8 +52,8 @@
 		<!-- TABS -->
 		<nav class="tab-fixed">
 			<ul class="tab-inner">
-				<li id="news" class="active"><a data-tab="news" data-type="news" data-page="recent" data-tpl="news" class="tab">News</a></li>
-				<li id="categories"><a data-tab="categories" data-type="categories" data-page="overview" data-tpl="categories" class="tab">Kategorien</a></li>
+				<li id="news" class="active"><a data-routing="news.recent" data-identifier="" data-tab="news" data-tpl="news" class="tab">News</a></li>
+				<li id="categories"><a data-routing="category.index" data-identifier="" data-tab="categories" data-tpl="categories" class="tab">Kategorien</a></li>
 			</ul>
 		</nav>
 		<!-- TABS -->

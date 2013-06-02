@@ -148,19 +148,19 @@ function get_data(type, page, callback) {
 
 		switch (type) {
 			case 'news':
-				source = _base + "/api/json/get_recent_posts/?callback=?";
+				source = _base + "/api/json/get_recent_posts/?include=id,title_plain,excerpt&callback=?";
 				break;
 			case 'categories':
 				source = _base + "/api/json/get_category_index/?callback=?";
 				break;
 			case 'category':
-				source = _base + "/api/json/get_category_posts/?id=" + page + "&callback=?";
+				source = _base + "/api/json/get_category_posts/?id=" + page + "&include=id,title_plain,excerpt&callback=?";
 				break;
 			case 'post':
-				source = _base + "/api/json/get_post/?id=" + page + "&callback=?";
+				source = _base + "/api/json/get_post/?id=" + page + "&include=title_plain,content,date,thumbnail&callback=?";
 				break;
 			case 'search':
-				source = _base + "/api/json/get_search_results/?search=" + _data['search_query'] + "&callback=?";
+				source = _base + "/api/json/get_search_results/?search=" + _data['search_query'] + "&include=id,title_plain,excerpt&callback=?";
 				break;
 			default:
 				break;

@@ -28,7 +28,7 @@
 	},
 
 	"page": {
-		"index": "get_page_inde?dev=0x",
+		"index": "get_page_inde?dev=0",
 		"id": "get_page/?include=title,content&id=",
 		"slug": "get_page/?include=title,content&slug="
 	},

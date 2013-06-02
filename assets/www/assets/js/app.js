@@ -157,7 +157,7 @@ function get_data(type, page, callback) {
 				source = _base + "/api/json/get_category_posts/?id=" + page + "&include=id,title_plain,excerpt&callback=?";
 				break;
 			case 'post':
-				source = _base + "/api/json/get_post/?id=" + page + "&include=title_plain,content,date,thumbnail&callback=?";
+				source = _base + "/api/json/get_post/?id=" + page + "&include=title_plain,content,date,thumbnail&thumbnail_size=athleten-thumb&callback=?";
 				break;
 			case 'search':
 				source = _base + "/api/json/get_search_results/?search=" + _data['search_query'] + "&include=id,title_plain,excerpt&callback=?";

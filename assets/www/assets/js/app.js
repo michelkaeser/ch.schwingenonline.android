@@ -51,8 +51,6 @@ var _data = {};
 /**
  * Loads the routing table.
  * Loads routing table from file 'routing.json' and stores in _routing for direct access.
- * @param callback - callback function
- *	-> called after successful loading
  */
 function load_routing(callback) {
     $.ajax({
@@ -62,21 +60,16 @@ function load_routing(callback) {
 	})
 	.done(function(data, status, xhr) {
 		_routing = data;
-
-		if (typeof(callback) == typeof(Function)) {
-			return( callback() );
-		}
+		return callback(null);
     })
-    .fail(function(xhr, status, error) {});
-
-    return false;
+    .fail(function(xhr, status, error) {
+    	return callback(true);
+    });
 }
 
 /**
  * Loads the templates.
  * Loads every template file defined in templates into _tpl array for direct access.
- * @param callback - callback function
- *	-> called after successful loading all templates
  */
 function load_templates(callback) {
     var templates = [
@@ -96,15 +89,15 @@ function load_templates(callback) {
 	    })
 	    .done(function(data, status, xhr) {
 	    	_tpl[e] = data;
+
+	    	if (i == templates.length - 1) {
+	    		return callback(null);
+	    	}
     	})
-    	.fail(function(xhr, status, error) {});
+    	.fail(function(xhr, status, error) {
+    		return callback(true);
+    	});
     });
-
-    if (typeof(callback) == typeof(Function)) {
-    	return( callback() );
-    }
-
-    return false;
 }
 
 /******************************************************************************
@@ -112,33 +105,34 @@ function load_templates(callback) {
 ******************************************************************************/
 
 /**
+ * onGoing click event listener for internal links
+ */
+$(document).on('click', 'a:not([href])', function(e) {
+    e.preventDefault();
+    navigator.notification.activityStart("Laden", "Inhalt wird geladen...");
+
+    var routing = $(this).data('routing');
+    var identifier = $(this).data('identifier');
+    var tab = $(this).data('tab');
+    var tpl = $(this).data('tpl');
+
+    process_click(routing, identifier, tab, tpl, hide_loader);
+});
+
+/**
  * Initializes the application.
  */
 function init_app() {
-	$(document).on('click', 'a:not([href])', function(e) {
-	    e.preventDefault();
-	    navigator.notification.activityStart("Laden", "Inhalt wird geladen...");
-
-	    var routing = $(this).data('routing');
-	    var identifier = $(this).data('identifier');
-	    var tab = $(this).data('tab');
-	    var tpl = $(this).data('tpl');
-
-	    process_click(routing, identifier, tab, tpl, hide_loader);
-	});
-
-	setTimeout(function () {
+	setTimeout(function() {
 		_storage.clear();
 
 		$('#news').find('.tab').click();
 
-		iscroll = new iScroll('iscroll', {
+		iscroll = new iScroll('scroller', {
 			hScroll: false,
 			hScrollbar: false
 		});
-	}, 500);
-
-	return false;
+	}, 750);
 }
 
 /**
@@ -155,24 +149,28 @@ function init_app() {
 function process_click(routing, identifier, tab, tpl, callback) {
 	update_ui(routing, tab);
 
+	var tpl = tpl;
+
 	if (routing.substring(0, 8) == "internal") {
-		// TODO: internal routing handling
-		render_tpl(tpl, '', function() {
-			if (typeof(callback) == typeof(Function)) {
-				return( callback() );
-			}
+		async.waterfall([
+		    function(callback) {
+		        render_tpl(tpl, '', callback);
+		    }
+		], function (err, result) {
+			return callback();
 		});
 	} else {
-		get_data(routing, identifier, function(data) {
-			render_tpl(tpl, data, function() {
-				if (typeof(callback) == typeof(Function)) {
-					return( callback() );
-				}
-			});
+		async.waterfall([
+		    function(callback) {
+		        get_data(routing, identifier, callback);
+		    },
+		    function(arg1, callback) {
+		        render_tpl(tpl, arg1, callback);
+		    }
+		], function (err, result) {
+			return callback();
 		});
 	}
-
-	return false;
 }
 
 /**
@@ -195,8 +193,6 @@ function update_ui(routing, tab) {
 		$('.tab').parent().removeClass('active');
 		$('#' + tab).addClass('active');
 	}, 0);
-
-	return false;
 }
 
 /**
@@ -214,10 +210,7 @@ function get_data(routing, identifier, callback) {
 
 	if (storage !== null) {
 		var json = $.parseJSON(storage);
-
-		if (typeof(callback) == typeof(Function)) {
-			return( callback(json) );
-		}
+		return callback(false, json);
 	} else {
 		var api = _base + _api;
 
@@ -233,13 +226,15 @@ function get_data(routing, identifier, callback) {
 
 		source += "&callback=?";
 
-		console.log(source);
-
-		fetch_json(source, function(json) {
-			var string = JSON.stringify(json);
+		async.waterfall([
+		    function(callback) {
+		        fetch_json(source, callback);
+		    }
+		], function (err, result) {
+			var string = JSON.stringify(result);
 			_storage.setItem(uri, string);
 
-			return( callback(json) );
+			return callback(null, result);
 		});
 	}
 
@@ -256,17 +251,15 @@ function get_data(routing, identifier, callback) {
  *	-> called after templates has been rendered
  */
 function render_tpl(tpl, data, callback) {
-	var output = Mustache.to_html(_tpl[tpl], data, {
-		'error': _tpl['error']
-	});
+	setTimeout(function () {
+		var output = Mustache.to_html(_tpl[tpl], data, {
+			'error': _tpl['error']
+		});
 
-	$('#iscroll').html(output);
+		$('#scroller').html(output);
 
-	if (typeof(callback) == typeof(Function)) {
-		return( callback(data) );
-	}
-
-	return false;
+		return callback(null);
+	}, 0);
 }
 
 /**
@@ -288,13 +281,11 @@ function fetch_json(url, callback) {
 		cache: true
 	})
 	.done(function(data, status, xhr) {
-		if (typeof(callback) == typeof(Function)) {
-			return( callback(data) );
-		}
+		return callback(null, data);
 	})
-	.fail(function(xhr, status, error) {});
-
-	return false;
+	.fail(function(xhr, status, error) {
+		return callback(true);
+	});
 }
 
 /**
@@ -302,17 +293,7 @@ function fetch_json(url, callback) {
  * Hides the loader and scrolls back to top to reset previous scolling position.
  */
 function hide_loader() {
-	// TODO: needs refactoring
 	setTimeout(function() {
 		navigator.notification.activityStop();
-	}, 750);
-
-	setTimeout(function() {
-		iscroll.refresh();
-		iscroll.scrollTo(0, 0, 0, false);
 	}, 500);
-
-	$('#iscroll').waitForImages(function() {
-	    iscroll.refresh();
-	});
 }

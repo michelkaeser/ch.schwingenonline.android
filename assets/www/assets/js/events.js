@@ -3,12 +3,6 @@
  */
 function onLoad() {
     document.addEventListener('deviceready', onDeviceReady, false);
-
-    // TODO: load routing + templates in parallel
-    load_routing();
-    load_templates(function() {
-        init_app();
-    });
 }
 
 /**
@@ -17,15 +11,30 @@ function onLoad() {
  * The Cordova framework can add various listeners to the application.
  * We have to wait until it's loaded before we can add them though. */
 function onDeviceReady() {
-    //document.addEventListener('backbutton', onBackKeyDown, false);
-    document.addEventListener('menubutton', onMenuKeyDown, false);
-    document.addEventListener('searchbutton', onSearchKeyDown, false);
+    async.parallel([
+        function(callback) {
+            setTimeout(function() {
+                //document.addEventListener('backbutton', onBackKeyDown, false);
+                document.addEventListener('menubutton', onMenuKeyDown, false);
+                document.addEventListener('searchbutton', onSearchKeyDown, false);
 
-    /*document.addEventListener('volumeupbutton', onVolumeUpKeyDown, false);
-    document.addEventListener('volumedownbutton', onVolumeDownKeyDown, false);
+                /*document.addEventListener('volumeupbutton', onVolumeUpKeyDown, false);
+                document.addEventListener('volumedownbutton', onVolumeDownKeyDown, false);*/
 
-    document.addEventListener('online', onOnline, false);
-    document.addEventListener('offline', onOffline, false);*/
+                document.addEventListener('online', onOnline, false);
+                document.addEventListener('offline', onOffline, false);
+                return callback(null);
+            }, 0);
+        },
+        function(callback) {
+            load_routing(callback);
+        },
+        function(callback) {
+            load_templates(callback);
+        }
+    ], function(err, results) {
+        init_app();
+    });
 }
 
 /**

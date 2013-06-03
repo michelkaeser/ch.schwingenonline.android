@@ -17,6 +17,16 @@
 <!-- // TPL JS -->
 <script src="assets/js/libs/mustache-0be4e2b9446ccac052a8e74e57fe6d7444dcc231.min.js"></script>
 
+<!-- // FRIES -->
+<script src="assets/js/libs/fries-1.0.0.spinners.min.js"></script>
+<script src="assets/js/libs/fries-1.0.0.action-bars.min.js"></script>
+<script>
+// TODO: in external resource
+$('.action-overflow-icon').click(function() {
+	e.preventDefault();
+});
+</script>
+
 <!-- // MISC JS -->
 <script src="assets/js/libs/iscroll-lite-4.1.6.min.js"></script>
 
@@ -45,6 +55,9 @@
 			<h1 class="title">schwingenonline.ch</h1>
 			<ul class="actions pull-right">
 				<li><a id="search" data-routing="internal.search_form" data-identifier="" data-tab="" data-tpl="search" class="action" title="Suche"><i class="icon-search"></i></a></li>
+				<li><a data-routing="calendar.index" data-identifier="" data-tab="" data-tpl="calendar" class="action" title="Agenda"><i class="icon-calendar"></i></a></li>
+				<li><a data-routing="athlets.index" data-identifier="" data-tab="" data-tpl="athlets" class="action" title="Athleten"><i class="icon-group"></i></a></li>
+				<li><a data-routing="internal.settings" data-identifier="" data-tab="" data-tpl="settings" class="action" title="Einstellungen"><i class="icon-settings"></i></a></li>
 			</ul>
 		</header>
 		<!-- ACTIONBAR -->

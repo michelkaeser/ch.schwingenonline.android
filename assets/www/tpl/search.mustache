@@ -1,5 +1,16 @@
 {{> error }}
 
+<form id="form" action="javascript:void(0)" onsubmit="validate()">
+	<label>Suche</label>
+    <input id="input" type="text" name="search" placeholder="Suchbegriff" class="input-text">
+
+    <div class="form-actions">
+	    <input type="button" class="btn btn-block" value="Absenden" onclick="validate()">
+        <a data-routing="news.recent" data-identifier="" data-tab="news" data-tpl="news" class="btn btn-block" style="text-align: center">Abbruch</a>
+        <a id="submit" data-routing="search.results" data-identifier="" data-tab="news" data-tpl="search_results"></a>
+    </div>
+</form>
+
 {{{}}}
 <script>
 var input = $('#input');
@@ -22,14 +33,3 @@ function validate() {
 }
 </script>
 {{{}}}
-
-<form id="form" action="javascript:void(0)" onsubmit="validate()">
-	<label>Suche</label>
-    <input id="input" type="text" name="search" placeholder="Suchbegriff" class="input-text">
-
-    <div class="form-actions">
-	    <input type="button" class="btn btn-block" value="Absenden" onclick="validate()">
-        <a data-routing="news.recent" data-identifier="" data-tab="news" data-tpl="news" class="btn btn-block" style="text-align: center">Abbruch</a>
-        <a id="submit" data-routing="search.results" data-identifier="" data-tab="news" data-tpl="search_results"></a>
-    </div>
-</form>

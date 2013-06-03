@@ -73,6 +73,7 @@ function load_routing(callback) {
  */
 function load_templates(callback) {
     var templates = [
+    	'athlets',
     	'categories',
     	'error',
     	'news',
@@ -107,7 +108,7 @@ function load_templates(callback) {
 /**
  * onGoing click event listener for internal links
  */
-$(document).on('click', 'a:not([href])', function(e) {
+$(document).on('click', 'a[data-routing]', function(e) {
     e.preventDefault();
     navigator.notification.activityStart("Laden", "Inhalt wird geladen...");
 

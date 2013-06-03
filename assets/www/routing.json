@@ -37,8 +37,12 @@
 		"results": "get_search_results/?include=id,title,excerpt&search="
 	},
 
-	"athleten": {
-		"index": "",
+	"calendar": {
+		"index": ""
+	},
+
+	"athlets": {
+		"index": "athleten/get_athlets/?dev=0",
 		"url": "?json=1&custom_fields=birth,job,weight,size,verband,club,url,hobbies,vorbild,special,story&exclude=title,title_plain,content,excerpt,data,modified,categories,tags,author,comments,attachments,date,url,slug,type,status,comment_count,comment_status,id"
 	},
 

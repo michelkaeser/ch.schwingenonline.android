@@ -120,7 +120,7 @@ $(document).on('click', 'a[data-routing]', function(e) {
  */
 function init_app() {
 	setTimeout(function() {
-		_storage.clear();
+		clear_cache();
 
 		$('#news').find('.tab').click();
 
@@ -285,6 +285,10 @@ function hide_loader() {
 	}, 500);
 }
 
+/******************************************************************************
+* MAIN FUNCTIONS END
+******************************************************************************/
+
 /**
  * Returns the source for given route.
  * Returns the source from routing.json for given route.
@@ -304,4 +308,11 @@ function get_source(routing, identifier) {
 	source += "&callback=?";
 
 	return source;
+}
+
+/**
+ *
+ */
+function clear_cache() {
+	_storage.clear();
 }

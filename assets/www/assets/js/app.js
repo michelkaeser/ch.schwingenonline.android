@@ -73,13 +73,16 @@ function load_routing(callback) {
  */
 function load_templates(callback) {
     var templates = [
+    	'athlete',
     	'athlets',
     	'categories',
     	'error',
+    	'events',
     	'news',
     	'post',
     	'search',
-    	'search_results'
+    	'search_results',
+    	'settings'
     ];
 
     $.each(templates, function(i, e) {

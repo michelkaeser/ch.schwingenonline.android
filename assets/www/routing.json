@@ -38,7 +38,7 @@
 	},
 
 	"calendar": {
-		"index": ""
+		"index": "events/get_events/?dev=0"
 	},
 
 	"athlets": {

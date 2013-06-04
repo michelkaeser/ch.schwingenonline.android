@@ -63,7 +63,8 @@ function load_routing(callback) {
 		return callback(null);
     })
     .fail(function(xhr, status, error) {
-    	return callback(true);
+    	var data = get_error(error);
+    	return callback(true, data);
     });
 }
 
@@ -99,7 +100,8 @@ function load_templates(callback) {
 	    	}
     	})
     	.fail(function(xhr, status, error) {
-    		return callback(true);
+    		var data = get_error(error);
+    		return callback(true, data);
     	});
     });
 }
@@ -263,10 +265,8 @@ function fetch_json(url, callback) {
 		return callback(null, data);
 	})
 	.fail(function(xhr, status, error) {
-		var json = $.parseJSON({
-			"error": true
-		});
-		return callback(true);
+		var data = get_error(error);
+		return callback(true, data);
 	});
 }
 
@@ -308,6 +308,20 @@ function get_source(routing, identifier) {
 	source += "&callback=?";
 
 	return source;
+}
+
+/**
+ * Returns a JSON error object.
+ * @param msg - error message
+ * @return err
+ */
+function get_error(msg) {
+	var err = $.parseJSON({
+		"error": true,
+		"error_msg": msg
+	});
+
+	return err;
 }
 
 /**

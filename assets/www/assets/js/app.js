@@ -301,7 +301,7 @@ function get_source(routing, identifier) {
 }
 
 /**
- *
+ * Clears the localStorage cache.
  */
 function clear_cache() {
 	_storage.clear();

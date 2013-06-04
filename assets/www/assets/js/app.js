@@ -2,13 +2,13 @@
  * Stores the app's base URL.
  * @var string
  */
-var _base = "http://www.schwingenonline.ch";
+var _base = "http://www.schwingenonline.ch/";
 
 /*
  * Stores the app's API path.
  * @var string
  */
-var _api = "/api/json/";
+var _api = "api/json/";
 
 /*
  * Stores the initial landing page.

@@ -37,8 +37,8 @@
 		"results": "get_search_results/?include=id,title,excerpt&search="
 	},
 
-	"calendar": {
-		"index": "events/get_events/?dev=0"
+	"events": {
+		"index": "agenda/get_events/?dev=0"
 	},
 
 	"athlets": {

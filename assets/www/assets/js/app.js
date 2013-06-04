@@ -63,8 +63,7 @@ function load_routing(callback) {
 		return callback(null);
     })
     .fail(function(xhr, status, error) {
-    	var data = get_error(error);
-    	return callback(true, data);
+    	return callback(true);
     });
 }
 
@@ -100,8 +99,7 @@ function load_templates(callback) {
 	    	}
     	})
     	.fail(function(xhr, status, error) {
-    		var data = get_error("Beim Laden der Templates ist ein Fehler aufgetreten.");
-    		return callback(true, data);
+    		return callback(true);
     	});
     });
 }
@@ -208,7 +206,7 @@ function get_data(routing, identifier, callback) {
 
 	if (storage !== null) {
 		var json = $.parseJSON(storage);
-		return callback(false, json);
+		return callback(null, json);
 	} else {
 		var source = get_source(routing, identifier);
 
@@ -269,7 +267,7 @@ function fetch_json(url, callback) {
 	})
 	.fail(function(xhr, status, error) {
 		var data = get_error("Der Server lieferte keine Daten.");
-		return callback(true, data);
+		return callback(null, data);
 	});
 }
 

@@ -1,8 +1,53 @@
 {{> error }}
 
 <article class="post">
-	<p class="post-date">Sorry</p>
+	{{# post.custom_fields }}
+	<p class="post-date">{{ name }}, {{ prename }}</p>
 	<div class="post-content">
-		Diese Funktion wurde noch nicht implementiert.
+		<table style="width: 100% !important">
+			<tr>
+				<td style="width: 35%">Geburtstag</td>
+				<td style="width: 65%">{{ birth }}</td>
+			</tr>
+			<tr>
+				<td>Beruf</td>
+				<td>{{ job }}</td>
+			</tr>
+			<tr>
+				<td>Gewicht in kg</td>
+				<td>{{ weight }}</td>
+			</tr>
+			<tr>
+				<td>Grösse in cm</td>
+				<td>{{ size }}</td>
+			</tr>
+			<tr>
+				<td>Verband</td>
+				<td>{{ verband }}</td>
+			</tr>
+			<tr>
+				<td>Club</td>
+				<td>{{ club }}</td>
+			</tr>
+			<tr>
+				<td>Webseite</td>
+				<td><a href="http://{{ url }}" target="_blank">{{ url }}</a></td>
+			</tr>
+		</table>
+
+		<br />
+
+		<h4>Hobbies</h4>
+		<p>{{ hobbies }}</p>
+
+		<h4>Vorbild, und warum?</h4>
+		<p>{{ vorbild }}</p>
+
+		<h4>Besonderes Merkmal</h4>
+		<p>{{ special }}</p>
+
+		<h4>Geschichte aus dem Leben</h4>
+		<p>{{ story }}</p>
 	</div>
+	{{/ post.custom_fields }}
 </article>

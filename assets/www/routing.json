@@ -43,7 +43,7 @@
 
 	"athlets": {
 		"index": "athleten/get_athlets/?dev=0",
-		"url": "?json=1&custom_fields=birth,job,weight,size,verband,club,url,hobbies,vorbild,special,story&exclude=title,title_plain,content,excerpt,data,modified,categories,tags,author,comments,attachments,date,url,slug,type,status,comment_count,comment_status,id"
+		"id": "?json=1&post_type=athleten&custom_fields=name,prename,birth,job,weight,size,verband,club,url,hobbies,vorbild,special,story&p="
 	},
 
 	"internal": {

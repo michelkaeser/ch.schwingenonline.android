@@ -2,7 +2,7 @@
 
 <ul class="list">
 	<li class="list-divider">Athleten</li>
-	{{# athlets }}
-		<li class="list-item-single-line"><a data-routing="internal.url" data-identifier="" data-tab="" data-tpl="athlete">{{ name }}, {{ prename }}</a></li>
-	{{/ athlets }}
+	{{# p }}
+		<li class="list-item-single-line"><a data-routing="athlets.id" data-identifier="{{ id }}" data-tab="" data-tpl="athlete">{{ name }}, {{ prename }}</a></li>
+	{{/ p }}
 </ul>

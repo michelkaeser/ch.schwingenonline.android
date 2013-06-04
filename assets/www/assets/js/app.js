@@ -100,7 +100,7 @@ function load_templates(callback) {
 	    	}
     	})
     	.fail(function(xhr, status, error) {
-    		var data = get_error(error);
+    		var data = get_error("Beim Laden der Templates ist ein Fehler aufgetreten.");
     		return callback(true, data);
     	});
     });
@@ -268,7 +268,7 @@ function fetch_json(url, callback) {
 		return callback(null, data);
 	})
 	.fail(function(xhr, status, error) {
-		var data = get_error(error);
+		var data = get_error("Der Server lieferte keine Daten.");
 		return callback(true, data);
 	});
 }

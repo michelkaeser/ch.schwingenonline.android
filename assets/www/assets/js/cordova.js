@@ -14,7 +14,7 @@ function onDeviceReady() {
     async.parallel([
         function(callback) {
             setTimeout(function() {
-                document.addEventListener('backbutton', onBackKeyDown, false);
+                //document.addEventListener('backbutton', onBackKeyDown, false);
                 document.addEventListener('menubutton', onMenuKeyDown, false);
                 document.addEventListener('searchbutton', onSearchKeyDown, false);
 

@@ -8,4 +8,9 @@
 			<p>{{{ excerpt }}}</p>
 		</li>
 	{{/ posts }}
+	{{^ posts}}
+	<li class="list-item-multi-line">
+		<p>Die Suche lieferte keine Treffer.</p>
+	</li>
+	{{/ posts }}
 </ul>

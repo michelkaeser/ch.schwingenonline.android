@@ -4,15 +4,21 @@ Simple Android application for Schwingenonline.ch to receive the latest news.
 
 ## Overview
 
-The project is realized with PhoneGap/Cordova and fetchs the data through Wordpress's JSON API plugin. It can therefor be adapted to other projects relative easily by changeing the `_base` URL in `app.js`.
+The project is realized with PhoneGap/Cordova and fetchs the data through Wordpress's JSON API plugin. It can therefor be adapted to other projects relative easily by changeing the `_base` and `_api` URL in `app.js`.
 
-Wordpress JSON API plugin: [http://wordpress.org/extend/plugins/json-api/](http://wordpress.org/extend/plugins/json-api/)
+Furthermore, all routing is done in `routing.js` - so adding own controllers is easy.
+
+Wordpress JSON API plugin: [https://github.com/adwins04/wp-json-api](https://github.com/adwins04/wp-json-api)
 
 ## Used Resources
 
+**async**: Async utilities for node and the browser    
+**Used for** async processing of clicks (UI, fetch JSON etc.).    
+[https://github.com/caolan/async](https://github.com/caolan/async)
+
 **Fries**: Fries helps you prototype Android apps using HTML, CSS, and JavaScript.    
 **Used for** getting the Holo look & feel.    
-[https://github.com/jaunesarmiento/fries/](https://github.com/jaunesarmiento/fries/)
+[https://github.com/jaunesarmiento/fries](https://github.com/jaunesarmiento/fries)
 
 **iScroll**: Smooth scrolling for the web    
 **Used for** smooth and native-like scrolling.    

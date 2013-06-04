@@ -28,7 +28,7 @@
 	},
 
 	"page": {
-		"index": "get_page_inde?dev=0x",
+		"index": "get_page_inde?dev=0",
 		"id": "get_page/?include=title,content&id=",
 		"slug": "get_page/?include=title,content&slug="
 	},
@@ -37,7 +37,19 @@
 		"results": "get_search_results/?include=id,title,excerpt&search="
 	},
 
+	"calendar": {
+		"index": "events/get_events/?dev=0"
+	},
+
+	"athlets": {
+		"index": "athleten/get_athlets/?dev=0",
+		"id": "?json=1&post_type=athleten&custom_fields=name,prename,birth,job,weight,size,verband,club,url,hobbies,vorbild,special,story&p="
+	},
+
 	"internal": {
-		"search_form": ""
+		"search": {
+			"form": ""
+		},
+		"settings": ""
 	}
 }

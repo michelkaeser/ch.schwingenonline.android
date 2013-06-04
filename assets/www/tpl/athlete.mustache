@@ -1,50 +1,52 @@
 {{> error }}
 
-<article class="post">
+<p class="top-divider">{{ post.custom_fields.name }}, {{ post.custom_fields.prename }}</p>
+<article class="athlete">
 	{{# post.custom_fields }}
-	<p class="post-date">{{ name }}, {{ prename }}</p>
-	<div class="post-content">
-		<table style="width: 100% !important">
+	<div class="content">
+		<img src="{{ post.thumbnail }}" alt="" class="img">
+		<table class="athlete-table">
 			<tr>
-				<td style="width: 35%">Geburtstag</td>
-				<td style="width: 65%">{{ birth }}</td>
+				<td>Geburtstag</td>
+				<td>Beruf</td>
 			</tr>
 			<tr>
-				<td>Beruf</td>
+				<td>{{ birth }}</td>
 				<td>{{ job }}</td>
 			</tr>
 			<tr>
 				<td>Gewicht in kg</td>
-				<td>{{ weight }}</td>
+				<td>Grösse in cm</td>
 			</tr>
 			<tr>
-				<td>Grösse in cm</td>
+				<td>{{ weight }}</td>
 				<td>{{ size }}</td>
 			</tr>
 			<tr>
 				<td>Verband</td>
-				<td>{{ verband }}</td>
+				<td>Club</td>
 			</tr>
 			<tr>
-				<td>Club</td>
+				<td>{{ verband }}</td>
 				<td>{{ club }}</td>
 			</tr>
 			<tr>
 				<td>Webseite</td>
-				<td><a href="http://{{ url }}" target="_blank">{{ url }}</a></td>
+				<td colspan="3"><a href="http://{{ url }}" target="_blank">{{ url }}</a></td>
 			</tr>
 		</table>
 
-		<br />
-
 		<h4>Hobbies</h4>
 		<p>{{ hobbies }}</p>
+		<hr />
 
 		<h4>Vorbild, und warum?</h4>
 		<p>{{ vorbild }}</p>
+		<hr />
 
 		<h4>Besonderes Merkmal</h4>
 		<p>{{ special }}</p>
+		<hr />
 
 		<h4>Geschichte aus dem Leben</h4>
 		<p>{{ story }}</p>

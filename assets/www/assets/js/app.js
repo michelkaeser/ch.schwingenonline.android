@@ -112,12 +112,7 @@ $(document).on('click', 'a[data-routing]', function(e) {
     e.preventDefault();
     navigator.notification.activityStart("Laden", "Inhalt wird geladen...");
 
-    var routing = $(this).data('routing');
-    var identifier = $(this).data('identifier');
-    var tab = $(this).data('tab');
-    var tpl = $(this).data('tpl');
-
-    process_click(routing, identifier, tab, tpl, hide_loader);
+    process_click($(this), hide_loader);
 });
 
 /**
@@ -140,17 +135,17 @@ function init_app() {
  * Processes click events.
  * Every time a link gets clicked a 'click' event is raised.
  *
- * @param routing - routing information
- * @param identifier - unique identifier
- * @param tab - tab to activate/show content in
- * @param tpl - template to render
+ * @param dom - clicked dom object
  * @param callback - callback function
  *	-> called after successful processing the click
  */
-function process_click(routing, identifier, tab, tpl, callback) {
-	update_ui(routing, tab);
+function process_click(dom, callback) {
+	var routing = dom.data('routing');
+	var identifier = dom.data('identifier');
+	var tab = dom.data('tab');
+	var tpl = dom.data('tpl');
 
-	var tpl = tpl;
+	update_ui(routing, tab);
 
 	if (routing.substring(0, 8) == "internal") {
 		async.waterfall([
@@ -213,19 +208,7 @@ function get_data(routing, identifier, callback) {
 		var json = $.parseJSON(storage);
 		return callback(false, json);
 	} else {
-		var api = _base + _api;
-
-		var route = routing.split('.');
-		var base = route[0];
-		var child = route[1];
-
-		var source = api + _routing[base][child];
-
-		if (identifier !== null) {
-			source += identifier;
-		}
-
-		source += "&callback=?";
+		var source = get_source(routing, identifier);
 
 		async.waterfall([
 		    function(callback) {
@@ -285,6 +268,9 @@ function fetch_json(url, callback) {
 		return callback(null, data);
 	})
 	.fail(function(xhr, status, error) {
+		var json = $.parseJSON({
+			"error": true
+		});
 		return callback(true);
 	});
 }
@@ -297,4 +283,25 @@ function hide_loader() {
 	setTimeout(function() {
 		navigator.notification.activityStop();
 	}, 500);
+}
+
+/**
+ * Returns the source for given route.
+ * Returns the source from routing.json for given route.
+ * @param routing - the routing path
+ * @return source
+ */
+function get_source(routing, identifier) {
+	var api = _base + _api;
+
+	var route = routing.split('.');
+	var base = route[0];
+	var child = route[1];
+
+	var source = api + _routing[base][child];
+
+	if (identifier !== null) source += identifier;
+	source += "&callback=?";
+
+	return source;
 }

@@ -191,7 +191,9 @@ function update_ui(routing, tab) {
  *	-> called after data have been fetched
  */
 function get_data(routing, identifier, callback) {
-	var uri = routing + "__" + identifier;
+	var uri = routing;
+	if (identifier !== null && identifier !== "") uri += "__" + identifier;
+
 	var storage = _storage.getItem(uri);
 
 	if (storage !== null) {

@@ -115,8 +115,6 @@ function load_templates(callback) {
  */
 function init_app() {
 	setTimeout(function() {
-		clear_cache();
-
 		$('#news').find('.tab').click();
 
 		iscroll = new iScroll('scroller', {
@@ -140,27 +138,34 @@ function process_click(dom, callback) {
 	var tab = dom.data('tab');
 	var tpl = dom.data('tpl');
 
-	update_ui(routing, tab);
+	if (routing.substring(0, 8) == "function") {
+		var fn = routing.replace("function.", "");
 
-	if (routing.substring(0, 8) == "internal") {
-		async.waterfall([
-		    function(callback) {
-		        render_tpl(tpl, '', callback);
-		    }
-		], function (err, result) {
-			return callback();
-		});
+		window[fn](identifier);
+		return callback();
 	} else {
-		async.waterfall([
-		    function(callback) {
-		        get_data(routing, identifier, callback);
-		    },
-		    function(arg1, callback) {
-		        render_tpl(tpl, arg1, callback);
-		    }
-		], function (err, result) {
-			return callback();
-		});
+		update_ui(routing, tab);
+
+		if (routing.substring(0, 8) == "internal") {
+			async.waterfall([
+			    function(callback) {
+			        render_tpl(tpl, '', callback);
+			    }
+			], function (err, result) {
+				return callback();
+			});
+		} else {
+			async.waterfall([
+			    function(callback) {
+			        get_data(routing, identifier, callback);
+			    },
+			    function(arg1, callback) {
+			        render_tpl(tpl, arg1, callback);
+			    }
+			], function (err, result) {
+				return callback();
+			});
+		}
 	}
 }
 
@@ -218,8 +223,6 @@ function get_data(routing, identifier, callback) {
 			return callback(null, result);
 		});
 	}
-
-	return false;
 }
 
 /**

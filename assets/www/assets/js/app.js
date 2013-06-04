@@ -106,16 +106,6 @@ function load_templates(callback) {
 ******************************************************************************/
 
 /**
- * onGoing click event listener for internal links
- */
-$(document).on('click', 'a[data-routing]', function(e) {
-    e.preventDefault();
-    navigator.notification.activityStart("Laden", "Inhalt wird geladen...");
-
-    process_click($(this), hide_loader);
-});
-
-/**
  * Initializes the application.
  */
 function init_app() {

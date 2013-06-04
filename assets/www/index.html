@@ -20,15 +20,6 @@
 <!-- // FRIES -->
 <script src="assets/js/libs/fries-1.0.0.spinners.min.js"></script>
 <script src="assets/js/libs/fries-1.0.0.action-bars.min.js"></script>
-<script>
-// TODO: in external resource
-$('.action-overflow-icon').click(function(e) {
-	e.preventDefault();
-});
-$(document).on('click', '.spinner-item', function(e) {
-	$(this).parent('.action-overflow-list').toggle().removeClass('active');
-});
-</script>
 
 <!-- // MISC JS -->
 <script src="assets/js/libs/iscroll-lite-4.1.6.min.js"></script>
@@ -39,6 +30,7 @@ $(document).on('click', '.spinner-item', function(e) {
 
 <!-- // APP JS -->
 <script src="assets/js/cordova.js"></script>
+<script src="assets/js/events.js"></script>
 <script src="assets/js/app.js"></script>
 
 <!-- // CORDOVA -->

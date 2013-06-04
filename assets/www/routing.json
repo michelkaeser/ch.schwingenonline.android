@@ -47,7 +47,9 @@
 	},
 
 	"internal": {
-		"search_form": "",
+		"search": {
+			"form": ""
+		},
 		"settings": "",
 		"clear_cache": ""
 	}

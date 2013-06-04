@@ -289,12 +289,17 @@ function hide_loader() {
  */
 function get_source(routing, identifier) {
 	var api = _base + _api;
-
 	var route = routing.split('.');
 	var base = route[0];
-	var child = route[1];
+	var object = _routing[base];
+	var child;
 
-	var source = api + _routing[base][child];
+	for (var i = 1; i < route.length; ++i) {
+		child = route[i];
+		object = object[child];
+	}
+
+	var source = api + object;
 
 	if (identifier !== null) source += identifier;
 	source += "&callback=?";

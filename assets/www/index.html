@@ -22,8 +22,11 @@
 <script src="assets/js/libs/fries-1.0.0.action-bars.min.js"></script>
 <script>
 // TODO: in external resource
-$('.action-overflow-icon').click(function() {
+$('.action-overflow-icon').click(function(e) {
 	e.preventDefault();
+});
+$(document).on('click', '.spinner-item', function(e) {
+	$(this).parent('.action-overflow-list').toggle().removeClass('active');
 });
 </script>
 

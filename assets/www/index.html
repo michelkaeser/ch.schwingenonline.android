@@ -49,9 +49,7 @@
 			<h1 class="title">schwingenonline.ch</h1>
 			<ul class="actions pull-right">
 				<li><a id="search" data-routing="internal.search.form" data-identifier="" data-tab="" data-tpl="search" class="action" title="Suche"><i class="icon-search"></i></a></li>
-				<li><a data-routing="events.index" data-identifier="" data-tab="" data-tpl="events" class="action" title="Agenda"><i class="icon-calendar"></i></a></li>
-				<li><a data-routing="athlets.index" data-identifier="" data-tab="" data-tpl="athlets" class="action" title="Athleten"><i class="icon-group"></i></a></li>
-				<li><a data-routing="function.clear_cache" data-identifier="" data-tab="" data-tpl="" class="action" title="Cache leeren"><i class="icon-remove"></i></a></li>
+				<li><a data-routing="function.clear_cache" data-identifier="" data-tab="" data-tpl="" class="action" title="Cache leeren"><i class="icon-trash"></i></a></li>
 			</ul>
 		</header>
 		<!-- ACTIONBAR -->
@@ -60,7 +58,8 @@
 		<nav class="tab-fixed">
 			<ul class="tab-inner">
 				<li id="news" class="active"><a data-routing="news.recent" data-identifier="" data-tab="news" data-tpl="news" class="tab">News</a></li>
-				<li id="categories"><a data-routing="category.index" data-identifier="" data-tab="categories" data-tpl="categories" class="tab">Kategorien</a></li>
+				<li id="events"><a data-routing="events.index" data-identifier="" data-tab="events" data-tpl="events" class="tab">Agenda</a></li>
+				<li id="athlets"><a data-routing="athlets.index" data-identifier="" data-tab="athlets" data-tpl="athlets" class="tab">Athleten</a></li>
 			</ul>
 		</nav>
 		<!-- TABS -->
@@ -74,9 +73,7 @@
 	</div>
 
 	<script>
-	$(window).load(function() {
-		onLoad();
-	});
+	$(window).load(function() {	onLoad(); });
 	</script>
 </body>
 </html>

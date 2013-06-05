@@ -285,12 +285,12 @@ function fetch_json(url, callback) {
 function hide_loader() {
 	setTimeout(function() {
 		navigator.notification.activityStop();
-	}, 350);
+	}, 450);
 
 	setTimeout(function() {
 		_iscroll.refresh();
 		_iscroll.scrollTo(0, 0, 25);
-	}, 275);
+	}, 300);
 }
 
 /******************************************************************************

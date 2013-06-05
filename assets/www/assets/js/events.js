@@ -23,16 +23,8 @@ $(document).on('click', 'a[data-routing]', function(e) {
     ], function (err, result) {
     	setTimeout(function() {
     		notification.activityStop();
-    	}, 375);
+    	}, 450);
     });
-});
-
-/**
- * Click event listener for action-overflow-icon.
- * We need this to prevent default behavior.
- */
-$('.action-overflow-icon').click(function(e) {
-	e.preventDefault();
 });
 
 /**
@@ -42,4 +34,12 @@ $('.action-overflow-icon').click(function(e) {
 $(document).on('click', '.spinner-item', function(e) {
 	e.preventDefault();
 	$(this).parent('.action-overflow-list').toggle().removeClass('active');
+});
+
+/**
+ * Click event listener for action-overflow-icon.
+ * We need this to prevent default behavior.
+ */
+$('.action-overflow-icon').click(function(e) {
+    e.preventDefault();
 });

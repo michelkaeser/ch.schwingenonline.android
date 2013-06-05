@@ -1,16 +1,16 @@
-/*
+/**
  * Stores the app's base URL.
  * @var string
  */
 var _base = "http://www.schwingenonline.ch/";
 
-/*
+/**
  * Stores the app's API path.
  * @var string
  */
 var _api = "api/json/";
 
-/*
+/**
  * Stores the initial landing page.
  * @var string
  */
@@ -20,31 +20,31 @@ var _home = 'news.recent';
 * CONFIGURATION END - DO NOT EDIT LINES BELOW
 ******************************************************************************/
 
-/*
+/**
  * Stores the routing table.
  * @var json
  */
 var _routing;
 
-/*
+/**
  * Stores the loaded templates.
  * @var array
  */
 var _tpl = {};
 
-/*
+/**
  * Stores the localStorage object.
  * @var object
  */
 var _storage = window.localStorage;
 
-/*
+/**
  * Stores various application data.
  * @var array
  */
 var _data = {};
 
-/*
+/**
  * Stores the iScroll object.
  * @var object
  */
@@ -119,6 +119,8 @@ function load_templates(callback) {
  */
 function init_app() {
 	setTimeout(function() {
+		$('#sidr').sidr();
+
 		_iscroll = new iScroll('main', {
 			hScroll: false,
 			hScrollbar: false,

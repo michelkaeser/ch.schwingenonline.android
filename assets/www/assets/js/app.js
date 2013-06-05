@@ -24,7 +24,7 @@ var _home = 'news.recent';
  * Stores the routing table.
  * @var json
  */
-var _routing = null;
+var _routing;
 
 /*
  * Stores the loaded templates.
@@ -43,6 +43,12 @@ var _storage = window.localStorage;
  * @var array
  */
 var _data = {};
+
+/*
+ * Stores the iScroll object.
+ * @var object
+ */
+var _iscroll;
 
 /******************************************************************************
 * VARIABLE DECLARATIONS END
@@ -113,12 +119,13 @@ function load_templates(callback) {
  */
 function init_app() {
 	setTimeout(function() {
-		$('#news').find('.tab').click();
-
-		iscroll = new iScroll('scroller', {
+		_iscroll = new iScroll('main', {
 			hScroll: false,
-			hScrollbar: false
+			hScrollbar: false,
+			vScrollbar: false
 		});
+
+		$('#news').find('.tab').click();
 	}, 750);
 }
 
@@ -278,7 +285,12 @@ function fetch_json(url, callback) {
 function hide_loader() {
 	setTimeout(function() {
 		navigator.notification.activityStop();
-	}, 500);
+	}, 350);
+
+	setTimeout(function() {
+		_iscroll.refresh();
+		_iscroll.scrollTo(0, 0, 75);
+	}, 275);
 }
 
 /******************************************************************************
@@ -331,3 +343,7 @@ function get_error(msg) {
 function clear_cache() {
 	_storage.clear();
 }
+
+/******************************************************************************
+* HELPER FUNCTIONS END
+******************************************************************************/

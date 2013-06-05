@@ -290,7 +290,7 @@ function hide_loader() {
 	setTimeout(function() {
 		_iscroll.refresh();
 		_iscroll.scrollTo(0, 0, 25);
-	}, 300);
+	}, 375);
 }
 
 /******************************************************************************

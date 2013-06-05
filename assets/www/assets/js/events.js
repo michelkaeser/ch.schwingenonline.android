@@ -6,7 +6,9 @@ $(document).on('click', 'a[data-routing]', function(e) {
     e.preventDefault();
     navigator.notification.activityStart("Laden", "Inhalt wird geladen...");
 
-    process_click($(this), hide_loader);
+    process_click($(this), function() {
+    	hide_loader();
+    });
 });
 
 /**

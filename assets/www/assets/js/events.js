@@ -23,7 +23,7 @@ $(document).on('click', 'a[data-routing]', function(e) {
     ], function (err, result) {
     	setTimeout(function() {
     		notification.activityStop();
-    	}, 250);
+    	}, 375);
     });
 });
 

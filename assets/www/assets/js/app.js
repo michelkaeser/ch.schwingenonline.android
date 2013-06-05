@@ -335,14 +335,25 @@ function update_ui(routing, tab) {
 function wait_for_images(callback) {
 	var imgs = $('#scroller').find('img');
 	var length = imgs.length;
+	var counter = 0;
 
 	if (length > 0) {
-		imgs.each(function(i) {
-			$(this).load(function() {
-				if (i == length - 1) {
-					return callback(null);
-				}
-			});
+		imgs.each(function() {
+			if (this.complete) {
+				counter++;
+			} else {
+				$(this).load(function() {
+					counter++;
+
+					if (counter == length) {
+						return callback(null);
+					}
+				});
+			}
+
+			if (counter == length) {
+				return callback(null);
+			}
 		});
 	} else {
 		return callback(null);
@@ -358,7 +369,6 @@ function wait_for_images(callback) {
  */
 function update_scroller(callback) {
 	setTimeout(function() {
-		console.log(_iscroll);
 		_iscroll.refresh();
 		_iscroll.scrollTo(0, 0, 25);
 

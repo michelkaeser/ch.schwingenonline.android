@@ -126,7 +126,7 @@ function init_app() {
 		});
 
 		$('#news').find('.tab').click();
-	}, 750);
+	}, 500);
 }
 
 /**
@@ -147,7 +147,7 @@ function process_click(dom, callback) {
 		var fn = routing.replace("function.", "");
 
 		window[fn](identifier);
-		return callback();
+		return callback(null);
 	} else {
 		update_ui(routing, tab);
 
@@ -157,7 +157,7 @@ function process_click(dom, callback) {
 			        render_tpl(tpl, '', callback);
 			    }
 			], function (err, result) {
-				return callback();
+				return callback(null);
 			});
 		} else {
 			async.waterfall([
@@ -168,32 +168,10 @@ function process_click(dom, callback) {
 			        render_tpl(tpl, arg1, callback);
 			    }
 			], function (err, result) {
-				return callback();
+				return callback(null);
 			});
 		}
 	}
-}
-
-/**
- * Updates the UI components.
- * Adds and removes classes and states of UI elements.
- *
- * @param routing - current routing state
- * @param tab - tab to activate
- */
-function update_ui(routing, tab) {
-	setTimeout(function() {
-		if (routing == _home) {
-			$('.app-icon').removeClass('up').attr('disabled', 'disabled');
-			$('.chevron').hide();
-		} else {
-			$('.app-icon').addClass('up').removeAttr('disabled');
-			$('.chevron').show();
-		}
-
-		$('.tab').parent().removeClass('active');
-		$('#' + tab).addClass('active');
-	}, 0);
 }
 
 /**
@@ -207,7 +185,10 @@ function update_ui(routing, tab) {
  */
 function get_data(routing, identifier, callback) {
 	var uri = routing;
-	if (identifier !== null && identifier !== "") uri += "__" + identifier;
+
+	if (identifier !== null && identifier !== "") {
+		uri += "__" + identifier;
+	}
 
 	var storage = _storage.getItem(uri);
 
@@ -231,24 +212,43 @@ function get_data(routing, identifier, callback) {
 }
 
 /**
- * Renders the template.
- * Renders the data with given mustache template.
- *
- * @param tpl - template to render
- * @param data - data to render
- * @param callback - callback function
- *	-> called after templates has been rendered
+ * Returns a JSON error object.
+ * @param msg - error message
+ * @return err
  */
-function render_tpl(tpl, data, callback) {
-	setTimeout(function () {
-		var output = Mustache.to_html(_tpl[tpl], data, {
-			'error': _tpl['error']
-		});
+function get_error(msg) {
+	var err = $.parseJSON({
+		"error": true,
+		"error_msg": msg
+	});
 
-		$('#scroller').html(output);
+	return err;
+}
 
-		return callback(null);
-	}, 0);
+/**
+ * Returns the source for given route.
+ * Returns the source from routing.json for given route.
+ * @param routing - the routing path
+ * @return source
+ */
+function get_source(routing, identifier) {
+	var api = _base + _api;
+	var route = routing.split('.');
+	var base = route[0];
+	var object = _routing[base];
+	var child;
+
+	for (var i = 1; i < route.length; ++i) {
+		child = route[i];
+		object = object[child];
+	}
+
+	var source = api + object;
+
+	if (identifier !== null) source += identifier;
+	source += "&callback=?";
+
+	return source;
 }
 
 /**
@@ -279,18 +279,24 @@ function fetch_json(url, callback) {
 }
 
 /**
- * Hides the loading animation.
- * Hides the loader and scrolls back to top to reset previous scolling position.
+ * Renders the template.
+ * Renders the data with given mustache template.
+ *
+ * @param tpl - template to render
+ * @param data - data to render
+ * @param callback - callback function
+ *	-> called after templates has been rendered
  */
-function hide_loader() {
-	setTimeout(function() {
-		navigator.notification.activityStop();
-	}, 450);
+function render_tpl(tpl, data, callback) {
+	setTimeout(function () {
+		var output = Mustache.to_html(_tpl[tpl], data, {
+			'error': _tpl['error']
+		});
 
-	setTimeout(function() {
-		_iscroll.refresh();
-		_iscroll.scrollTo(0, 0, 25);
-	}, 375);
+		$('#scroller').html(output);
+
+		return callback(null);
+	}, 0);
 }
 
 /******************************************************************************
@@ -298,43 +304,66 @@ function hide_loader() {
 ******************************************************************************/
 
 /**
- * Returns the source for given route.
- * Returns the source from routing.json for given route.
- * @param routing - the routing path
- * @return source
+ * Updates the UI components.
+ * Adds and removes classes and states of UI elements.
+ *
+ * @param routing - current routing state
+ * @param tab - tab to activate
  */
-function get_source(routing, identifier) {
-	var api = _base + _api;
-	var route = routing.split('.');
-	var base = route[0];
-	var object = _routing[base];
-	var child;
+function update_ui(routing, tab) {
+	setTimeout(function() {
+		if (routing == _home) {
+			$('.app-icon').removeClass('up').attr('disabled', 'disabled');
+			$('.chevron').hide();
+		} else {
+			$('.app-icon').addClass('up').removeAttr('disabled');
+			$('.chevron').show();
+		}
 
-	for (var i = 1; i < route.length; ++i) {
-		child = route[i];
-		object = object[child];
-	}
-
-	var source = api + object;
-
-	if (identifier !== null) source += identifier;
-	source += "&callback=?";
-
-	return source;
+		$('.tab').parent().removeClass('active');
+		$('#' + tab).addClass('active');
+	}, 0);
 }
 
 /**
- * Returns a JSON error object.
- * @param msg - error message
- * @return err
+ * Waits until images are loaded.
+ * Waites until all images (if any) are loaded.
+ *
+ * @param callback - callback function
+ *	-> called after images have been loaded
  */
-function get_error(msg) {
-	var err = $.parseJSON({
-		"error": true,
-		"error_msg": msg
-	});
+function wait_for_images(callback) {
+	var imgs = $('#scroller').find('img');
+	var length = imgs.length;
 
-	return err;
+	if (length > 0) {
+		imgs.each(function(i) {
+			$(this).load(function() {
+				if (i == length - 1) {
+					return callback(null);
+				}
+			});
+		});
+	} else {
+		return callback(null);
+	}
+}
+
+/**
+ * Updates the scroller.
+ * Updates the scoller and scrolls back to top.
+ *
+ * @param callback - callback function
+ *	-> called after scroller has been updated
+ */
+function update_scroller(callback) {
+	setTimeout(function() {
+		console.log(_iscroll);
+		_iscroll.refresh();
+		_iscroll.scrollTo(0, 0, 25);
+
+		return callback(null);
+	}, 0);
 }
 
 /**

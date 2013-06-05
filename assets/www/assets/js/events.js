@@ -4,10 +4,26 @@
  */
 $(document).on('click', 'a[data-routing]', function(e) {
     e.preventDefault();
-    navigator.notification.activityStart("Laden", "Inhalt wird geladen...");
 
-    process_click($(this), function() {
-    	hide_loader();
+    var $this = $(this);
+    var notification = navigator.notification;
+
+    notification.activityStart("Laden", "Inhalt wird geladen...");
+
+    async.waterfall([
+        function(callback) {
+            process_click($this, callback);
+        },
+        function(callback) {
+        	wait_for_images(callback);
+        },
+        function(callback) {
+        	update_scroller(callback);
+        }
+    ], function (err, result) {
+    	setTimeout(function() {
+    		notification.activityStop();
+    	}, 250);
     });
 });
 

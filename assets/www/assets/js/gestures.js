@@ -1,25 +1,14 @@
-Quo(document).ready(function($$) {
-
-	$$('body').swipeLeft(function() {
-		switch_tab();
-	});
-
-	$$('body').swipeRight(function() {
-		switch_tab();
-	});
-
-});
-
 /**
- * Switches the current active tab.
- * Fired through the event 'swipeLeft'.
+ * Initializes the gesture events.
  */
-function switch_tab() {
-	var active = $('.tab').parent('.active').attr('id');
+function init_gestures() {
+	var doc = $$('html, body');
 
-	if (active == 'news') {
-		$('#categories').find('.tab').click();
-	} else {
-		$('#news').find('.tab').click();
-	}
+	doc.swipeLeft(function() {
+		$.sidr('close');
+	});
+
+	doc.swipeRight(function() {
+		$.sidr('open');
+	});
 }

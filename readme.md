@@ -35,3 +35,7 @@ Wordpress JSON API plugin: [https://github.com/adwins04/wp-json-api](https://git
 **QuoJS**: Micro #JavaScript Library for Mobile Devices    
 **Used for** touch gestures.    
 [https://github.com/soyjavi/QuoJS](https://github.com/soyjavi/QuoJS)
+
+**sidr**: Sidr is a jQuery plugin for creating side menus and the easiest way for doing your menu responsive.    
+**Used for** sliding panels.    
+[https://github.com/artberri/sidr](https://github.com/artberri/sidr)

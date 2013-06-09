@@ -147,7 +147,7 @@ function process_click(dom, callback) {
 	var tpl = dom.data('tpl');
 	var sidepanel = dom.data('sidepanel');
 
-	if (sidepanel !== undefined) {
+	if (sidepanel !== undefined && sidepanel != "inherit") {
 		async.waterfall([
 		    function(callback) {
 		        get_data(sidepanel.routing, sidepanel.identifier, callback);
@@ -159,7 +159,7 @@ function process_click(dom, callback) {
 			$('#sidr').removeClass('deactivated');
 			// TODO: include sidepanel waterfall in normal waterfall
 		});
-	} else {
+	} else if (sidepanel != "inherit") {
 		$('#sidr').addClass('deactivated');
 	}
 

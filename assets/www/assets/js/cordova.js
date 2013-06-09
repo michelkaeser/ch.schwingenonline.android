@@ -34,6 +34,7 @@ function onDeviceReady() {
         }
     ], function(err, results) {
         init_app();
+        init_gestures();
     });
 }
 

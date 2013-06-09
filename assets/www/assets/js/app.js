@@ -1,16 +1,16 @@
-/*
+/**
  * Stores the app's base URL.
  * @var string
  */
 var _base = "http://www.schwingenonline.ch/";
 
-/*
+/**
  * Stores the app's API path.
  * @var string
  */
 var _api = "api/json/";
 
-/*
+/**
  * Stores the initial landing page.
  * @var string
  */
@@ -20,31 +20,31 @@ var _home = 'news.recent';
 * CONFIGURATION END - DO NOT EDIT LINES BELOW
 ******************************************************************************/
 
-/*
+/**
  * Stores the routing table.
  * @var json
  */
 var _routing;
 
-/*
+/**
  * Stores the loaded templates.
  * @var array
  */
 var _tpl = {};
 
-/*
+/**
  * Stores the localStorage object.
  * @var object
  */
 var _storage = window.localStorage;
 
-/*
+/**
  * Stores various application data.
  * @var array
  */
 var _data = {};
 
-/*
+/**
  * Stores the iScroll object.
  * @var object
  */
@@ -119,6 +119,8 @@ function load_templates(callback) {
  */
 function init_app() {
 	setTimeout(function() {
+		$('#sidr').sidr();
+
 		_iscroll = new iScroll('main', {
 			hScroll: false,
 			hScrollbar: false,
@@ -137,11 +139,29 @@ function init_app() {
  * @param callback - callback function
  *	-> called after successful processing the click
  */
+// FIXME: needs refactoring!!!
 function process_click(dom, callback) {
 	var routing = dom.data('routing');
 	var identifier = dom.data('identifier');
 	var tab = dom.data('tab');
 	var tpl = dom.data('tpl');
+	var sidepanel = dom.data('sidepanel');
+
+	if (sidepanel !== undefined) {
+		async.waterfall([
+		    function(callback) {
+		        get_data(sidepanel.routing, sidepanel.identifier, callback);
+		    },
+		    function(arg1, callback) {
+		        render_tpl(sidepanel.tpl, arg1, '#sidr', callback);
+		    }
+		], function (err, result) {
+			$('#sidr').removeClass('deactivated');
+			// TODO: include sidepanel waterfall in normal waterfall
+		});
+	} else {
+		$('#sidr').addClass('deactivated');
+	}
 
 	if (routing.substring(0, 8) == "function") {
 		var fn = routing.replace("function.", "");
@@ -154,7 +174,7 @@ function process_click(dom, callback) {
 		if (routing.substring(0, 8) == "internal") {
 			async.waterfall([
 			    function(callback) {
-			        render_tpl(tpl, '', callback);
+			        render_tpl(tpl, '', '#scroller', callback);
 			    }
 			], function (err, result) {
 				return callback(null);
@@ -165,7 +185,7 @@ function process_click(dom, callback) {
 			        get_data(routing, identifier, callback);
 			    },
 			    function(arg1, callback) {
-			        render_tpl(tpl, arg1, callback);
+			        render_tpl(tpl, arg1, '#scroller', callback);
 			    }
 			], function (err, result) {
 				return callback(null);
@@ -186,7 +206,7 @@ function process_click(dom, callback) {
 function get_data(routing, identifier, callback) {
 	var uri = routing;
 
-	if (identifier !== null && identifier !== "") {
+	if (identifier !== undefined && identifier !== '') {
 		uri += "__" + identifier;
 	}
 
@@ -217,10 +237,7 @@ function get_data(routing, identifier, callback) {
  * @return err
  */
 function get_error(msg) {
-	var err = $.parseJSON({
-		"error": true,
-		"error_msg": msg
-	});
+	var err = $.parseJSON('{"error": "true", "error_msg": "' + msg + '"}');
 
 	return err;
 }
@@ -287,15 +304,22 @@ function fetch_json(url, callback) {
  * @param callback - callback function
  *	-> called after templates has been rendered
  */
-function render_tpl(tpl, data, callback) {
+function render_tpl(tpl, data, dom, append, callback) {
 	setTimeout(function () {
 		var output = Mustache.to_html(_tpl[tpl], data, {
 			'error': _tpl['error']
 		});
 
-		$('#scroller').html(output);
+		if (typeof(append) === typeof(Function)) {
+			callback = append;
+			$(dom).html(output);
+		} else {
+			$(dom).append(output);
+		}
 
-		return callback(null);
+		if (typeof(callback) === typeof(Function)) {
+			return callback(null);
+		}
 	}, 0);
 }
 
@@ -312,6 +336,8 @@ function render_tpl(tpl, data, callback) {
  */
 function update_ui(routing, tab) {
 	setTimeout(function() {
+		$.sidr('close');
+
 		if (routing == _home) {
 			$('.app-icon').removeClass('up').attr('disabled', 'disabled');
 			$('.chevron').hide();

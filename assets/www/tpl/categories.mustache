@@ -1,8 +1,6 @@
-{{> error }}
-
-<ul class="list">
-	<li class="list-divider">&Uuml;bersicht</li>
+<h5>Kategorien</h5>
+<ul class="sidr-menu">
 	{{# categories }}
-		<li class="list-item-single-line"><a data-routing="category.posts" data-identifier="{{ id }}" data-tab="news" data-tpl="news">{{ title }}</a></li>
+	<li><a data-routing="category.posts" data-identifier="{{ id }}" data-tab="news" data-tpl="news">{{ title }}</a></li>
 	{{/ categories }}
 </ul>

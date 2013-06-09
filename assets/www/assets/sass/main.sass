@@ -25,8 +25,8 @@ html
 	background-color: $bg
 
 body
-	margin-top: 96px
-	position: initial
+	//margin-top: 96px
+	position: absolute
 	word-wrap: break-word
 
 h3,
@@ -154,8 +154,48 @@ hr
 ///////////////////////////////////////////////////////////////////////////////
 
 #scroller
-	//min-height: 100%
 	padding-bottom: 25px
+
+#sidr
+	width: 200px
+	height: auto
+	padding: 15px 5px
+	background: #222
+	border-right: 1px solid #4d4d4d
+	top: 96px
+	bottom: 0
+	font-family: inherit
+	box-shadow: none
+	box-sizing: border-box
+
+.sidr
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6
+		padding: 0 5px
+		background: none
+		font-size: 12px
+		font-weight: bold
+		color: #33b5e5
+		text-transform: uppercase
+		box-shadow: none
+	ul
+		margin-bottom: -12px
+		border-bottom: 0
+		li
+			&:hover,
+			&.active,
+			&.sidr-class-active
+				border-top: 1px solid #4d4d4d
+				line-height: 48px
+			&:last-child
+				border-bottom: 0
+			a,
+			span
+				padding: 0 10px
 
 .top-divider
 	margin-top: 5px

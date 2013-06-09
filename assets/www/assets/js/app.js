@@ -156,7 +156,7 @@ function process_click(dom, callback) {
 		if (routing.substring(0, 8) == "internal") {
 			async.waterfall([
 			    function(callback) {
-			        render_tpl(tpl, '', callback);
+			        render_tpl(tpl, '', '#scroller', callback);
 			    }
 			], function (err, result) {
 				return callback(null);
@@ -167,7 +167,7 @@ function process_click(dom, callback) {
 			        get_data(routing, identifier, callback);
 			    },
 			    function(arg1, callback) {
-			        render_tpl(tpl, arg1, callback);
+			        render_tpl(tpl, arg1, '#scroller', callback);
 			    }
 			], function (err, result) {
 				return callback(null);
@@ -289,13 +289,18 @@ function fetch_json(url, callback) {
  * @param callback - callback function
  *	-> called after templates has been rendered
  */
-function render_tpl(tpl, data, callback) {
+function render_tpl(tpl, data, dom, append, callback) {
 	setTimeout(function () {
 		var output = Mustache.to_html(_tpl[tpl], data, {
 			'error': _tpl['error']
 		});
 
-		$('#scroller').html(output);
+		if (typeof(append) === typeof(Function)) {
+			callback = append;
+			$(dom).html(output);
+		} else {
+			$(dom).append(output);
+		}
 
 		return callback(null);
 	}, 0);

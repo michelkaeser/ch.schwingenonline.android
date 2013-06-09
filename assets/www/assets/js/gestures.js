@@ -5,10 +5,14 @@ function init_gestures() {
 	var doc = $$('html, body');
 
 	doc.swipeLeft(function() {
-		$.sidr('close');
+		if (!$('#sidr').hasClass('deactivated')) {
+			$.sidr('close');
+		}
 	});
 
 	doc.swipeRight(function() {
-		$.sidr('open');
+		if (!$('#sidr').hasClass('deactivated')) {
+			$.sidr('open');
+		}
 	});
 }

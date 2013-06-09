@@ -139,11 +139,29 @@ function init_app() {
  * @param callback - callback function
  *	-> called after successful processing the click
  */
+// FIXME: needs refactoring!!!
 function process_click(dom, callback) {
 	var routing = dom.data('routing');
 	var identifier = dom.data('identifier');
 	var tab = dom.data('tab');
 	var tpl = dom.data('tpl');
+	var sidepanel = dom.data('sidepanel');
+
+	if (sidepanel !== undefined) {
+		async.waterfall([
+		    function(callback) {
+		        get_data(sidepanel.routing, sidepanel.identifier, callback);
+		    },
+		    function(arg1, callback) {
+		        render_tpl(sidepanel.tpl, arg1, '#sidr', callback);
+		    }
+		], function (err, result) {
+			$('#sidr').removeClass('deactivated');
+			// TODO: include sidepanel waterfall in normal waterfall
+		});
+	} else {
+		$('#sidr').addClass('deactivated');
+	}
 
 	if (routing.substring(0, 8) == "function") {
 		var fn = routing.replace("function.", "");
@@ -188,7 +206,7 @@ function process_click(dom, callback) {
 function get_data(routing, identifier, callback) {
 	var uri = routing;
 
-	if (identifier !== null && identifier !== "") {
+	if (identifier !== undefined && identifier !== '') {
 		uri += "__" + identifier;
 	}
 
@@ -219,10 +237,7 @@ function get_data(routing, identifier, callback) {
  * @return err
  */
 function get_error(msg) {
-	var err = $.parseJSON({
-		"error": true,
-		"error_msg": msg
-	});
+	var err = $.parseJSON('{"error": "true", "error_msg": "' + msg + '"}');
 
 	return err;
 }
@@ -302,7 +317,9 @@ function render_tpl(tpl, data, dom, append, callback) {
 			$(dom).append(output);
 		}
 
-		return callback(null);
+		if (typeof(callback) === typeof(Function)) {
+			return callback(null);
+		}
 	}, 0);
 }
 
@@ -319,6 +336,8 @@ function render_tpl(tpl, data, dom, append, callback) {
  */
 function update_ui(routing, tab) {
 	setTimeout(function() {
+		$.sidr('close');
+
 		if (routing == _home) {
 			$('.app-icon').removeClass('up').attr('disabled', 'disabled');
 			$('.chevron').hide();

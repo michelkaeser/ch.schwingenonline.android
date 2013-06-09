@@ -1,6 +1,8 @@
+{{> error }}
+
 <h5>Kategorien</h5>
 <ul class="sidr-menu">
 	{{# categories }}
-	<li><a data-routing="category.posts" data-identifier="{{ id }}" data-tab="news" data-tpl="news">{{ title }}</a></li>
+	<li><a data-routing="category.posts" data-identifier="{{ id }}" data-tab="news" data-tpl="news" data-sidepanel='{"tpl": "categories", "routing": "category.index", "identifier": ""}'>{{ title }}</a></li>
 	{{/ categories }}
 </ul>

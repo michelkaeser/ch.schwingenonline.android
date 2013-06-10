@@ -161,7 +161,6 @@ function process_click(dom, callback) {
 
 	if (routing.substring(0, 8) == "function") {
 		var fn = routing.replace("function.", "");
-
 		fn = str_to_function(fn);
 		window[fn.fn](fn.args);
 

@@ -2,7 +2,7 @@
 
 {{{}}}
 <script>
-var input = $('#search');
+var input = $('#search_field');
 input.focus();
 
 function validate() {
@@ -25,7 +25,7 @@ function validate() {
 
 <form id="form" action="javascript:void(0)" onsubmit="validate()">
 	<label>Suche</label>
-    <input id="search" type="text" name="search" placeholder="Suchbegriff" class="input-text">
+    <input id="search_field" type="text" name="search" placeholder="Suchbegriff" class="input-text">
 
     <div class="form-actions">
 	    <input type="button" class="btn btn-block" value="Absenden" onclick="validate()">

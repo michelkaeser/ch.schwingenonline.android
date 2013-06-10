@@ -4,7 +4,7 @@
 	{{^ pulled }}<li class="list-divider">News</li>{{/ pulled }}
 	{{# posts }}
 		<li class="list-item-multi-line">
-			<h3><a data-routing="post.id" data-identifier="{{ id }}" data-tab="news" data-tpl="post" data-sidepanel="inherit" data-puller="inc:1:1">{{{ title }}}</a></h3>
+			<h3><a data-routing="post.id" data-identifier="{{ id }}" data-tab="news" data-tpl="post" data-sidepanel="inherit">{{{ title }}}</a></h3>
 			<p>{{{ excerpt }}}</p>
 		</li>
 	{{/ posts }}

@@ -119,6 +119,8 @@ function load_templates(callback) {
  */
 function init_app() {
 	setTimeout(function() {
+		validate_cache();
+
 		$('#sidr').sidr();
 
 		_iscroll = new iScroll('main', {
@@ -447,6 +449,7 @@ function update_scroller(callback) {
 
 /**
  * Clears the localStorage cache.
+ *
  * @param confirm - weither to show a confirmation prompt or not
  */
 function clear_cache(confirm) {
@@ -463,6 +466,28 @@ function clear_cache(confirm) {
 		);
 	} else {
 		_storage.clear();
+	}
+}
+
+/**
+ * Validates the age of the cache and clears if needed.
+ */
+function validate_cache() {
+	var time = new Date().getTime();
+	var cache = _storage.getItem('cache_time');
+
+	if (cache !== null) {
+		var diff = time - cache;
+		var secs = Math.round(diff / 1000);
+		var mins = secs / 60;
+		var hours = mins / 60;
+
+		if (hours >= 2) {
+			clear_cache(false);
+			_storage.setItem('cache_time', time);
+		}
+	} else {
+		_storage.setItem('cache_time', time);
 	}
 }
 

@@ -179,7 +179,9 @@ function process_click(dom, callback) {
 		    			    function(callback) {
 		    			        render_tpl(tpl, '', '#scroller', callback);
 		    			    }
-		    			], function (err, result) {});
+		    			], function (err, result) {
+		    				callback(null);
+		    			});
 		    		} else {
 		    			async.waterfall([
 		    			    function(callback) {
@@ -188,7 +190,9 @@ function process_click(dom, callback) {
 		    			    function(arg1, callback) {
 		    			        render_tpl(tpl, arg1, '#scroller', callback);
 		    			    }
-		    			], function (err, result) {});
+		    			], function (err, result) {
+		    				callback(null);
+		    			});
 		    		}
 		    	}, 0);
 		    }

@@ -220,6 +220,7 @@ function process_click(dom, callback) {
 
 	if (routing.substring(0, 8) == "function") {
 		var fn = routing.replace("function.", "");
+
 		fn = str_to_function(fn);
 		window[fn.fn](fn.args);
 
@@ -390,8 +391,13 @@ function get_source(routing, identifier, append_callback) {
 
 	var source = api + object;
 
-	if (identifier !== undefined) source += identifier;
-	if (append_callback) source += "&callback=?";
+	if (identifier !== undefined) {
+		source += identifier;
+	}
+
+	if (append_callback) {
+		source += "&callback=?";
+	}
 
 	return source;
 }

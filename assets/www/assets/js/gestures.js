@@ -2,7 +2,7 @@
  * Initializes the gesture events.
  */
 function init_gestures() {
-	var doc = $$('html, body');
+	var doc = $$('body');
 
 	doc.swipeLeft(function() {
 		if (!$('#sidr').hasClass('deactivated')) {

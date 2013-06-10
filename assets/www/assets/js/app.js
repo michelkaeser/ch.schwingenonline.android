@@ -112,8 +112,7 @@ function load_templates(callback) {
     	'news',
     	'post',
     	'search',
-    	'search_results',
-    	'settings'
+    	'search_results'
     ];
 
     $.each(templates, function(i, e) {

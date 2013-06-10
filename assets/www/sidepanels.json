@@ -1,7 +1,6 @@
 {
 	"categories": {
 		"tpl": "categories",
-		"routing": "category.index",
-		"identifier": ""
+		"routing": "category.index"
 	}
 }

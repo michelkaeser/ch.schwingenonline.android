@@ -121,6 +121,8 @@ function onPullUpRelease() {
             get_data(routing, identifier, callback);
         },
         function(arg1, callback) {
+            arg1.pulled = true;
+
             render_tpl(tpl, arg1, '#mustache', true, callback);
         }
     ], function (err, result) {

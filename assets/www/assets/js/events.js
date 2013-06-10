@@ -56,7 +56,7 @@ function onScrollerRefresh(puller) {
 
     if (dom.hasClass('loading')) {
         dom.removeClass();
-        dom.find('.pullUpLabel').html("Pull up to load more...");
+        dom.find('.pullUpLabel').html("Ziehen zum Aktualisieren...");
     }
 }
 
@@ -68,11 +68,11 @@ function onScrollerMove(puller) {
 
     if (_iscroll.y < (_iscroll.maxScrollY - 5) && !dom.hasClass('flip')) {
         dom.addClass('flip');
-        dom.find('.pullUpLabel').html("Release to refresh...");
+        dom.find('.pullUpLabel').html("Loslassen zum Aktualisieren...");
         _iscroll.maxScrollY = _iscroll.maxScrollY;
     } else if (_iscroll.y > (_iscroll.maxScrollY + 5) && dom.hasClass('flip')) {
         dom.removeClass();
-        dom.find('.pullUpLabel').html("Pull up to load more...");
+        dom.find('.pullUpLabel').html("Ziehen zum Aktualisieren...");
         _iscroll.maxScrollY = puller.offset;
     }
 }
@@ -85,7 +85,7 @@ function onScrollerEnd(puller) {
 
     if (dom.hasClass('flip')) {
         dom.removeClass('flip').addClass('loading');
-        dom.find('.pullUpLabel').html("Loading...");
+        dom.find('.pullUpLabel').html("Laden...");
         onPullUpRelease();
     }
 }

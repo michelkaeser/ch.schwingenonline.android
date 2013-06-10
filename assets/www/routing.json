@@ -41,7 +41,7 @@
 		"index": "agenda/get_events/?dev=0"
 	},
 
-	"athlets": {
+	"athletes": {
 		"index": "athleten/get_athlets/?dev=0",
 		"id": "?json=1&post_type=athleten&custom_fields=name,prename,birth,job,weight,size,verband,club,url,hobbies,vorbild,special,story&p="
 	}

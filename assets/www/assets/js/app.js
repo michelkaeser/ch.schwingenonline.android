@@ -105,7 +105,7 @@ function load_sidepanels(callback) {
 function load_templates(callback) {
     var templates = [
     	'athlete',
-    	'athlets',
+    	'athletes',
     	'categories',
     	'error',
     	'events',

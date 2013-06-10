@@ -228,7 +228,7 @@ function process_click(dom, callback) {
 		    		if (routing.substring(0, 8) == "internal") {
 		    			async.waterfall([
 		    			    function(callback) {
-					        render_tpl(tpl, '', '#mustache', callback);
+		    			        render_tpl(tpl, '', '#mustache', callback);
 		    			    }
 		    			], function (err, result) {
 		    				callback(null);
@@ -239,7 +239,7 @@ function process_click(dom, callback) {
 		    			        get_data(routing, identifier, callback);
 		    			    },
 		    			    function(arg1, callback) {
-					        render_tpl(tpl, arg1, '#mustache', callback);
+		    			        render_tpl(tpl, arg1, '#mustache', callback);
 		    			    }
 		    			], function (err, result) {
 		    				callback(null);

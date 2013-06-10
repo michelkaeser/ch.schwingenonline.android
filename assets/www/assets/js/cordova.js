@@ -1,26 +1,40 @@
 /**
- * Event that gets raised as soon as the DOM is loaded.
+ * The 'cordova.js' file is meant for everything related to PhoneGap/Cordova events/triggers.
+ * -----
+ * onLoad() is fired after the DOM has loaded and should therefor be used to initialize the
+ * whole application.
+ * We wait for Cordova to be ready first so we can use all featurs like notifications.
+ *
+ * @author Michel Käser <mk@frontender.ch>
+ */
+
+/**
+ * DOM loaded event.
+ * The onLoad() event is triggered in index.html as soon as the DOM is ready and loaded.
+ * We don't have to bother afterwards if libraries are loaded -> they are.
+ *
+ * @since 2.6.1
+ *
+ * @triggers onDeviceReady()
  */
 function onLoad() {
     document.addEventListener('deviceready', onDeviceReady, false);
 }
 
 /**
- * Event that gets raised when Cordova (PhoneGap) is ready.
+ * Cordova/Device ready event.
+ * This event is triggered by onLoad() as soon as Cordova is ready.
+ * The main initialization should therefor be placed in here as we
+ * can be sure that really everything is ready.
  *
- * The Cordova framework can add various listeners to the application.
- * We have to wait until it's loaded before we can add them though. */
+ * @since 2.6.1
+ */
 function onDeviceReady() {
     async.parallel([
         function(callback) {
             setTimeout(function() {
-                //document.addEventListener('backbutton', onBackKeyDown, false);
                 document.addEventListener('menubutton', onMenuKeyDown, false);
                 document.addEventListener('searchbutton', onSearchKeyDown, false);
-                /*document.addEventListener('volumeupbutton', onVolumeUpKeyDown, false);
-                document.addEventListener('volumedownbutton', onVolumeDownKeyDown, false);*/
-                document.addEventListener('online', onOnline, false);
-                document.addEventListener('offline', onOffline, false);
                 return callback(null);
             }, 0);
         },
@@ -40,15 +54,12 @@ function onDeviceReady() {
 }
 
 /**
- * Event that gets raised after back button press.
- */
-function onBackKeyDown() {
-    // TODO: back history (a la stack)
-	navigator.app.backHistory;
-}
-
-/**
- * Event that gets raised after menu button press.
+ * Menu button pressed event.
+ * This event gets fired by Cordova when the menu button on device is pressed.
+ * It's smart to use this to display a notification or menu with links
+ * e.g. to preferences, app info etc.
+ *
+ * @since 2.6.1
  */
 function onMenuKeyDown() {
 	navigator.notification.confirm(
@@ -68,28 +79,12 @@ function onMenuKeyDown() {
 }
 
 /**
- * Event that gets raised after search button press.
+ * Search button pressed event.
+ * This event gets fired by Cordova when the search button on device is pressed.
+ * Used to "redirect" the user to the search form.
+ *
+ * @since 2.6.1
  */
 function onSearchKeyDown() {
     $('#search').click();
 }
-
-/**
- * Event that gets raised after volume up button press.
- */
-function onVolumeUpKeyDown() {}
-
-/**
- * Event that gets raised after volume down button press.
- */
-function onVolumeDownKeyDown() {}
-
-/**
- * Event that gets raised when the device goes online.
- */
-function onOnline() {}
-
-/**
- * Event that gets raised when the device goes offline.
- */
-function onOffline() {}

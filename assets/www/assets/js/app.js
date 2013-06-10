@@ -161,7 +161,9 @@ function process_click(dom, callback) {
 
 	if (routing.substring(0, 8) == "function") {
 		var fn = routing.replace("function.", "");
-		window[fn](identifier);
+
+		fn = str_to_function(fn);
+		window[fn.fn](fn.args);
 
 		return callback(null);
 	} else {
@@ -446,9 +448,43 @@ function update_scroller(callback) {
 
 /**
  * Clears the localStorage cache.
+ * @param confirm - weither to show a confirmation prompt or not
  */
-function clear_cache() {
-	_storage.clear();
+function clear_cache(confirm) {
+	if (confirm) {
+		navigator.notification.confirm(
+		    "Möchten Sie den Cache wirklich leeren?",
+		    function(btn) {
+		        if (btn === 1) {
+			        _storage.clear();
+		        }
+		    },
+		    'Cache leeren',
+		    'Ja,Nein'
+		);
+	} else {
+		_storage.clear();
+	}
+}
+
+/**
+ * Divides a function in string form into fn and arguments.
+ *
+ * @oaram str - string representing the function
+ * @return result
+ */
+function str_to_function(str) {
+	var args_s = str.indexOf("(");
+	var args_e = str.indexOf(")");
+
+	var fn = str.substring(0, args_s);
+	var args = str.substring(args_s + 1, args_e);
+
+	var result = {};
+	result.fn = fn;
+	result.args = args;
+
+	return result;
 }
 
 /******************************************************************************

@@ -43,3 +43,71 @@ $(document).on('click', '.spinner-item', function(e) {
 $('.action-overflow-icon').click(function(e) {
     e.preventDefault();
 });
+
+/******************************************************************************
+* LAYOUT EVENTS END
+******************************************************************************/
+
+/**
+ *
+ */
+function onScrollerRefresh(puller) {
+    var dom = puller.dom;
+
+    if (dom.hasClass('loading')) {
+        dom.removeClass();
+        dom.find('.pullUpLabel').html("Pull up to load more...");
+    }
+}
+
+/**
+ *
+ */
+function onScrollerMove(puller) {
+    var dom = puller.dom;
+
+    if (_iscroll.y < (_iscroll.maxScrollY - 5) && !dom.hasClass('flip')) {
+        dom.addClass('flip');
+        dom.find('.pullUpLabel').html("Release to refresh...");
+        _iscroll.maxScrollY = _iscroll.maxScrollY;
+    } else if (_iscroll.y > (_iscroll.maxScrollY + 5) && dom.hasClass('flip')) {
+        dom.removeClass();
+        dom.find('.pullUpLabel').html("Pull up to load more...");
+        _iscroll.maxScrollY = puller.offset;
+    }
+}
+
+/**
+ *
+ */
+function onScrollerEnd(puller) {
+    var dom = puller.dom;
+
+    if (dom.hasClass('flip')) {
+        dom.removeClass('flip').addClass('loading');
+        dom.find('.pullUpLabel').html("Loading...");
+        onPullUpRelease();
+    }
+}
+
+/**
+ *
+ */
+function onPullUpRelease() {
+    setTimeout(function() {
+        var el, li, i;
+        el = document.getElementById('mustache');
+
+        for (i = 0; i < 3; i++) {
+            li = document.createElement('li');
+            li.innerText = 'Generated row ' + i;
+            el.appendChild(li, el.childNodes[0]);
+        }
+
+        _iscroll.refresh();
+    }, 1000);
+}
+
+/******************************************************************************
+* SCOLLER EVENTS END
+******************************************************************************/

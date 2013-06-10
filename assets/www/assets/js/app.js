@@ -123,14 +123,37 @@ function init_app() {
 
 		$('#sidr').sidr();
 
-		_iscroll = new iScroll('main', {
-			hScroll: false,
-			hScrollbar: false,
-			vScrollbar: false
-		});
+		init_scroller();
 
 		$('#news').find('.tab').click();
 	}, 500);
+}
+
+/**
+ * Initializes the iScroller.
+ */
+function init_scroller() {
+	var puller = {};
+
+	puller.dom = $('#pullUp');
+	pullerOffset = puller.offsetHeight;
+
+	_iscroll = new iScroll('main', {
+		hScroll: false,
+		hScrollbar: false,
+		vScrollbar: false,
+		useTransition: false,
+		topOffset: 0,
+		onRefresh: function () {
+			onScrollerRefresh(puller);
+		},
+		onScrollMove: function () {
+			onScrollerMove(puller);
+		},
+		onScrollEnd: function () {
+			onScrollerEnd(puller);
+		}
+	});
 }
 
 /**
@@ -180,7 +203,7 @@ function process_click(dom, callback) {
 		    		if (routing.substring(0, 8) == "internal") {
 		    			async.waterfall([
 		    			    function(callback) {
-		    			        render_tpl(tpl, '', '#scroller', callback);
+		    			        render_tpl(tpl, '', '#mustache', callback);
 		    			    }
 		    			], function (err, result) {
 		    				callback(null);
@@ -191,7 +214,7 @@ function process_click(dom, callback) {
 		    			        get_data(routing, identifier, callback);
 		    			    },
 		    			    function(arg1, callback) {
-		    			        render_tpl(tpl, arg1, '#scroller', callback);
+		    			        render_tpl(tpl, arg1, '#mustache', callback);
 		    			    }
 		    			], function (err, result) {
 		    				callback(null);
@@ -404,7 +427,7 @@ function update_ui(routing, tab, callback) {
  *	-> called after images have been loaded
  */
 function wait_for_images(callback) {
-	var imgs = $('#scroller').find('img');
+	var imgs = $('#mustache').find('img');
 	var length = imgs.length;
 	var counter = 0;
 

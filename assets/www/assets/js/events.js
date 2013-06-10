@@ -105,6 +105,7 @@ function onScrollerEnd(puller) {
  * iScoll "callback" event for fully released pullers.
  * Fired by onScrollerEnd().
  */
+// FIXME: needs heavy refactoring!!!
 function onPullUpRelease() {
     var routing = _data.puller.routing;
     var identifier = _data.puller.identifier;

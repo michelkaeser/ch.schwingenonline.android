@@ -198,7 +198,7 @@ function init_scroller(use_puller) {
  * @param callback - callback function
  *	-> called after successful processing the click
  */
-// FIXME: needs refactoring!!!
+// FIXME: needs heavy refactoring!!!
 function process_click(dom, callback) {
 	var data = dom.data();
 	var routing = data.routing;

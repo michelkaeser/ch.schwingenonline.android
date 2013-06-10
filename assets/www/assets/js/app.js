@@ -479,8 +479,7 @@ function validate_cache() {
 	if (cache !== null) {
 		var diff = time - cache;
 		var secs = Math.round(diff / 1000);
-		var mins = secs / 60;
-		var hours = mins / 60;
+		var hours = secs / 360;
 
 		if (hours >= 2) {
 			clear_cache(false);

@@ -27,6 +27,12 @@ var _home = 'news.recent';
 var _routing;
 
 /**
+ * Stores the sidepanels table.
+ * @var json
+ */
+var _sidepanels;
+
+/**
  * Stores the loaded templates.
  * @var array
  */
@@ -66,6 +72,25 @@ function load_routing(callback) {
 	})
 	.done(function(data, status, xhr) {
 		_routing = data;
+		return callback(null);
+    })
+    .fail(function(xhr, status, error) {
+    	return callback(true);
+    });
+}
+
+/**
+ * Loads the sidepanels table.
+ * Loads sidepanels table from file 'sidepanels.json' and stores in _sidepanels for direct access.
+ */
+function load_sidepanels(callback) {
+    $.ajax({
+	    url: 'sidepanels.json',
+	    dataType: 'json',
+	    cache: true
+	})
+	.done(function(data, status, xhr) {
+		_sidepanels = data;
 		return callback(null);
     })
     .fail(function(xhr, status, error) {
@@ -150,9 +175,9 @@ function process_click(dom, callback) {
 	var sidepanel = {};
 
 	if (dom.data('sidepanel') !== undefined) {
-		sidepanel = dom.data('sidepanel');
+		sidepanel.obj = dom.data('sidepanel');
 
-		if (sidepanel == "inherit") {
+		if (sidepanel.obj == "inherit") {
 			sidepanel.status = "inherit";
 		} else {
 			sidepanel.status = "true";
@@ -218,12 +243,14 @@ function process_sidepanel(sidepanel, callback) {
 
 		switch (status) {
 			case "true":
+				var json = _sidepanels[sidepanel.obj];
+
 				async.waterfall([
 				    function(callback) {
-				        get_data(sidepanel.routing, sidepanel.identifier, callback);
+				        get_data(json.routing, json.identifier, callback);
 				    },
 				    function(arg1, callback) {
-				        render_tpl(sidepanel.tpl, arg1, '#sidr', callback);
+				        render_tpl(json.tpl, arg1, '#sidr', callback);
 				    }
 				], function (err, result) {
 					$('#sidr').removeClass('deactivated');

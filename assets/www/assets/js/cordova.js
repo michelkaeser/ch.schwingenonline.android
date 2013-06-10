@@ -30,6 +30,9 @@ function onDeviceReady() {
             load_routing(callback);
         },
         function(callback) {
+            load_sidepanels(callback);
+        },
+        function(callback) {
             load_templates(callback);
         }
     ], function(err, results) {

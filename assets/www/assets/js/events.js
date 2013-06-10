@@ -49,7 +49,10 @@ $('.action-overflow-icon').click(function(e) {
 ******************************************************************************/
 
 /**
+ * iScroll scroll refresh event.
+ * This event is raised every time the iscroll object gets refreshed (e.g. when scrolling).
  *
+ * @param puller - puller object
  */
 function onScrollerRefresh(puller) {
     var dom = puller.dom;
@@ -61,7 +64,10 @@ function onScrollerRefresh(puller) {
 }
 
 /**
+ * iScroll scroll move event.
+ * This event is raised every time the iscroll puller object gets moved.
  *
+ * @param puller - puller object
  */
 function onScrollerMove(puller) {
     var dom = puller.dom;
@@ -78,7 +84,10 @@ function onScrollerMove(puller) {
 }
 
 /**
+ * iScroll scroll end event.
+ * This event is raised every time the iscroll puller object has been fully released.
  *
+ * @param puller - puller object
  */
 function onScrollerEnd(puller) {
     var dom = puller.dom;
@@ -91,7 +100,8 @@ function onScrollerEnd(puller) {
 }
 
 /**
- *
+ * iScoll "callback" event for fully released pullers.
+ * Fired by onScrollerEnd().
  */
 function onPullUpRelease() {
     setTimeout(function() {

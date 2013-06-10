@@ -24,13 +24,13 @@ var _home = 'news.recent';
  * Stores the routing table.
  * @var json
  */
-var _routing;
+var _routing = {};
 
 /**
  * Stores the sidepanels table.
  * @var json
  */
-var _sidepanels;
+var _sidepanels = {};
 
 /**
  * Stores the loaded templates.

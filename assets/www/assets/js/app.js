@@ -210,10 +210,21 @@ function process_click(dom, callback) {
 	}
 
 	if (dom.data('puller') !== undefined) {
+		// TODO
 		var puller = dom.data('puller');
 		var pull_options = puller.split(":");
 
-		console.log(puller);
+		var method = pull_options[0];
+		var start = pull_options[1];
+		var step = pull_options[2];
+
+		var full_identifier = identifier + start;
+		var source = get_source(routing, full_identifier);
+
+		_data.puller = {};
+		_data.puller.source = source;
+
+		console.log(_data);
 	} else {
 		$('#pullUp').hide();
 	}

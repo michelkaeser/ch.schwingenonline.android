@@ -1,18 +1,32 @@
 /**
+ * The 'app.js' file is meant for the main application logic and variable declaration.
+ * -----
+ * The whole logic is placed in this file as well as global scoped variables.
+ * Per-page functionality on the other side should be placed directly into the page's
+ * template or a separate file.
+ *
+ * @author Michel Käser <mk@frontender.ch>
+ */
+
+/**
  * Stores the app's base URL.
- * @var string
+ *
+ * @var {String}
  */
 var _base = "http://www.schwingenonline.ch/";
 
 /**
- * Stores the app's API path.
- * @var string
+ * Stores the app's API URI.
+ *
+ * @var {String}
  */
 var _api = "api/json/";
 
 /**
- * Stores the initial landing page.
- * @var string
+ * Stores the initial landing page route.
+ *
+ * @see routing.json
+ * @var {String}
  */
 var _home = 'news.recent';
 
@@ -22,37 +36,64 @@ var _home = 'news.recent';
 
 /**
  * Stores the routing table.
- * @var json
+ *
+ * @see routing.json
+ * @see load_routing()
+ * @since 2.6.1
+ *
+ * @var {JSON}
  */
 var _routing = {};
 
 /**
  * Stores the sidepanels table.
- * @var json
+ *
+ * @see sidepanels.json
+ * @see load_sidepanels()
+ * @since 2.6.1
+ *
+ * @var {JSON}
  */
 var _sidepanels = {};
 
 /**
  * Stores the loaded templates.
- * @var array
+ *
+ * @see tpl/*.mustache
+ * @see load_templates()
+ * @since 2.6.1
+ *
+ * @var {Object}
  */
 var _tpl = {};
 
 /**
- * Stores the localStorage object.
- * @var object
+ * Stores the localStorage (cache) object.
+ *
+ * @since 2.6.1
+ *
+ * @var {Object}
  */
 var _storage = window.localStorage;
 
 /**
  * Stores various application data.
- * @var array
+ * If you need to store data you should place them in here rather than creating
+ * new objects or using cookies.
+ *
+ * @since 2.6.1
+ *
+ * @var {Object}
  */
 var _data = {};
 
 /**
  * Stores the iScroll object.
- * @var object
+ *
+ * @see init_scroller()
+ * @since 2.6.1
+ *
+ * @var {Object}
  */
 var _iscroll;
 
@@ -61,8 +102,16 @@ var _iscroll;
 ******************************************************************************/
 
 /**
- * Loads the routing table.
- * Loads routing table from file 'routing.json' and stores in _routing for direct access.
+ * Loads the routing table from file into global variable.
+ * Routes are defined in routing.json but read at app init.
+ * Direct access is faster and more elegant.
+ *
+ * @since 2.6.1
+ *
+ * @param callback {Function} callback function
+ * @return callback {Function} callback function
+ *   -> when the routing.json file has been loaded
+ * @sets _routing
  */
 function load_routing(callback) {
     $.ajax({
@@ -80,8 +129,16 @@ function load_routing(callback) {
 }
 
 /**
- * Loads the sidepanels table.
- * Loads sidepanels table from file 'sidepanels.json' and stores in _sidepanels for direct access.
+ * Loads the sidepanels table from file into global variable.
+ * Sidepanels are defined in sidepanels.json but read at app init.
+ * Direct access is faster and more elegant.
+ *
+ * @since 2.6.1
+ *
+ * @param callback {Function} callback function
+ * @return callback {Function} callback function
+ *   -> when the sidepanels.json file has been loaded
+ * @sets _sidepanels
  */
 function load_sidepanels(callback) {
     $.ajax({
@@ -99,8 +156,16 @@ function load_sidepanels(callback) {
 }
 
 /**
- * Loads the templates.
- * Loads every template file defined in templates into _tpl array for direct access.
+ * Loads the templates from file into global variable.
+ * Templates are defined in tpl/ but read at app init.
+ * Direct access is faster and more elegant.
+ *
+ * @since 2.6.1
+ *
+ * @param callback {Function} callback function
+ * @return callback {Function} callback function
+ *   -> when the templates have been loaded
+ * @sets _tpl
  */
 function load_templates(callback) {
     var templates = [
@@ -140,6 +205,14 @@ function load_templates(callback) {
 
 /**
  * Initializes the application.
+ * As soon as everything has been loaded, cordova.js\onDeviceReady() triggers
+ * this function.
+ * Used to initially check the cache and click on a link to load it's content.
+ * Wrapped into setTimeout() as not doing so caused problems.
+ *
+ * @since 2.6.1
+ *
+ * @triggers init_scroller()
  */
 function init_app() {
 	setTimeout(function() {
@@ -151,15 +224,25 @@ function init_app() {
 }
 
 /**
- * Initializes the iScroller.
+ * Initializes the scroller.
+ * This inits the iScroll object. iScroll is used for smooth and native-like scrolling
+ * experience as well as pull-to-refresh feature.
+ * The function is triggers by process_click() every time an app internal link is clicked.
  *
- * @param use_puller - activates puller is true
+ * @see _iscoll;
+ * @since 2.6.1
+ *
+ * @param use_puller {Boolean} to use pull-to-refresh or not
+ * @sets _iscroll;
+ * @triggers onScrollerRefresh()
+ * @triggers onScrollerMove()
+ * @triggers onScrollerEnd()
  */
 function init_scroller(use_puller) {
 	var puller = {};
 
 	puller.dom = $('#pullUp');
-	pullerOffset = puller.offsetHeight;
+	puller.offset = puller.dom.offsetHeight;
 
 	if (use_puller) {
 		_iscroll = new iScroll('main', {
@@ -189,56 +272,82 @@ function init_scroller(use_puller) {
 	}
 }
 
+/******************************************************************************
+* INITIALIZER FUNCTIONS END
+******************************************************************************/
+
 /**
- * Processes click events.
- * Every time a link gets clicked a 'click' event is raised.
+ * Processes the link click.
+ * This function does the most magic and is fired by the on.click event
+ * in events.js every time an app internal link is clicked.
+ * It receives the JSON respond from remote server (if needed), renders the view,
+ * and builds the sidepanel.
  *
- * @param dom - clicked dom object
- * @param callback - callback function
- *	-> called after successful processing the click
+ * @since 2.6.1
+ *
+ * @param dom {Object} clicked DOM object
+ * @param callback {Function} callback function
+ * @returns callback {Function} callback function
+ *   -> when the click has been processed, e.g. hide loader
+ * @triggers update_ui()
+ * @triggers process_sidepanel()
+ * @triggers get_data()
+ * @triggers render_tpl()
+ * @triggers init_scroller()
+ * @sets _data.puller
  */
-// FIXME: needs heavy refactoring!!!
 function process_click(dom, callback) {
+	var rqst = {};
 	var data = dom.data();
-	var routing = data.routing;
-	var identifier = data.identifier;
-	var tab = data.tab;
-	var tpl = data.tpl;
-	var sidepanel = {};
 
+	var rqst.routing = data.routing;
+	var rqst.identifier = data.identifier;
+	var rqst.tab = data.tab;
+	var rqst.tpl = data.tpl;
+	var rqst.sidepanel = {};
+
+	// define sidepanel status
 	if (data.sidepanel !== undefined) {
-		sidepanel.obj = data.sidepanel;
+		rqst.sidepanel.obj = data.sidepanel;
 
-		if (sidepanel.obj == "inherit") {
-			sidepanel.status = "inherit";
+		if (rqst.sidepanel.obj == "inherit") {
+			rqst.sidepanel.status = "inherit";
 		} else {
-			sidepanel.status = "true";
+			rqst.sidepanel.status = "true";
 		}
 	} else {
-		sidepanel.status = "false";
+		rqst.sidepanel.status = "false";
 	}
 
-	if (routing.substring(0, 8) == "function") {
-		var fn = routing.replace("function.", "");
+	// function calls are cheap and only need to be fired
+	// no get_data and render_tpl needed
+	if (rqst.routing.substring(0, 8) == "function") {
+		var fn = rqst.routing.replace("function.", "");
 
 		fn = str_to_function(fn);
 		window[fn.fn](fn.args);
 
 		return callback(null);
 	} else {
+		// parallel processing of functions since they don't depend on each other
+		// however, all need to finish before we can process -> otherwise we would
+		// display half-finished results
 		async.parallel([
 		    function(callback) {
-		        update_ui(routing, tab, callback);
+		        update_ui(rqst, callback);
 		    },
 		    function(callback) {
 		    	process_sidepanel(sidepanel, callback);
 		    },
 		    function(callback) {
+		    	// TODO: outsource to external fn
 		    	setTimeout(function() {
-		    		if (routing.substring(0, 8) == "internal") {
+		    		// internal views don't reply on external data
+		    		// -> render directly
+		    		if (rqst.routing.substring(0, 8) == "internal") {
 		    			async.waterfall([
 		    			    function(callback) {
-		    			        render_tpl(tpl, '', '#mustache', callback);
+		    			        render_tpl(rqst.tpl, '', '#mustache', callback);
 		    			    }
 		    			], function (err, result) {
 		    				callback(null);
@@ -246,10 +355,10 @@ function process_click(dom, callback) {
 		    		} else {
 		    			async.waterfall([
 		    			    function(callback) {
-		    			        get_data(routing, identifier, callback);
+		    			        get_data(rqst.routing, rqst.identifier, callback);
 		    			    },
 		    			    function(arg1, callback) {
-		    			        render_tpl(tpl, arg1, '#mustache', callback);
+		    			        render_tpl(rqst.tpl, arg1, '#mustache', callback);
 		    			    }
 		    			], function (err, result) {
 		    				callback(null);
@@ -258,6 +367,7 @@ function process_click(dom, callback) {
 		    	}, 0);
 		    }
 		], function(err, results) {
+			// TODO: refactor!!!
 			if (dom.data('puller') !== undefined) {
 				var puller = dom.data('puller').split(":");
 
@@ -290,11 +400,21 @@ function process_click(dom, callback) {
 }
 
 /**
- * Processes the sidepanel handling.
+ * Processes the sidepanel rendering.
+ * The sidepanel can be used to show additional information/links for a given page
+ * and is defined through data-sidepanel which should point to a JSON object in
+ * sidepanels.json.
+ * The processing is much like process_click.
  *
- * @param sidepanel - JSON object of sidepanel properties
- * @param callback - callback function
- *	-> called after successful processing the sidepanel tasks
+ * @see _sidepanels
+ * @since 2.6.1
+ *
+ * @param sidepanel {String} name of the JSON sidepanel object
+ * @param callback {Function} callback function
+ * @returns callback {Function} callback function
+ *   -> when the click has been processed, e.g. hide loader
+ * @triggers get_data()
+ * @triggers render_tpl()
  */
 function process_sidepanel(sidepanel, callback) {
 	setTimeout(function() {
@@ -321,6 +441,10 @@ function process_sidepanel(sidepanel, callback) {
 		}
 	}, 0);
 }
+
+/******************************************************************************
+* PROCESSOR FUNCTIONS END
+******************************************************************************/
 
 /**
  * Returns the data for given URI.
@@ -430,13 +554,22 @@ function fetch_json(url, callback) {
 }
 
 /**
- * Renders the template.
- * Renders the data with given mustache template.
+ * Renders the Mustache template.
+ * Renders the given Mustache template stored in _tpl with the given data into given DOM object.
+ * This funtion is triggered by every process_click that's not an internal function call.
+ * When using pull-to-refresh the rendered result should be appended rather than override existing
+ * content.
+ * Define template with data-tpl in HTML.
  *
- * @param tpl - template to render
- * @param data - data to render
- * @param callback - callback function
- *	-> called after templates has been rendered
+ * @see _tpl;
+ * @since 2.6.1
+ *
+ * @param tpl {String} name of the template to use
+ * @param data {Object} data to render
+ * @param dom {String} DOM object into which the render result should be added
+ * @param callback {Function} callback function
+ * @return callback {Function} callback function
+ *   -> when the template has been rendered
  */
 function render_tpl(tpl, data, dom, append, callback) {
 	setTimeout(function () {
@@ -457,23 +590,24 @@ function render_tpl(tpl, data, dom, append, callback) {
 	}, 0);
 }
 
-/******************************************************************************
-* MAIN FUNCTIONS END
-******************************************************************************/
-
 /**
  * Updates the UI components.
- * Adds and removes classes and states of UI elements.
+ * After every click the UI needs to be updated. Therefor this function is triggered/called
+ * by process_click.
+ * It closes the sidepanel, updates the app-icon in actionbar and sets the active tab.
  *
- * @param routing - current routing state
- * @param tab - tab to activate
- * @param callback - callback function
+ * @since 2.6.1
+ *
+ * @param rqst {Object} requested/target link/content
+ * @param callback {Function} callback function
+ * @return callback {Function} callback function
+ *   -> when the UI has been updated
  */
-function update_ui(routing, tab, callback) {
+function update_ui(rqst, callback) {
 	setTimeout(function() {
 		$.sidr('close');
 
-		if (routing == _home) {
+		if (rqst.routing == _home) {
 			$('.app-icon').removeClass('up').attr('disabled', 'disabled');
 			$('.chevron').hide();
 		} else {
@@ -482,10 +616,90 @@ function update_ui(routing, tab, callback) {
 		}
 
 		$('.tab').parent().removeClass('active');
-		$('#' + tab).addClass('active');
+		$('#' + rqst.tab).addClass('active');
 
 		return callback(null);
 	}, 0);
+}
+
+/******************************************************************************
+* MAIN FUNCTIONS END
+******************************************************************************/
+
+/**
+ * Clears the localStorage cache.
+ *
+ * @param confirm - weither to show a confirmation prompt or not
+ */
+function clear_cache(confirm) {
+	if (confirm) {
+		navigator.notification.confirm(
+		    "Möchten Sie den Cache wirklich leeren?",
+		    function(btn) {
+		        if (btn === 1) {
+			        _storage.clear();
+		        }
+		    },
+		    'Cache leeren',
+		    'Ja,Nein'
+		);
+	} else {
+		_storage.clear();
+	}
+}
+
+/**
+ * Splits the given string into function name and arguments.
+ * Links with data-routing="function.XY" can be used to call internal functions.
+ * This is useful e.g. to clear the cache.
+ *
+ * @since 2.6.1
+ *
+ * @param str {String} function call string
+ * @return result {Object} the splitted fn/args
+ */
+function str_to_function(str) {
+	var result = {};
+
+	var args_s = str.indexOf("(");
+	var args_e = str.indexOf(")");
+
+	var fn = str.substring(0, args_s);
+	var args = str.substring(args_s + 1, args_e);
+
+	result.fn = fn;
+	result.args = args;
+
+	return result;
+}
+
+/**
+ * Validates the age of the cache.
+ * Since we cache JSON responds in localStorage we need to make sure it
+ * gets refreshed from time to time. This function checks if the cache is
+ * older than two hours and purges/clears if true.
+ *
+ * @see _storage
+ * @since 2.6.1
+ *
+ * @triggers clear_cache()
+ */
+function validate_cache() {
+	var time = new Date().getTime();
+	var cache = _storage.getItem('cache_time');
+
+	if (cache !== null) {
+		var diff = time - cache;
+		var secs = Math.round(diff / 1000);
+		var hours = secs / 360;
+
+		if (hours >= 2) {
+			clear_cache(false);
+			_storage.setItem('cache_time', time);
+		}
+	} else {
+		_storage.setItem('cache_time', time);
+	}
 }
 
 /**
@@ -521,69 +735,6 @@ function wait_for_images(callback) {
 	} else {
 		return callback(null);
 	}
-}
-
-/**
- * Clears the localStorage cache.
- *
- * @param confirm - weither to show a confirmation prompt or not
- */
-function clear_cache(confirm) {
-	if (confirm) {
-		navigator.notification.confirm(
-		    "Möchten Sie den Cache wirklich leeren?",
-		    function(btn) {
-		        if (btn === 1) {
-			        _storage.clear();
-		        }
-		    },
-		    'Cache leeren',
-		    'Ja,Nein'
-		);
-	} else {
-		_storage.clear();
-	}
-}
-
-/**
- * Validates the age of the cache and clears if needed.
- */
-function validate_cache() {
-	var time = new Date().getTime();
-	var cache = _storage.getItem('cache_time');
-
-	if (cache !== null) {
-		var diff = time - cache;
-		var secs = Math.round(diff / 1000);
-		var hours = secs / 360;
-
-		if (hours >= 2) {
-			clear_cache(false);
-			_storage.setItem('cache_time', time);
-		}
-	} else {
-		_storage.setItem('cache_time', time);
-	}
-}
-
-/**
- * Divides a function in string form into fn and arguments.
- *
- * @oaram str - string representing the function
- * @return result
- */
-function str_to_function(str) {
-	var args_s = str.indexOf("(");
-	var args_e = str.indexOf(")");
-
-	var fn = str.substring(0, args_s);
-	var args = str.substring(args_s + 1, args_e);
-
-	var result = {};
-	result.fn = fn;
-	result.args = args;
-
-	return result;
 }
 
 /******************************************************************************

@@ -145,17 +145,49 @@ function load_templates(callback) {
 function init_app() {
 	setTimeout(function() {
 		validate_cache();
-
+		init_scroller(true);
 		$('#sidr').sidr();
+		$('#news').find('.tab').click();
+	}, 500);
+}
 
+/**
+ * Initializes the iScroller.
+ *
+ * @param use_puller - activates puller is true
+ */
+function init_scroller(use_puller) {
+	var puller = {};
+
+	puller.dom = $('#pullUp');
+	pullerOffset = puller.offsetHeight;
+
+	if (use_puller) {
 		_iscroll = new iScroll('main', {
 			hScroll: false,
 			hScrollbar: false,
-			vScrollbar: false
+			vScrollbar: false,
+			useTransition: false,
+			topOffset: 0,
+			onRefresh: function () {
+				onScrollerRefresh(puller);
+			},
+			onScrollMove: function () {
+				onScrollerMove(puller);
+			},
+			onScrollEnd: function () {
+				onScrollerEnd(puller);
+			}
 		});
-
-		$('#news').find('.tab').click();
-	}, 500);
+	} else {
+		_iscroll = new iScroll('main', {
+			hScroll: false,
+			hScrollbar: false,
+			vScrollbar: false,
+			useTransition: false,
+			topOffset: 0
+		});
+	}
 }
 
 /**
@@ -206,7 +238,7 @@ function process_click(dom, callback) {
 		    		if (routing.substring(0, 8) == "internal") {
 		    			async.waterfall([
 		    			    function(callback) {
-		    			        render_tpl(tpl, '', '#scroller', callback);
+		    			        render_tpl(tpl, '', '#mustache', callback);
 		    			    }
 		    			], function (err, result) {
 		    				callback(null);
@@ -217,7 +249,7 @@ function process_click(dom, callback) {
 		    			        get_data(routing, identifier, callback);
 		    			    },
 		    			    function(arg1, callback) {
-		    			        render_tpl(tpl, arg1, '#scroller', callback);
+		    			        render_tpl(tpl, arg1, '#mustache', callback);
 		    			    }
 		    			], function (err, result) {
 		    				callback(null);
@@ -226,6 +258,32 @@ function process_click(dom, callback) {
 		    	}, 0);
 		    }
 		], function(err, results) {
+			if (dom.data('puller') !== undefined) {
+				var puller = dom.data('puller').split(":");
+
+				var method = puller[0];
+				var start = parseInt(puller[1], 10);
+				var step = parseInt(puller[2], 10);
+
+				_data.puller = {};
+				_data.puller.routing = routing;
+				_data.puller.identifier = identifier;
+				_data.puller.method = method;
+				_data.puller.current = start;
+
+				if (method == "inc") {
+					_data.puller.next = start + step;
+				} else {
+					_data.puller.next = start - step;
+				}
+
+				init_scroller(true);
+				$('#pullUp').show();
+			} else {
+				init_scroller(false);
+				$('#pullUp').hide();
+			}
+
 			return callback(null);
 		});
 	}
@@ -286,7 +344,7 @@ function get_data(routing, identifier, callback) {
 		var json = $.parseJSON(storage);
 		return callback(null, json);
 	} else {
-		var source = get_source(routing, identifier);
+		var source = get_source(routing, identifier, true);
 
 		async.waterfall([
 		    function(callback) {
@@ -316,9 +374,10 @@ function get_error(msg) {
  * Returns the source for given route.
  * Returns the source from routing.json for given route.
  * @param routing - the routing path
+ * @param append_callback - appends &callback=? if true
  * @return source
  */
-function get_source(routing, identifier) {
+function get_source(routing, identifier, append_callback) {
 	var api = _base + _api;
 	var route = routing.split('.');
 	var base = route[0];
@@ -333,7 +392,7 @@ function get_source(routing, identifier) {
 	var source = api + object;
 
 	if (identifier !== null) source += identifier;
-	source += "&callback=?";
+	if (append_callback) source += "&callback=?";
 
 	return source;
 }
@@ -432,7 +491,7 @@ function update_ui(routing, tab, callback) {
  *	-> called after images have been loaded
  */
 function wait_for_images(callback) {
-	var imgs = $('#scroller').find('img');
+	var imgs = $('#mustache').find('img');
 	var length = imgs.length;
 	var counter = 0;
 
@@ -457,22 +516,6 @@ function wait_for_images(callback) {
 	} else {
 		return callback(null);
 	}
-}
-
-/**
- * Updates the scroller.
- * Updates the scoller and scrolls back to top.
- *
- * @param callback - callback function
- *	-> called after scroller has been updated
- */
-function update_scroller(callback) {
-	setTimeout(function() {
-		_iscroll.refresh();
-		_iscroll.scrollTo(0, 0, 25);
-
-		return callback(null);
-	}, 0);
 }
 
 /**

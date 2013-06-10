@@ -17,10 +17,8 @@ function onDeviceReady() {
                 //document.addEventListener('backbutton', onBackKeyDown, false);
                 document.addEventListener('menubutton', onMenuKeyDown, false);
                 document.addEventListener('searchbutton', onSearchKeyDown, false);
-
                 /*document.addEventListener('volumeupbutton', onVolumeUpKeyDown, false);
                 document.addEventListener('volumedownbutton', onVolumeDownKeyDown, false);*/
-
                 document.addEventListener('online', onOnline, false);
                 document.addEventListener('offline', onOffline, false);
                 return callback(null);

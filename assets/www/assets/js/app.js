@@ -145,40 +145,49 @@ function load_templates(callback) {
 function init_app() {
 	setTimeout(function() {
 		validate_cache();
-
+		init_scroller(true);
 		$('#sidr').sidr();
-
-		init_scroller();
-
 		$('#news').find('.tab').click();
 	}, 500);
 }
 
 /**
  * Initializes the iScroller.
+ *
+ * @param use_puller - activates puller is true
  */
-function init_scroller() {
+function init_scroller(use_puller) {
 	var puller = {};
 
 	puller.dom = $('#pullUp');
 	pullerOffset = puller.offsetHeight;
 
-	_iscroll = new iScroll('main', {
-		hScroll: false,
-		hScrollbar: false,
-		vScrollbar: false,
-		useTransition: false,
-		topOffset: 0,
-		onRefresh: function () {
-			onScrollerRefresh(puller);
-		},
-		onScrollMove: function () {
-			onScrollerMove(puller);
-		},
-		onScrollEnd: function () {
-			onScrollerEnd(puller);
-		}
-	});
+	if (use_puller) {
+		_iscroll = new iScroll('main', {
+			hScroll: false,
+			hScrollbar: false,
+			vScrollbar: false,
+			useTransition: false,
+			topOffset: 0,
+			onRefresh: function () {
+				onScrollerRefresh(puller);
+			},
+			onScrollMove: function () {
+				onScrollerMove(puller);
+			},
+			onScrollEnd: function () {
+				onScrollerEnd(puller);
+			}
+		});
+	} else {
+		_iscroll = new iScroll('main', {
+			hScroll: false,
+			hScrollbar: false,
+			vScrollbar: false,
+			useTransition: false,
+			topOffset: 0
+		});
+	}
 }
 
 /**
@@ -207,26 +216,6 @@ function process_click(dom, callback) {
 		}
 	} else {
 		sidepanel.status = "false";
-	}
-
-	if (dom.data('puller') !== undefined) {
-		// TODO
-		var puller = dom.data('puller');
-		var pull_options = puller.split(":");
-
-		var method = pull_options[0];
-		var start = pull_options[1];
-		var step = pull_options[2];
-
-		var full_identifier = identifier + start;
-		var source = get_source(routing, full_identifier);
-
-		_data.puller = {};
-		_data.puller.source = source;
-
-		console.log(_data);
-	} else {
-		$('#pullUp').hide();
 	}
 
 	if (routing.substring(0, 8) == "function") {
@@ -268,6 +257,32 @@ function process_click(dom, callback) {
 		    	}, 0);
 		    }
 		], function(err, results) {
+			if (dom.data('puller') !== undefined) {
+				var puller = dom.data('puller').split(":");
+
+				var method = puller[0];
+				var start = parseInt(puller[1], 10);
+				var step = parseInt(puller[2], 10);
+
+				_data.puller = {};
+				_data.puller.routing = routing;
+				_data.puller.identifier = identifier;
+				_data.puller.method = method;
+				_data.puller.current = start;
+
+				if (method == "inc") {
+					_data.puller.next = start + step;
+				} else {
+					_data.puller.next = start - step;
+				}
+
+				init_scroller(true);
+				$('#pullUp').show();
+			} else {
+				init_scroller(false);
+				$('#pullUp').hide();
+			}
+
 			return callback(null);
 		});
 	}
@@ -328,7 +343,7 @@ function get_data(routing, identifier, callback) {
 		var json = $.parseJSON(storage);
 		return callback(null, json);
 	} else {
-		var source = get_source(routing, identifier);
+		var source = get_source(routing, identifier, true);
 
 		async.waterfall([
 		    function(callback) {
@@ -358,9 +373,10 @@ function get_error(msg) {
  * Returns the source for given route.
  * Returns the source from routing.json for given route.
  * @param routing - the routing path
+ * @param append_callback - appends &callback=? if true
  * @return source
  */
-function get_source(routing, identifier) {
+function get_source(routing, identifier, append_callback) {
 	var api = _base + _api;
 	var route = routing.split('.');
 	var base = route[0];
@@ -375,7 +391,7 @@ function get_source(routing, identifier) {
 	var source = api + object;
 
 	if (identifier !== null) source += identifier;
-	source += "&callback=?";
+	if (append_callback) source += "&callback=?";
 
 	return source;
 }
@@ -499,22 +515,6 @@ function wait_for_images(callback) {
 	} else {
 		return callback(null);
 	}
-}
-
-/**
- * Updates the scroller.
- * Updates the scoller and scrolls back to top.
- *
- * @param callback - callback function
- *	-> called after scroller has been updated
- */
-function update_scroller(callback) {
-	setTimeout(function() {
-		_iscroll.refresh();
-		_iscroll.scrollTo(0, 0, 25);
-
-		return callback(null);
-	}, 0);
 }
 
 /**

@@ -5,6 +5,8 @@
 $(document).on('click', 'a[data-routing]', function(e) {
     e.preventDefault();
 
+    _iscroll.destroy();
+
     var $this = $(this);
     var notification = navigator.notification;
 
@@ -16,11 +18,10 @@ $(document).on('click', 'a[data-routing]', function(e) {
         },
         function(callback) {
         	wait_for_images(callback);
-        },
-        function(callback) {
-        	update_scroller(callback);
         }
     ], function (err, result) {
+        _iscroll.refresh();
+
     	setTimeout(function() {
     		notification.activityStop();
     	}, 450);
@@ -33,6 +34,7 @@ $(document).on('click', 'a[data-routing]', function(e) {
  */
 $(document).on('click', '.spinner-item', function(e) {
 	e.preventDefault();
+
 	$(this).parent('.action-overflow-list').toggle().removeClass('active');
 });
 
@@ -104,18 +106,25 @@ function onScrollerEnd(puller) {
  * Fired by onScrollerEnd().
  */
 function onPullUpRelease() {
-    setTimeout(function() {
-        var el, li, i;
-        el = document.getElementById('mustache');
+    var routing = _data.puller.routing;
+    var identifier = _data.puller.identifier;
+    var current = _data.puller.current;
+    var next = _data.puller.next;
+    var tpl = "news";
 
-        for (i = 0; i < 3; i++) {
-            li = document.createElement('li');
-            li.innerText = 'Generated row ' + i;
-            el.appendChild(li, el.childNodes[0]);
+    identifier += next;
+    _data.puller.next++;
+
+    async.waterfall([
+        function(callback) {
+            get_data(routing, identifier, callback);
+        },
+        function(arg1, callback) {
+            render_tpl(tpl, arg1, '#mustache', true, callback);
         }
-
+    ], function (err, result) {
         _iscroll.refresh();
-    }, 1000);
+    });
 }
 
 /******************************************************************************

@@ -390,7 +390,7 @@ function get_source(routing, identifier, append_callback) {
 
 	var source = api + object;
 
-	if (identifier !== null) source += identifier;
+	if (identifier !== undefined) source += identifier;
 	if (append_callback) source += "&callback=?";
 
 	return source;

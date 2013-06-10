@@ -209,6 +209,15 @@ function process_click(dom, callback) {
 		sidepanel.status = "false";
 	}
 
+	if (dom.data('puller') !== undefined) {
+		var puller = dom.data('puller');
+		var pull_options = puller.split(":");
+
+		console.log(puller);
+	} else {
+		$('#pullUp').hide();
+	}
+
 	if (routing.substring(0, 8) == "function") {
 		var fn = routing.replace("function.", "");
 		fn = str_to_function(fn);

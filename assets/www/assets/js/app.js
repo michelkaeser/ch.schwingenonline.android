@@ -168,14 +168,15 @@ function init_app() {
  */
 // FIXME: needs refactoring!!!
 function process_click(dom, callback) {
-	var routing = dom.data('routing');
-	var identifier = dom.data('identifier');
-	var tab = dom.data('tab');
-	var tpl = dom.data('tpl');
+	var data = dom.data();
+	var routing = data.routing;
+	var identifier = data.identifier;
+	var tab = data.tab;
+	var tpl = data.tpl;
 	var sidepanel = {};
 
-	if (dom.data('sidepanel') !== undefined) {
-		sidepanel.obj = dom.data('sidepanel');
+	if (data.sidepanel !== undefined) {
+		sidepanel.obj = data.sidepanel;
 
 		if (sidepanel.obj == "inherit") {
 			sidepanel.status = "inherit";

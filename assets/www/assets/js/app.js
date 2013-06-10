@@ -145,53 +145,88 @@ function process_click(dom, callback) {
 	var identifier = dom.data('identifier');
 	var tab = dom.data('tab');
 	var tpl = dom.data('tpl');
-	var sidepanel = dom.data('sidepanel');
+	var sidepanel = {};
 
-	if (sidepanel !== undefined && sidepanel != "inherit") {
-		async.waterfall([
-		    function(callback) {
-		        get_data(sidepanel.routing, sidepanel.identifier, callback);
-		    },
-		    function(arg1, callback) {
-		        render_tpl(sidepanel.tpl, arg1, '#sidr', callback);
-		    }
-		], function (err, result) {
-			$('#sidr').removeClass('deactivated');
-			// TODO: include sidepanel waterfall in normal waterfall
-		});
-	} else if (sidepanel != "inherit") {
-		$('#sidr').addClass('deactivated');
+	if (dom.data('sidepanel') !== undefined) {
+		sidepanel = dom.data('sidepanel');
+
+		if (sidepanel == "inherit") {
+			sidepanel.status = "inherit";
+		} else {
+			sidepanel.status = "true";
+		}
+	} else {
+		sidepanel.status = "false";
 	}
 
 	if (routing.substring(0, 8) == "function") {
 		var fn = routing.replace("function.", "");
-
 		window[fn](identifier);
+
 		return callback(null);
 	} else {
-		update_ui(routing, tab);
-
-		if (routing.substring(0, 8) == "internal") {
-			async.waterfall([
-			    function(callback) {
-			        render_tpl(tpl, '', '#scroller', callback);
-			    }
-			], function (err, result) {
-				return callback(null);
-			});
-		} else {
-			async.waterfall([
-			    function(callback) {
-			        get_data(routing, identifier, callback);
-			    },
-			    function(arg1, callback) {
-			        render_tpl(tpl, arg1, '#scroller', callback);
-			    }
-			], function (err, result) {
-				return callback(null);
-			});
-		}
+		async.parallel([
+		    function(callback) {
+		        update_ui(routing, tab, callback);
+		    },
+		    function(callback) {
+		    	process_sidepanel(sidepanel, callback);
+		    },
+		    function(callback) {
+		    	setTimeout(function() {
+		    		if (routing.substring(0, 8) == "internal") {
+		    			async.waterfall([
+		    			    function(callback) {
+		    			        render_tpl(tpl, '', '#scroller', callback);
+		    			    }
+		    			], function (err, result) {});
+		    		} else {
+		    			async.waterfall([
+		    			    function(callback) {
+		    			        get_data(routing, identifier, callback);
+		    			    },
+		    			    function(arg1, callback) {
+		    			        render_tpl(tpl, arg1, '#scroller', callback);
+		    			    }
+		    			], function (err, result) {});
+		    		}
+		    	}, 0);
+		    }
+		], function(err, results) {
+			return callback(null);
+		});
 	}
+}
+
+/**
+ * Processes the sidepanel handling.
+ *
+ * @param sidepanel - JSON object of sidepanel properties
+ * @param callback - callback function
+ *	-> called after successful processing the sidepanel tasks
+ */
+function process_sidepanel(sidepanel, callback) {
+	setTimeout(function() {
+		var status = sidepanel.status;
+
+		switch (status) {
+			case "true":
+				async.waterfall([
+				    function(callback) {
+				        get_data(sidepanel.routing, sidepanel.identifier, callback);
+				    },
+				    function(arg1, callback) {
+				        render_tpl(sidepanel.tpl, arg1, '#sidr', callback);
+				    }
+				], function (err, result) {
+					$('#sidr').removeClass('deactivated');
+				});
+			case "false":
+				$('#sidr').addClass('deactivated');
+			default:
+				return callback(null);
+		}
+	}, 0);
 }
 
 /**
@@ -333,8 +368,9 @@ function render_tpl(tpl, data, dom, append, callback) {
  *
  * @param routing - current routing state
  * @param tab - tab to activate
+ * @param callback - callback function
  */
-function update_ui(routing, tab) {
+function update_ui(routing, tab, callback) {
 	setTimeout(function() {
 		$.sidr('close');
 
@@ -348,6 +384,8 @@ function update_ui(routing, tab) {
 
 		$('.tab').parent().removeClass('active');
 		$('#' + tab).addClass('active');
+
+		return callback(null);
 	}, 0);
 }
 

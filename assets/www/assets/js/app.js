@@ -300,11 +300,11 @@ function process_click(dom, callback) {
 	var rqst = {};
 	var data = dom.data();
 
-	var rqst.routing = data.routing;
-	var rqst.identifier = data.identifier;
-	var rqst.tab = data.tab;
-	var rqst.tpl = data.tpl;
-	var rqst.sidepanel = {};
+	rqst.routing = data.routing;
+	rqst.identifier = data.identifier;
+	rqst.tab = data.tab;
+	rqst.tpl = data.tpl;
+	rqst.sidepanel = {};
 
 	// define sidepanel status
 	if (data.sidepanel !== undefined) {
@@ -337,10 +337,10 @@ function process_click(dom, callback) {
 		        update_ui(rqst, callback);
 		    },
 		    function(callback) {
-		    	process_sidepanel(sidepanel, callback);
+		    	process_sidepanel(rqst.sidepanel, callback);
 		    },
 		    function(callback) {
-		    	// TODO: outsource to external fn
+		    	// TODO: outsource to external fn process_content()
 		    	setTimeout(function() {
 		    		// internal views don't reply on external data
 		    		// -> render directly
@@ -355,7 +355,7 @@ function process_click(dom, callback) {
 		    		} else {
 		    			async.waterfall([
 		    			    function(callback) {
-		    			        get_data(rqst.routing, rqst.identifier, callback);
+		    			        get_data(rqst, callback);
 		    			    },
 		    			    function(arg1, callback) {
 		    			        render_tpl(rqst.tpl, arg1, '#mustache', callback);
@@ -376,8 +376,8 @@ function process_click(dom, callback) {
 				var step = parseInt(puller[2], 10);
 
 				_data.puller = {};
-				_data.puller.routing = routing;
-				_data.puller.identifier = identifier;
+				_data.puller.routing = rqst.routing;
+				_data.puller.identifier = rqst.identifier;
 				_data.puller.method = method;
 				_data.puller.current = start;
 
@@ -426,7 +426,7 @@ function process_sidepanel(sidepanel, callback) {
 
 				async.waterfall([
 				    function(callback) {
-				        get_data(json.routing, json.identifier, callback);
+				        get_data(json, callback);
 				    },
 				    function(arg1, callback) {
 				        render_tpl(json.tpl, arg1, '#sidr', callback);
@@ -447,16 +447,25 @@ function process_sidepanel(sidepanel, callback) {
 ******************************************************************************/
 
 /**
- * Returns the data for given URI.
- * Fetchs and returns the data for the given URI and proceeds with callback.
+ * Returns the data for given URI (routing + identifier).
+ * This function is primary triggered by process_click() and delivers
+ * the data used to render the template.
+ * localStorage is looked up to search content first. If nothing is found,
+ * a fetch_json() request is fired and the result stored in cache for future
+ * access.
  *
- * @param routing - routing information
- * @param identifier - unique identifier
- * @param callback - callback function
- *	-> called after data have been fetched
+ * @since 2.6.1
+ *
+ * @param rqst {String} request to get the data for
+ * @param callback {Function} callback function
+ * @return callback {Function} callback function
+ *   -> when the data has been fetched
+ * @sets _storage
+ * @triggers fetch_json()
  */
-function get_data(routing, identifier, callback) {
-	var uri = routing;
+function get_data(rqst, callback) {
+	var uri = rqst.routing;
+	var identifier = rqst.identifier;
 
 	if (identifier !== undefined && identifier !== '') {
 		uri += "__" + identifier;
@@ -468,7 +477,7 @@ function get_data(routing, identifier, callback) {
 		var json = $.parseJSON(storage);
 		return callback(null, json);
 	} else {
-		var source = get_source(routing, identifier, true);
+		var source = get_source(rqst, true);
 
 		async.waterfall([
 		    function(callback) {
@@ -484,9 +493,14 @@ function get_data(routing, identifier, callback) {
 }
 
 /**
- * Returns a JSON error object.
- * @param msg - error message
- * @return err
+ * Returns an error object for use in templates.
+ * Use it to display errors when something goes wrong, e.g. fetching remote data.
+ * When "error" is set, the according notification gets activated in tpl/error.mustache.
+ *
+ * @since 2.6.1
+ *
+ * @param mst {String} error message to display
+ * @return err {JSON} error object
  */
 function get_error(msg) {
 	var err = $.parseJSON('{"error": "true", "error_msg": "' + msg + '"}');
@@ -495,15 +509,22 @@ function get_error(msg) {
 }
 
 /**
- * Returns the source for given route.
- * Returns the source from routing.json for given route.
- * @param routing - the routing path
- * @param append_callback - appends &callback=? if true
- * @return source
+ * Returns the source for given URI (routing + identifier).
+ * The source is looked up from _routing which represents the JSON object
+ * found in routing.json.
+ * Use this function to get the URL from it for given request.
+ *
+ * @see _routing
+ * @see get_data()
+ * @since 2.6.1
+ *
+ * @param rqst {String} request to get the data for
+ * @param append_callback {Boolean} appends &callback=? if true
+ * @return source {String} combined source URL
  */
-function get_source(routing, identifier, append_callback) {
+function get_source(rqst, append_callback) {
 	var api = _base + _api;
-	var route = routing.split('.');
+	var route = rqst.routing.split('.');
 	var base = route[0];
 	var object = _routing[base];
 	var child;
@@ -515,8 +536,8 @@ function get_source(routing, identifier, append_callback) {
 
 	var source = api + object;
 
-	if (identifier !== undefined) {
-		source += identifier;
+	if (rqst.identifier !== undefined) {
+		source += rqst.identifier;
 	}
 
 	if (append_callback) {
@@ -527,12 +548,16 @@ function get_source(routing, identifier, append_callback) {
 }
 
 /**
- * Fetchs a JSON from given remove URL.
- * Receivces and fetchs JSON from remote URL and proceeds with callback.
+ * Fetches the remote's answer JSON object.
+ * If the data could not be fetched an error is triggered and shown to user.
+ * Use get_source() and get_data() and avoid calling this function directly.
  *
- * @param url - remote origin URL
- * @param callback - callback function
- *	-> called after JSON was fetched
+ * @since 2.6.1
+ *
+ * @param url {String} remote server URL
+ * @param callback {Function} callback function
+ * @return callback {Function} callback function
+ *   -> when the data has been fetched
  */
 function fetch_json(url, callback) {
 	var api = url;
@@ -628,8 +653,12 @@ function update_ui(rqst, callback) {
 
 /**
  * Clears the localStorage cache.
+ * Triggered by validata_cache() if needed.
  *
- * @param confirm - weither to show a confirmation prompt or not
+ * @since 2.6.1
+ *
+ * @param confirm {Boolean} shows confirmation prompt if set
+ * @sets _storage
  */
 function clear_cache(confirm) {
 	if (confirm) {
@@ -703,11 +732,13 @@ function validate_cache() {
 }
 
 /**
- * Waits until images are loaded.
- * Waites until all images (if any) are loaded.
+ * Waits for all images to be fully loaded.
  *
- * @param callback - callback function
- *	-> called after images have been loaded
+ * @since 2.6.1
+ *
+ * @param callback {Function} callback function
+ * @return callback {Function} callback function
+ *   -> when the images have been loaded
  */
 function wait_for_images(callback) {
 	var imgs = $('#mustache').find('img');

@@ -17,11 +17,10 @@
 $(document).on('click', 'a[data-routing]', function(e) {
     e.preventDefault();
 
-    _iscroll.destroy();
-
     var $this = $(this);
     var notification = navigator.notification;
 
+    _iscroll.destroy();
     notification.activityStart("Laden", "Inhalt wird geladen...");
 
     async.waterfall([
@@ -137,19 +136,18 @@ function onScrollerEnd(puller) {
  * @since 2.6.1
  */
 function onPullUpRelease() {
-    // FIXME: needs heavy refactoring!!!
-    var routing = _data.puller.routing;
-    var identifier = _data.puller.identifier;
-    var current = _data.puller.current;
-    var next = _data.puller.next;
+    // TODO: needs heavy refactoring!!!
+    var rqst = {};
     var tpl = "news";
 
-    identifier += next;
-    _data.puller.next++;
+    rqst.routing = _data.puller.routing;
+    rqst.identifier = _data.puller.identifier;
+
+    rqst.identifier += _data.puller.next++;
 
     async.waterfall([
         function(callback) {
-            get_data(routing, identifier, callback);
+            get_data(rqst, callback);
         },
         function(arg1, callback) {
             arg1.pulled = true;

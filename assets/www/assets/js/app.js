@@ -363,7 +363,7 @@ function process_click(dom, callback) {
 		    	    function(callback) {
 		    	        process_content(rqst, callback);
 		    	    },
-		    	    function(arg1, callback) {
+		    	    function(callback) {
 		    	        process_puller(rqst, callback);
 		    	    }
 		    	], function (err, result) {

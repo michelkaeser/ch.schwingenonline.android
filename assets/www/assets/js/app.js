@@ -57,6 +57,14 @@ var _routing = {};
 var _sidepanels = {};
 
 /**
+ * Stores the puller object.
+ *
+ * @see process_puller()
+ * @since 2.6.1
+ */
+var _puller = {};
+
+/**
  * Stores the loaded templates.
  *
  * @see tpl/*.mustache
@@ -291,9 +299,8 @@ function init_scroller(use_puller) {
  *   -> when the click has been processed, e.g. hide loader
  * @triggers update_ui()
  * @triggers process_sidepanel()
- * @triggers get_data()
- * @triggers render_tpl()
- * @triggers init_scroller()
+ * @triggers process_content()
+ * @triggers process_puller()
  * @sets _data.puller
  */
 function process_click(dom, callback) {
@@ -305,6 +312,7 @@ function process_click(dom, callback) {
 	rqst.tab = data.tab;
 	rqst.tpl = data.tpl;
 	rqst.sidepanel = {};
+	rqst.puller = {};
 
 	// define sidepanel status
 	if (data.sidepanel !== undefined) {
@@ -317,6 +325,14 @@ function process_click(dom, callback) {
 		}
 	} else {
 		rqst.sidepanel.status = "false";
+	}
+
+	// define puller status
+	if (data.puller !== undefined) {
+		rqst.puller.obj = data.puller;
+		rqst.puller.status = "true";
+	} else {
+		rqst.puller.status = "false";
 	}
 
 	// function calls are cheap and only need to be fired
@@ -340,63 +356,110 @@ function process_click(dom, callback) {
 		    	process_sidepanel(rqst.sidepanel, callback);
 		    },
 		    function(callback) {
-		    	// TODO: outsource to external fn process_content()
-		    	setTimeout(function() {
-		    		// internal views don't reply on external data
-		    		// -> render directly
-		    		if (rqst.routing.substring(0, 8) == "internal") {
-		    			async.waterfall([
-		    			    function(callback) {
-		    			        render_tpl(rqst.tpl, '', '#mustache', callback);
-		    			    }
-		    			], function (err, result) {
-		    				callback(null);
-		    			});
-		    		} else {
-		    			async.waterfall([
-		    			    function(callback) {
-		    			        get_data(rqst, callback);
-		    			    },
-		    			    function(arg1, callback) {
-		    			        render_tpl(rqst.tpl, arg1, '#mustache', callback);
-		    			    }
-		    			], function (err, result) {
-		    				callback(null);
-		    			});
-		    		}
-		    	}, 0);
+		    	process_content(rqst, callback);
+		    },
+		    function(callback) {
+		    	process_puller(rqst, callback);
 		    }
 		], function(err, results) {
-			// TODO: refactor!!!
-			if (dom.data('puller') !== undefined) {
-				var puller = dom.data('puller').split(":");
-
-				var method = puller[0];
-				var start = parseInt(puller[1], 10);
-				var step = parseInt(puller[2], 10);
-
-				_data.puller = {};
-				_data.puller.routing = rqst.routing;
-				_data.puller.identifier = rqst.identifier;
-				_data.puller.method = method;
-				_data.puller.current = start;
-
-				if (method == "inc") {
-					_data.puller.next = start + step;
-				} else {
-					_data.puller.next = start - step;
-				}
-
-				init_scroller(true);
-				$('#pullUp').show();
-			} else {
-				init_scroller(false);
-				$('#pullUp').hide();
-			}
-
 			return callback(null);
 		});
 	}
+}
+
+/**
+ * Processes the content changing.
+ * This function checks the type of needed interaction (e.g. change DOM, call function)
+ * and fetches data for the new content if required.
+ * Additionally, the data is rendered into view.
+ * Primary triggered by process_click()
+ *
+ * @since 2.6.1
+ *
+ * @param rqst {Object} request to process
+ * @param callback {Function} callback function
+ * @returns callback {Function} callback function
+ *   -> when the content has been processed
+ */
+function process_content(rqst, callback) {
+	setTimeout(function() {
+		// internal views don't reply on external data
+		// -> render directly
+		if (rqst.routing.substring(0, 8) == "internal") {
+			async.waterfall([
+			    function(callback) {
+			        render_tpl(rqst.tpl, '', '#mustache', callback);
+			    }
+			], function (err, result) {
+				return callback(null);
+			});
+		} else {
+			async.waterfall([
+			    function(callback) {
+			        get_data(rqst, callback);
+			    },
+			    function(arg1, callback) {
+			        render_tpl(rqst.tpl, arg1, '#mustache', callback);
+			    }
+			], function (err, result) {
+				return callback(null);
+			});
+		}
+	}, 0);
+}
+
+/**
+ * Processes the puller handling.
+ * This function checks if a puller is needed for the current requests and builds
+ * it if needed by setting the _data var.
+ * Pullers can be set in HTML with data-puller="inc:1:1" where
+ * the first part is the method (inc|dec), followed by starting identifier and
+ * inc-/decrementation step.
+ *
+ * @since 2.6.1
+ *
+ * @param rqst {Object} request to process
+ * @param callback {Function} callback function
+ * @returns callback {Function} callback function
+ *   -> when the puller has been processed
+ * @sets _puller
+ */
+function process_puller(rqst, callback) {
+	setTimeout(function() {
+		var status = rqst.puller.status;
+		var puller = $('#pullUp');
+
+		switch (status) {
+			case "true":
+				var splitted = rqst.puller.obj.split(":");
+
+				var method = splitted[0];
+				var start = parseInt(splitted[1], 10);
+				var step = parseInt(splitted[2], 10);
+
+				_puller.routing = rqst.routing;
+				_puller.identifier = rqst.identifier;
+				_puller.tpl = rqst.tpl;
+				_puller.method = method;
+				_puller.current = parseInt(splitted[1], 10);
+
+				if (method == "inc") {
+					_puller.next = start + step;
+				} else {
+					_puller.next = start - step;
+				}
+
+				puller.show();
+			break;
+			case "false":
+				puller.hide();
+			break;
+		}
+
+		init_scroller(status === "true");
+
+		return callback(null);
+	}, 0);
 }
 
 /**
@@ -434,10 +497,15 @@ function process_sidepanel(sidepanel, callback) {
 				], function (err, result) {
 					$('#sidr').removeClass('deactivated');
 				});
+
+				return callback(null);
+			break;
 			case "false":
 				$('#sidr').addClass('deactivated');
-			default:
 				return callback(null);
+			break;
+			default:
+				return callback(true);
 		}
 	}, 0);
 }

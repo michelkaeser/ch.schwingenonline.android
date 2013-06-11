@@ -136,14 +136,13 @@ function onScrollerEnd(puller) {
  * @since 2.6.1
  */
 function onPullUpRelease() {
-    // TODO: needs heavy refactoring!!!
-    var rqst = {};
-    var tpl = "news";
+    var rqst = _puller;
 
-    rqst.routing = _data.puller.routing;
-    rqst.identifier = _data.puller.identifier;
-
-    rqst.identifier += _data.puller.next++;
+    if (rqst.method == "inc") {
+        rqst.identifier += rqst.next++;
+    } else {
+        rqst.identifier += rqst.next--;
+    }
 
     async.waterfall([
         function(callback) {
@@ -152,7 +151,7 @@ function onPullUpRelease() {
         function(arg1, callback) {
             arg1.pulled = true;
 
-            render_tpl(tpl, arg1, '#mustache', true, callback);
+            render_tpl(rqst.tpl, arg1, '#mustache', true, callback);
         }
     ], function (err, result) {
         _iscroll.refresh();

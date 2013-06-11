@@ -448,6 +448,7 @@ function process_puller(rqst, callback) {
 
 				_puller.routing = rqst.routing;
 				_puller.identifier = rqst.identifier;
+				_puller.identifier_raw = rqst.identifier;
 				_puller.tpl = rqst.tpl;
 				_puller.method = method;
 				_puller.current = parseInt(splitted[1], 10);

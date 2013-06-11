@@ -1,15 +1,26 @@
 /**
- * onGoing click event listener for internal links.
- * We need this to process clicks. on for ajax loaded content.
+ * The 'events.js' file is meant for everything related to regular events/triggers.
+ * -----
+ * If you have events that get raised when using the application, you should place
+ * them in here to have them centralized.
+ *
+ * @author Michel Käser <mk@frontender.ch>
+ */
+
+/**
+ * App internal link click listener/event.
+ * The event is fired every time a link with data-routing set is clicked.
+ * Every app internal link should have data-routing set (see routing.json)
+ *
+ * @since 2.6.1
  */
 $(document).on('click', 'a[data-routing]', function(e) {
     e.preventDefault();
 
-    _iscroll.destroy();
-
     var $this = $(this);
     var notification = navigator.notification;
 
+    _iscroll.destroy();
     notification.activityStart("Laden", "Inhalt wird geladen...");
 
     async.waterfall([
@@ -29,18 +40,21 @@ $(document).on('click', 'a[data-routing]', function(e) {
 });
 
 /**
- * onGoing click event listener for actiobar-spinner links.
- * We need this to close the menu after clicking an item.
+ * Dropdown menu link click listener/event.
+ * Needed to close the dropdown menu after clicking one of it's child links.
+ *
+ * @since 2.6.1
  */
 $(document).on('click', '.spinner-item', function(e) {
 	e.preventDefault();
-
 	$(this).parent('.action-overflow-list').toggle().removeClass('active');
 });
 
 /**
- * Click event listener for action-overflow-icon.
- * We need this to prevent default behavior.
+ * Dropdown icon click listener/event.
+ * Needed to prevent opening as regular link when clicking the dropdown icon in actionbar.
+ *
+ * @since 2.6.1
  */
 $('.action-overflow-icon').click(function(e) {
     e.preventDefault();
@@ -52,9 +66,12 @@ $('.action-overflow-icon').click(function(e) {
 
 /**
  * iScroll scroll refresh event.
- * This event is raised every time the iscroll object gets refreshed (e.g. when scrolling).
+ * This event gets fired every time the iscroll object gets refreshed (e.g. when scrolling).
+ * We need this for pull-to-refresh.
  *
- * @param puller - puller object
+ * @since 2.6.1
+ *
+ * @param puller {Object} object storing puller related properties
  */
 function onScrollerRefresh(puller) {
     var dom = puller.dom;
@@ -66,10 +83,14 @@ function onScrollerRefresh(puller) {
 }
 
 /**
- * iScroll scroll move event.
- * This event is raised every time the iscroll puller object gets moved.
+ * iScroll pullXY move event.
+ * This event gets fired every time the iscroll pull-to-refresh object gets moved
+ * (e.g. when pulling for more content).
+ * We need this for pull-to-refresh.
  *
- * @param puller - puller object
+ * @since 2.6.1
+ *
+ * @param puller {Object} object storing puller related properties
  */
 function onScrollerMove(puller) {
     var dom = puller.dom;
@@ -86,10 +107,14 @@ function onScrollerMove(puller) {
 }
 
 /**
- * iScroll scroll end event.
- * This event is raised every time the iscroll puller object has been fully released.
+ * iScroll scoll end event.
+ * This event gets fired every time the iscroll reached the bottom.
+ * We need this for pull-to-refresh.
  *
- * @param puller - puller object
+ * @since 2.6.1
+ *
+ * @param puller {Object} object storing puller related properties
+ * @triggers onPullUpRelease()
  */
 function onScrollerEnd(puller) {
     var dom = puller.dom;
@@ -97,33 +122,36 @@ function onScrollerEnd(puller) {
     if (dom.hasClass('flip')) {
         dom.removeClass('flip').addClass('loading');
         dom.find('.pullUpLabel').html("Laden...");
+
         onPullUpRelease();
     }
 }
 
 /**
- * iScoll "callback" event for fully released pullers.
- * Fired by onScrollerEnd().
+ * iScroll pull-up release event.
+ * This event gets fired every time the iscroll pull-to-refresh object is released.
+ * (e.g. when pulling for more content has been fully pulled).
+ * We need this to load content with pull-to-refresh.
+ *
+ * @since 2.6.1
  */
-// FIXME: needs heavy refactoring!!!
 function onPullUpRelease() {
-    var routing = _data.puller.routing;
-    var identifier = _data.puller.identifier;
-    var current = _data.puller.current;
-    var next = _data.puller.next;
-    var tpl = "news";
+    var rqst = _puller;
 
-    identifier += next;
-    _data.puller.next++;
+    if (rqst.method == "inc") {
+        rqst.identifier += rqst.next++;
+    } else {
+        rqst.identifier += rqst.next--;
+    }
 
     async.waterfall([
         function(callback) {
-            get_data(routing, identifier, callback);
+            get_data(rqst, callback);
         },
         function(arg1, callback) {
             arg1.pulled = true;
 
-            render_tpl(tpl, arg1, '#mustache', true, callback);
+            render_tpl(rqst.tpl, arg1, '#mustache', true, callback);
         }
     ], function (err, result) {
         _iscroll.refresh();
@@ -131,5 +159,5 @@ function onPullUpRelease() {
 }
 
 /******************************************************************************
-* SCOLLER EVENTS END
+* ISCOLLER EVENTS END
 ******************************************************************************/

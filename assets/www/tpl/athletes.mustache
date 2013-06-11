@@ -1,0 +1,8 @@
+{{> error }}
+
+<ul class="list">
+	<li class="list-divider">Athleten</li>
+	{{# p }}
+		<li class="list-item-single-line"><a data-routing="athletes.id" data-identifier="{{ id }}" data-tab="athletes" data-tpl="athlete">{{ name }}, {{ prename }}</a></li>
+	{{/ p }}
+</ul>

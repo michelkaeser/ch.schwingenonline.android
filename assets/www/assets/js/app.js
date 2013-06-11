@@ -356,6 +356,9 @@ function process_click(dom, callback) {
 		    	process_sidepanel(rqst.sidepanel, callback);
 		    },
 		    function(callback) {
+		    	// the puller should not be visible until the content has loaded
+		    	// therefor we need to wait for process_content before
+		    	// proceeding with it
 		    	async.waterfall([
 		    	    function(callback) {
 		    	        process_content(rqst, callback);

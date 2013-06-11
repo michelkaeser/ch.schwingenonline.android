@@ -356,10 +356,16 @@ function process_click(dom, callback) {
 		    	process_sidepanel(rqst.sidepanel, callback);
 		    },
 		    function(callback) {
-		    	process_content(rqst, callback);
-		    },
-		    function(callback) {
-		    	process_puller(rqst, callback);
+		    	async.waterfall([
+		    	    function(callback) {
+		    	        process_content(rqst, callback);
+		    	    },
+		    	    function(arg1, callback) {
+		    	        process_puller(rqst, callback);
+		    	    }
+		    	], function (err, result) {
+		    		callback(null);
+		    	});
 		    }
 		], function(err, results) {
 			return callback(null);

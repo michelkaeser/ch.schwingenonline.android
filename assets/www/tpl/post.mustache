@@ -1,10 +1,10 @@
 {{> error }}
 
+<p class="top-divider">{{ post.date }}</p>
 <article class="post">
-	<p class="post-date">{{ post.date }}</p>
-	<h3 class="post-title">{{{ post.title_plain }}}</h3>
-	<img src="{{ post.thumbnail }}" alt="" class="post-img">
-	<div class="post-content">
+	<h3>{{{ post.title }}}</h3>
+	<img src="{{ post.thumbnail }}" alt="" class="img">
+	<div>
 		{{{ post.content }}}
 	</div>
 </article>

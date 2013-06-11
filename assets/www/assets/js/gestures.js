@@ -1,25 +1,32 @@
-Quo(document).ready(function($$) {
-
-	$$('body').swipeLeft(function() {
-		switch_tab();
-	});
-
-	$$('body').swipeRight(function() {
-		switch_tab();
-	});
-
-});
+/**
+ * The 'gestures.js' file is meant for everything related to touch gestures/control.
+ * -----
+ * init_gestures() is called during app initialization in cordova.js\onDeviceReady().
+ * QuoJS is the included micro JS library that handles touch gestures:
+ * http://quojs.tapquo.com/
+ *
+ * @author Michel Käser <mk@frontender.ch>
+ */
 
 /**
- * Switches the current active tab.
- * Fired through the event 'swipeLeft'.
+ * Initializes the gesture listening/events.
+ *
+ * @see cordova.js\onDeviceReady()
+ * @since 2.6.1
  */
-function switch_tab() {
-	var active = $('.tab').parent('.active').attr('id');
+function init_gestures() {
+	var doc = $$('body');
+	var sidr = $('#sidr');
 
-	if (active == 'news') {
-		$('#categories').find('.tab').click();
-	} else {
-		$('#news').find('.tab').click();
-	}
+	doc.swipeLeft(function() {
+		if (!sidr.hasClass('deactivated')) {
+			$.sidr('close');
+		}
+	});
+
+	doc.swipeRight(function() {
+		if (!sidr.hasClass('deactivated')) {
+			$.sidr('open');
+		}
+	});
 }

@@ -18,7 +18,7 @@
        under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:windowSoftInputMode="adjustPan"
-      package="ch.schwingenonline.android" android:versionName="2.2.1" android:versionCode="8" android:hardwareAccelerated="true">
+      package="ch.schwingenonline.android" android:versionName="2.6.2" android:versionCode="24" android:hardwareAccelerated="true">
 
     <supports-screens
         android:largeScreens="true"
@@ -31,7 +31,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 

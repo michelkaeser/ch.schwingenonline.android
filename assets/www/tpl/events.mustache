@@ -1,0 +1,16 @@
+{{> error }}
+
+<ul class="list">
+	<li class="list-divider">Events</li>
+	{{# events }}
+		<li class="list-item-multi-line">
+			<h3>{{ date }}</h3>
+			<p>{{ place }} - {{ description }}
+				<br />
+				{{# link }}
+					<a href="{{ link }}" target="_blank">{{ link }}</a>
+				{{/ link }}
+			</p>
+		</li>
+	{{/ events }}
+</ul>

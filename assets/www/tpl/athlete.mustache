@@ -1,0 +1,55 @@
+{{> error }}
+
+<p class="top-divider">{{ post.custom_fields.name }}, {{ post.custom_fields.prename }}</p>
+<article class="athlete">
+	{{# post.custom_fields }}
+	<div>
+		<img src="{{ post.thumbnail }}" alt="" class="img">
+		<table class="athlete-table">
+			<tr>
+				<td>Geburtstag</td>
+				<td>Beruf</td>
+			</tr>
+			<tr>
+				<td>{{ birth }}</td>
+				<td>{{ job }}</td>
+			</tr>
+			<tr>
+				<td>Gewicht in kg</td>
+				<td>Grösse in cm</td>
+			</tr>
+			<tr>
+				<td>{{ weight }}</td>
+				<td>{{ size }}</td>
+			</tr>
+			<tr>
+				<td>Verband</td>
+				<td>Club</td>
+			</tr>
+			<tr>
+				<td>{{ verband }}</td>
+				<td>{{ club }}</td>
+			</tr>
+			<tr>
+				<td>Webseite</td>
+				<td colspan="3"><a href="http://{{ url }}" target="_blank">{{ url }}</a></td>
+			</tr>
+		</table>
+
+		<h4>Hobbies</h4>
+		<p>{{ hobbies }}</p>
+		<hr />
+
+		<h4>Vorbild, und warum?</h4>
+		<p>{{ vorbild }}</p>
+		<hr />
+
+		<h4>Besonderes Merkmal</h4>
+		<p>{{ special }}</p>
+		<hr />
+
+		<h4>Geschichte aus dem Leben</h4>
+		<p>{{ story }}</p>
+	</div>
+	{{/ post.custom_fields }}
+</article>

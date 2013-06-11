@@ -1,32 +1,93 @@
-$blue: #33b5e5
+///////////////////////////////////////////////////////////////////////////////
+// # VARIABLES
+// customizable variables
+///////////////////////////////////////////////////////////////////////////////
+
 $bg: #101010
+$border: #424242
+
+$btn: #59661f
+$btn-shadow: #7ea703
+$btn-active: #a2bb2c
+
+$active: #cae533
+$input-border: #7ea703
+$tab-border: #bde533
+$link: #c1e533
+
+///////////////////////////////////////////////////////////////////////////////
+// # GLOBALS
+// document level styles
+///////////////////////////////////////////////////////////////////////////////
 
 html
 	padding-bottom: 0
-	background: #111
 	background-color: $bg
 
 body
-	margin-top: 96px
-	position: initial
+	//margin-top: 96px
+	position: absolute
 	word-wrap: break-word
 
-#iscroll
-	position: relative
-	background: $bg
+h3,
+h4
+	color: #fff
+	font-weight: normal
 
-.page
-	position: initial
+h3
+	padding: 8px 0
+	font-size: 16px
+	line-height: 21px
+
+h4
+	padding: 4px 0
+	font-size: 14px
+
+img
+	height: auto
+	max-width: 100%
+
+table
+	width: auto !important
+
+a
+	//color: $link
+	display: block
+
+label
+	font-size: 12px
+	line-height: 20px
+	&:first-child
+		padding-top: 0
+
+p
+	margin-bottom: 18px
+	text-align: justify
+	+ hr
+		margin-top: 0
+
+hr
+	height: 1px
+	margin: 18px 0
+	background-color: $border
+	border: 0
+
+
+///////////////////////////////////////////////////////////////////////////////
+// # FRIES
+// Fries Android CSS overrides
+///////////////////////////////////////////////////////////////////////////////
+
+// -- BASE
+///////////////////////////////////////////////////////////////////////////////
 
 .action-bar,
 .tab-fixed
 	position: fixed
 
-.content
+.page
 	position: initial
 
-//
-//
 .app-icon
 	margin-right: 10px
 
@@ -36,8 +97,6 @@ body
 		background-image: url('../../img/actionbar-icon@2x.png')
 		background-size: 100%
 
-//
-//
 .actions
 	&.pull-right
 		position: absolute
@@ -45,69 +104,197 @@ body
 		right: 0
 
 
-//
-//
-img,
-.jwplayer
-	height: auto
-	max-width: 100%
+// -- COMPONENTS
+///////////////////////////////////////////////////////////////////////////////
 
-table
-	width: auto !important
+.list-item-multi-line
+	h3
+		height: auto
+		line-height: 21px
+	p
+		margin-bottom: 0
+		font-size: 13px
+		line-height: 1.35em
 
-a
-	display: block
+.list
+	> li.list-divider
+		@extend label
+
+
+// -- COLORS
+///////////////////////////////////////////////////////////////////////////////
+
+.content
+	font-size: 13px
+	line-height: 1.35em
+	color: #bbb
+
+
+///////////////////////////////////////////////////////////////////////////////
+// # HACKS
+// Hacks to change inline styles or look of JSON content
+///////////////////////////////////////////////////////////////////////////////
 
 .jwplayer
 	max-height: 200px
 	background-color: $bg !important
-
-//#main
-//	overflow: scroll
-//	-webkit-overflow-scrolling: touch
-
-//
-//
-.list-item-multi-line
-	h3
-		height: auto
-		padding: 6px 0
-		line-height: 23px
-	p
-		font-size: 14px
-		line-height: 1.35em
-
-.post
-	padding: 5px
-
-.post-date
-	margin: 0 -5px 5px
-	border-top: 0
-	border-bottom: 2px solid #595959
-	line-height: 18px
-	font-size: 11px
-	font-weight: bold
-	text-transform: uppercase
-	padding: 5px 5px 3px
-	color: #CCC
-
-.post-title
-	padding: 6px 0 10px
-	font-size: 16px
-	font-weight: normal
-	color: $blue
-	line-height: 23px
-
-.post-content
-	font-size: 14px
-	p
-		margin: 15px 0
-
-.post-img
-	min-height: 200px
-	margin-bottom: 2px
+	@extend img
 
 .related_post_title,
 .related-clear,
 .related_post
 	display: none
+
+///////////////////////////////////////////////////////////////////////////////
+// # LAYOUT
+// various layout elements
+///////////////////////////////////////////////////////////////////////////////
+
+// -- GLOBAL
+///////////////////////////////////////////////////////////////////////////////
+
+#scroller
+	padding-bottom: 25px
+
+#sidr
+	width: 200px
+	height: auto
+	padding: 15px 5px
+	background: #222
+	border-right: 1px solid #4d4d4d
+	top: 96px
+	bottom: 0
+	font-family: inherit
+	box-shadow: none
+	box-sizing: border-box
+
+.sidr
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6
+		padding: 0 5px
+		background: none
+		font-size: 12px
+		font-weight: bold
+		color: #33b5e5
+		text-transform: uppercase
+		box-shadow: none
+	ul
+		margin-bottom: -12px
+		border-bottom: 0
+		li
+			&:hover,
+			&.active,
+			&.sidr-class-active
+				border-top: 1px solid #4d4d4d
+				line-height: 48px
+			&:last-child
+				border-bottom: 0
+			a,
+			span
+				padding: 0 10px
+
+.top-divider
+	margin-top: 5px
+	margin-bottom: 0
+	padding: 5px 5px 3px
+	border-top: 0
+	border-bottom: 2px solid #595959
+	font-weight: bold
+	color: #ccc
+	text-transform: uppercase
+	@extend label
+
+// -- ISCROLL PULL-TO-REFRESH
+///////////////////////////////////////////////////////////////////////////////
+
+#pullUp
+	height: 40px
+	padding: 5px 0
+	font-weight: bold
+	font-size: 14px
+	color: #888
+	line-height: 40px
+	display: none
+	.pullUpIcon
+		width: 40px
+		height: 40px
+		margin-right: 10px
+		background: url(../../img/pull-icon@2x.png) 0 0 no-repeat
+		-webkit-background-size: 40px 80px
+		background-size: 40px 80px
+		display: block
+		float: left
+		-webkit-transition-property: -webkit-transform
+		-webkit-transition-duration: 250ms
+		-webkit-transform: rotate(-180deg) translateZ(0)
+	&.flip
+		.pullUpIcon
+			-webkit-transform: rotate(0deg) translateZ(0)
+	&.loading
+		.pullUpIcon
+			background-position: 0 100%
+			-webkit-transform: rotate(0deg) translateZ(0)
+			-webkit-transition-duration: 0ms
+			-webkit-animation-name: loading
+			-webkit-animation-duration: 2s
+			-webkit-animation-iteration-count: infinite
+			-webkit-animation-timing-function: linear
+
+@-webkit-keyframes loading
+	from
+		-webkit-transform: rotate(0deg) translateZ(0)
+	to
+		-webkit-transform: rotate(360deg) translateZ(0)
+
+
+// -- PER-PAGE
+///////////////////////////////////////////////////////////////////////////////
+
+.post,
+.athlete
+	padding: 5px
+
+.post
+	.img
+		padding: 3px 0 8px
+		min-height: 200px
+
+.athlete
+	.img
+		padding: 8px 0 0
+
+.athlete-table
+	width: 100% !important
+	margin: 10px 0 20px
+	tr
+		&:nth-child(2n+1)
+			font-size: 14px
+			color: #fff
+			td
+				padding: 10px 0 2px
+				border-top: 1px solid $border
+		&:nth-child(1)
+			td
+				padding-top: 0
+				border: 0
+	td
+		width: 50%
+		padding-bottom: 2px
+
+
+///////////////////////////////////////////////////////////////////////////////
+// # CLASSES
+// helper classes
+///////////////////////////////////////////////////////////////////////////////
+
+.cf
+	&:before,
+	&:after
+		content: " "
+		display: table
+	&:after
+		clear: both

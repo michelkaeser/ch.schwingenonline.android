@@ -1,8 +1,8 @@
 {{> error }}
 
-<ul class="list">
-	<li class="list-divider">&Uuml;bersicht</li>
+<h5>Kategorien</h5>
+<ul class="sidr-menu">
 	{{# categories }}
-		<li class="list-item-single-line"><a data-tab="news" data-type="category" data-page="{{ id }}" data-tpl="news">{{ title }}</a></li>
+		<li><a data-routing="category.posts" data-identifier="{{ id }}&amp;page=" data-tab="news" data-tpl="news" data-sidepanel="inherit" data-puller="inc:1:1">{{ title }}</a></li>
 	{{/ categories }}
 </ul>

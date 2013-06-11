@@ -1,0 +1,48 @@
+{
+	"info": "info?dev=0",
+
+	"post": {
+		"index": "get_posts/?include=id,title,excerpt",
+		"id": "get_post/?include=title,content,date,thumbnail&thumbnail_size=athleten-thumb&id=",
+		"slug": "get_post/?include=title,content,date,thumbnail&thumbnail_size=athleten-thumb&slug="
+	},
+
+	"news":	{
+		"recent": "get_recent_posts/?include=id,title,excerpt",
+		"date": "get_date_posts/?include=id,title,excerpt&date="
+	},
+
+	"category": {
+		"index": "get_category_index?dev=0",
+		"posts": "get_category_posts/?include=id,title,excerpt&id="
+	},
+
+	"tag": {
+		"index": "get_tag_index?dev=0",
+		"posts": "get_tag_posts/?include=id,title,excerpt&id="
+	},
+
+	"author": {
+		"index": "get_author_index?dev=0",
+		"posts": "get_author_posts/?include=id,title,excerpt&id="
+	},
+
+	"page": {
+		"index": "get_page_inde?dev=0",
+		"id": "get_page/?include=title,content&id=",
+		"slug": "get_page/?include=title,content&slug="
+	},
+
+	"search": {
+		"results": "get_search_results/?include=id,title,excerpt&search="
+	},
+
+	"events": {
+		"index": "agenda/get_events/?dev=0"
+	},
+
+	"athletes": {
+		"index": "athleten/get_athlets/?dev=0",
+		"id": "?json=1&post_type=athleten&custom_fields=name,prename,birth,job,weight,size,verband,club,url,hobbies,vorbild,special,story&p="
+	}
+}

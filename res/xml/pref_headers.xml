@@ -6,10 +6,7 @@
 		android:fragment="ch.schwingenonline.android.PreferencesActivity$GeneralPreferenceFragment"
 		android:title="@string/pref_header_general" />
 	<header
-		android:fragment="ch.schwingenonline.android.PreferencesActivity$NotificationPreferenceFragment"
-		android:title="@string/pref_header_notifications" />
-	<header
-		android:fragment="ch.schwingenonline.android.PreferencesActivity$DataSyncPreferenceFragment"
-		android:title="@string/pref_header_data_sync" />
+		android:fragment="ch.schwingenonline.android.PreferencesActivity$CachingPreferenceFragment"
+		android:title="@string/pref_header_caching" />
 
 </preference-headers>

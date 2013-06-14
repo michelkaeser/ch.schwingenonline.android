@@ -237,8 +237,6 @@ function init_app() {
 		init_scroller(true);
 		$('#sidr').sidr();
 		$('#news').find('.tab').click();
-
-		_preferences = cordova.require('cordova/plugin/applicationpreferences');
 	}, 500);
 }
 

@@ -35,6 +35,24 @@ var _home = 'news.recent';
 ******************************************************************************/
 
 /**
+ * Stores the preferences object.
+ *
+ * @since 2.6.4
+ *
+ * @var {Object}
+ */
+var _preferences = cordova.require('cordova/plugin/applicationpreferences');
+
+/**
+ * Stores the localStorage (cache) object.
+ *
+ * @since 2.6.1
+ *
+ * @var {Object}
+ */
+var _storage = window.localStorage;
+
+/**
  * Stores the routing table.
  *
  * @see routing.json
@@ -57,14 +75,6 @@ var _routing = {};
 var _sidepanels = {};
 
 /**
- * Stores the puller object.
- *
- * @see process_puller()
- * @since 2.6.1
- */
-var _puller = {};
-
-/**
  * Stores the loaded templates.
  *
  * @see tpl/*.mustache
@@ -76,13 +86,22 @@ var _puller = {};
 var _tpl = {};
 
 /**
- * Stores the localStorage (cache) object.
+ * Stores the iScroll object.
  *
+ * @see init_scroller()
  * @since 2.6.1
  *
  * @var {Object}
  */
-var _storage = window.localStorage;
+var _iscroll;
+
+/**
+ * Stores the puller object.
+ *
+ * @see process_puller()
+ * @since 2.6.1
+ */
+var _puller = {};
 
 /**
  * Stores various application data.
@@ -94,16 +113,6 @@ var _storage = window.localStorage;
  * @var {Object}
  */
 var _data = {};
-
-/**
- * Stores the iScroll object.
- *
- * @see init_scroller()
- * @since 2.6.1
- *
- * @var {Object}
- */
-var _iscroll;
 
 /******************************************************************************
 * VARIABLE DECLARATIONS END

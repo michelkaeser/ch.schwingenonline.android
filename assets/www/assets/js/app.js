@@ -739,6 +739,22 @@ function update_ui(rqst, callback) {
 ******************************************************************************/
 
 /**
+ * Loads all stored preferences.
+ * In order to get all the properties you can call the load method.
+ * The success callback of the load method will be called with a JSONObject
+ * which contains all the preferences.
+ *
+ * @since 2.7.1
+ */
+function load_preferences() {
+	_preferences.load(function(prefs) {
+		// success
+    }, function(error) {
+		//alert("Error! " + JSON.stringify(error));
+	});
+}
+
+/**
  * Shows the preferences activity.
  * The preferences are bridged to native library using Cordova plugin.
  * See: https://github.com/macdonst/AppPreferences for more information.

@@ -137,6 +137,7 @@ function onScrollerEnd(puller) {
  */
 function onPullUpRelease() {
     var rqst = _puller;
+    rqst.identifier = rqst.identifier_raw;
 
     if (rqst.method == "inc") {
         rqst.identifier += rqst.next++;

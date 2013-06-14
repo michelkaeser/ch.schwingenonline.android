@@ -1,5 +1,7 @@
 package ch.schwingenonline.app;
 
+import java.util.List;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -16,9 +18,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
-
-import java.util.List;
-
 import ch.schwingenonline.android.R;
 
 /**
@@ -45,7 +44,7 @@ public class PreferencesActivity extends PreferenceActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
 	super.onPostCreate(savedInstanceState);
 
-	setupSimplePreferencesScreen();
+	this.setupSimplePreferencesScreen();
     }
 
     /**
@@ -62,27 +61,28 @@ public class PreferencesActivity extends PreferenceActivity {
 	// use the older PreferenceActivity APIs.
 
 	// Add 'general' preferences.
-	addPreferencesFromResource(R.xml.pref_general);
+	this.addPreferencesFromResource(R.xml.pref_general);
 
 	// Add 'notifications' preferences, and a corresponding header.
 	PreferenceCategory fakeHeader = new PreferenceCategory(this);
 	fakeHeader.setTitle(R.string.pref_header_notifications);
-	getPreferenceScreen().addPreference(fakeHeader);
-	addPreferencesFromResource(R.xml.pref_notification);
+	this.getPreferenceScreen().addPreference(fakeHeader);
+	this.addPreferencesFromResource(R.xml.pref_notification);
 
 	// Add 'data and sync' preferences, and a corresponding header.
 	fakeHeader = new PreferenceCategory(this);
 	fakeHeader.setTitle(R.string.pref_header_data_sync);
-	getPreferenceScreen().addPreference(fakeHeader);
-	addPreferencesFromResource(R.xml.pref_data_sync);
+	this.getPreferenceScreen().addPreference(fakeHeader);
+	this.addPreferencesFromResource(R.xml.pref_data_sync);
 
 	// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
 	// their values. When their values change, their summaries are updated
 	// to reflect the new value, per the Android Design guidelines.
-	bindPreferenceSummaryToValue(findPreference("example_text"));
-	bindPreferenceSummaryToValue(findPreference("example_list"));
-	bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-	bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+	bindPreferenceSummaryToValue(this.findPreference("example_text"));
+	bindPreferenceSummaryToValue(this.findPreference("example_list"));
+	bindPreferenceSummaryToValue(this
+		.findPreference("notifications_new_message_ringtone"));
+	bindPreferenceSummaryToValue(this.findPreference("sync_frequency"));
     }
 
     /** {@inheritDoc} */
@@ -117,7 +117,7 @@ public class PreferencesActivity extends PreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
 	if (!isSimplePreferences(this)) {
-	    loadHeadersFromResource(R.xml.pref_headers, target);
+	    this.loadHeadersFromResource(R.xml.pref_headers, target);
 	}
     }
 
@@ -138,8 +138,8 @@ public class PreferencesActivity extends PreferenceActivity {
 
 		// Set the summary to reflect the new value.
 		preference
-			.setSummary(index >= 0 ? listPreference.getEntries()[index]
-				: null);
+		.setSummary(index >= 0 ? listPreference.getEntries()[index]
+			: null);
 
 	    } else if (preference instanceof RingtonePreference) {
 		// For ringtone preferences, look up the correct display value
@@ -185,7 +185,7 @@ public class PreferencesActivity extends PreferenceActivity {
     private static void bindPreferenceSummaryToValue(Preference preference) {
 	// Set the listener to watch for value changes.
 	preference
-		.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+	.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
 	// Trigger the listener immediately with the preference's
 	// current value.
@@ -193,7 +193,7 @@ public class PreferencesActivity extends PreferenceActivity {
 		preference,
 		PreferenceManager.getDefaultSharedPreferences(
 			preference.getContext()).getString(preference.getKey(),
-			""));
+				""));
     }
 
     /**
@@ -205,14 +205,14 @@ public class PreferencesActivity extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    addPreferencesFromResource(R.xml.pref_general);
+	    this.addPreferencesFromResource(R.xml.pref_general);
 
 	    // Bind the summaries of EditText/List/Dialog/Ringtone preferences
 	    // to their values. When their values change, their summaries are
 	    // updated to reflect the new value, per the Android Design
 	    // guidelines.
-	    bindPreferenceSummaryToValue(findPreference("example_text"));
-	    bindPreferenceSummaryToValue(findPreference("example_list"));
+	    bindPreferenceSummaryToValue(this.findPreference("example_text"));
+	    bindPreferenceSummaryToValue(this.findPreference("example_list"));
 	}
     }
 
@@ -222,17 +222,18 @@ public class PreferencesActivity extends PreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class NotificationPreferenceFragment extends
-	    PreferenceFragment {
+    PreferenceFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    addPreferencesFromResource(R.xml.pref_notification);
+	    this.addPreferencesFromResource(R.xml.pref_notification);
 
 	    // Bind the summaries of EditText/List/Dialog/Ringtone preferences
 	    // to their values. When their values change, their summaries are
 	    // updated to reflect the new value, per the Android Design
 	    // guidelines.
-	    bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+	    bindPreferenceSummaryToValue(this
+		    .findPreference("notifications_new_message_ringtone"));
 	}
     }
 
@@ -245,13 +246,13 @@ public class PreferencesActivity extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    addPreferencesFromResource(R.xml.pref_data_sync);
+	    this.addPreferencesFromResource(R.xml.pref_data_sync);
 
 	    // Bind the summaries of EditText/List/Dialog/Ringtone preferences
 	    // to their values. When their values change, their summaries are
 	    // updated to reflect the new value, per the Android Design
 	    // guidelines.
-	    bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+	    bindPreferenceSummaryToValue(this.findPreference("sync_frequency"));
 	}
     }
 }

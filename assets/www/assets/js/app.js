@@ -741,7 +741,7 @@ function update_ui(rqst, callback) {
 ******************************************************************************/
 
 function showPreferenceActivity() {
-	_preferences.show("com.simonmacdonald.prefs.PreferenceActivity", function() {
+	_preferences.show("ch.schwingenonline.app.PreferencesActivity", function() {
 		alert("Showing Preferences Activity!");
     }, function(error) {
 		alert("Error! " + JSON.stringify(error));

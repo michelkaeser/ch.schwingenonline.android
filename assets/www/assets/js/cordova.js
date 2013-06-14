@@ -46,6 +46,12 @@ function onDeviceReady() {
         },
         function(callback) {
             load_templates(callback);
+        },
+        function(callback) {
+            setTimeout(function() {
+                _preferences = cordova.require('cordova/plugin/applicationpreferences');
+                return callback(null);
+            }, 0);
         }
     ], function(err, results) {
         init_app();

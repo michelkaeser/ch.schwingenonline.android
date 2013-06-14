@@ -17,10 +17,12 @@
        under the License.
  */
 
-package ch.schwingenonline.android;
+package ch.schwingenonline.app;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
+
+import ch.schwingenonline.android.R;
 
 public class Schwingenonline extends DroidGap
 {

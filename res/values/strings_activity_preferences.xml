@@ -1,0 +1,25 @@
+<resources>
+
+	<string name="title_activity_preferences">Einstellungen</string>
+	<string name="pref_header_general">Allgemein</string>
+	<string name="pref_header_caching">Caching</string>
+	<string name="pref_title_cache_lifetime">Cache Lebensdauer</string>
+
+	<string-array name="pref_cache_lifetime_titles">
+		<item>15 Minuten</item>
+		<item>30 Minuten</item>
+		<item>1 Stunde</item>
+		<item>3 Stunden</item>
+		<item>6 Stunden</item>
+		<item>12 Stunden</item>
+	</string-array>
+	<string-array name="pref_cache_lifetime_values">
+		<item>0.25</item>
+		<item>0.5</item>
+		<item>1</item>
+		<item>3</item>
+		<item>6</item>
+		<item>12</item>
+	</string-array>
+
+</resources>

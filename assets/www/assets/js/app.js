@@ -41,7 +41,7 @@ var _home = 'news.recent';
  *
  * @var {Object}
  */
-var _preferences = cordova.require('cordova/plugin/applicationpreferences');
+var _preferences;
 
 /**
  * Stores the localStorage (cache) object.
@@ -237,6 +237,8 @@ function init_app() {
 		init_scroller(true);
 		$('#sidr').sidr();
 		$('#news').find('.tab').click();
+
+		_preferences = cordova.require('cordova/plugin/applicationpreferences');
 	}, 500);
 }
 
@@ -736,6 +738,18 @@ function update_ui(rqst, callback) {
 
 /******************************************************************************
 * MAIN FUNCTIONS END
+******************************************************************************/
+
+function showPreferenceActivity() {
+	_preferences.show("com.simonmacdonald.prefs.PreferenceActivity", function() {
+		alert("Showing Preferences Activity!");
+    }, function(error) {
+		alert("Error! " + JSON.stringify(error));
+	});
+}
+
+/******************************************************************************
+* PREFERENCES FUNCTIONS END
 ******************************************************************************/
 
 /**

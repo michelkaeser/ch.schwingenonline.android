@@ -35,6 +35,24 @@ var _home = 'news.recent';
 ******************************************************************************/
 
 /**
+ * Stores the preferences object.
+ *
+ * @since 2.6.4
+ *
+ * @var {Object}
+ */
+var _preferences;
+
+/**
+ * Stores the localStorage (cache) object.
+ *
+ * @since 2.6.1
+ *
+ * @var {Object}
+ */
+var _storage = window.localStorage;
+
+/**
  * Stores the routing table.
  *
  * @see routing.json
@@ -57,14 +75,6 @@ var _routing = {};
 var _sidepanels = {};
 
 /**
- * Stores the puller object.
- *
- * @see process_puller()
- * @since 2.6.1
- */
-var _puller = {};
-
-/**
  * Stores the loaded templates.
  *
  * @see tpl/*.mustache
@@ -76,13 +86,22 @@ var _puller = {};
 var _tpl = {};
 
 /**
- * Stores the localStorage (cache) object.
+ * Stores the iScroll object.
  *
+ * @see init_scroller()
  * @since 2.6.1
  *
  * @var {Object}
  */
-var _storage = window.localStorage;
+var _iscroll;
+
+/**
+ * Stores the puller object.
+ *
+ * @see process_puller()
+ * @since 2.6.1
+ */
+var _puller = {};
 
 /**
  * Stores various application data.
@@ -94,16 +113,6 @@ var _storage = window.localStorage;
  * @var {Object}
  */
 var _data = {};
-
-/**
- * Stores the iScroll object.
- *
- * @see init_scroller()
- * @since 2.6.1
- *
- * @var {Object}
- */
-var _iscroll;
 
 /******************************************************************************
 * VARIABLE DECLARATIONS END
@@ -730,6 +739,25 @@ function update_ui(rqst, callback) {
 ******************************************************************************/
 
 /**
+ * Shows the preferences activity.
+ * The preferences are bridged to native library using Cordova plugin.
+ * See: https://github.com/macdonst/AppPreferences for more information.
+ *
+ * @since 2.7.0
+ */
+function showPreferencesActivity() {
+	_preferences.show("ch.schwingenonline.app.PreferencesActivity", function() {
+		// success
+    }, function(error) {
+		//alert("Error! " + JSON.stringify(error));
+	});
+}
+
+/******************************************************************************
+* PREFERENCES FUNCTIONS END
+******************************************************************************/
+
+/**
  * Clears the localStorage cache.
  * Triggered by validata_cache() if needed.
  *
@@ -794,13 +822,20 @@ function str_to_function(str) {
 function validate_cache() {
 	var time = new Date().getTime();
 	var cache = _storage.getItem('cache_time');
+	var lifetime;
+
+	_preferences.get('cache_lifetime', function(value) {
+		lifetime = value;
+	}, function() {
+		lifetime = 1;
+	});
 
 	if (cache !== null) {
 		var diff = time - cache;
 		var secs = Math.round(diff / 1000);
 		var hours = secs / 360;
 
-		if (hours >= 2) {
+		if (hours >= lifetime) {
 			clear_cache(false);
 			_storage.setItem('cache_time', time);
 		}

@@ -38,6 +38,7 @@
     	<plugin name="Storage" value="org.apache.cordova.Storage" />
     	<plugin name="SplashScreen" value="org.apache.cordova.SplashScreen" />
       <plugin name="Notification" value="org.apache.cordova.Notification" />
+      <plugin name="applicationPreferences" value="com.simonmacdonald.prefs.AppPreferences" />
 	</plugins>
 </cordova>
 

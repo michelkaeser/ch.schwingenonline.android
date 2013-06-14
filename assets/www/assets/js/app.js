@@ -822,13 +822,20 @@ function str_to_function(str) {
 function validate_cache() {
 	var time = new Date().getTime();
 	var cache = _storage.getItem('cache_time');
+	var lifetime;
+
+	_preferences.get('cache_lifetime', function(value) {
+		lifetime = value;
+	}, function() {
+		lifetime = 1;
+	});
 
 	if (cache !== null) {
 		var diff = time - cache;
 		var secs = Math.round(diff / 1000);
 		var hours = secs / 360;
 
-		if (hours >= 2) {
+		if (hours >= lifetime) {
 			clear_cache(false);
 			_storage.setItem('cache_time', time);
 		}

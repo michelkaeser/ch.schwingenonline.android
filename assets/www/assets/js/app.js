@@ -740,11 +740,18 @@ function update_ui(rqst, callback) {
 * MAIN FUNCTIONS END
 ******************************************************************************/
 
-function showPreferenceActivity() {
+/**
+ * Shows the preferences activity.
+ * The preferences are bridged to native library using Cordova plugin.
+ * See: https://github.com/macdonst/AppPreferences for more information.
+ *
+ * @since 2.7.0
+ */
+function showPreferencesActivity() {
 	_preferences.show("ch.schwingenonline.app.PreferencesActivity", function() {
-		alert("Showing Preferences Activity!");
+		// success
     }, function(error) {
-		alert("Error! " + JSON.stringify(error));
+		//alert("Error! " + JSON.stringify(error));
 	});
 }
 

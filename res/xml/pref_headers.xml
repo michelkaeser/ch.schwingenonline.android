@@ -6,6 +6,9 @@
 		android:fragment="ch.schwingenonline.android.PreferencesActivity$GeneralPreferenceFragment"
 		android:title="@string/pref_header_general" />
 	<header
+		android:fragment="ch.schwingenonline.android.PreferencesActivity$DesignPreferenceFragment"
+		android:title="@string/pref_header_design" />
+	<header
 		android:fragment="ch.schwingenonline.android.PreferencesActivity$CachingPreferenceFragment"
 		android:title="@string/pref_header_caching" />
 

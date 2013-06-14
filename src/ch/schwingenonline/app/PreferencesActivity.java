@@ -65,6 +65,12 @@ public class PreferencesActivity extends PreferenceActivity {
 
 	// Add 'data and sync' preferences, and a corresponding header.
 	PreferenceCategory fakeHeader = new PreferenceCategory(this);
+	fakeHeader.setTitle(R.string.pref_header_design);
+	this.getPreferenceScreen().addPreference(fakeHeader);
+	this.addPreferencesFromResource(R.xml.pref_design);
+
+	// Add 'data and sync' preferences, and a corresponding header.
+	fakeHeader = new PreferenceCategory(this);
 	fakeHeader.setTitle(R.string.pref_header_caching);
 	this.getPreferenceScreen().addPreference(fakeHeader);
 	this.addPreferencesFromResource(R.xml.pref_caching);
@@ -72,6 +78,7 @@ public class PreferencesActivity extends PreferenceActivity {
 	// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
 	// their values. When their values change, their summaries are updated
 	// to reflect the new value, per the Android Design guidelines.
+	bindPreferenceSummaryToValue(this.findPreference("color_scheme"));
 	bindPreferenceSummaryToValue(this.findPreference("cache_lifetime"));
     }
 
@@ -201,13 +208,30 @@ public class PreferencesActivity extends PreferenceActivity {
 	    // to their values. When their values change, their summaries are
 	    // updated to reflect the new value, per the Android Design
 	    // guidelines.
-	    bindPreferenceSummaryToValue(this.findPreference("example_text"));
-	    bindPreferenceSummaryToValue(this.findPreference("example_list"));
 	}
     }
 
     /**
-     * This fragment shows data and sync preferences only. It is used when the
+     * This fragment shows design preferences only. It is used when the
+     * activity is showing a two-pane settings UI.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class DesignPreferenceFragment extends PreferenceFragment {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    this.addPreferencesFromResource(R.xml.pref_design);
+
+	    // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+	    // to their values. When their values change, their summaries are
+	    // updated to reflect the new value, per the Android Design
+	    // guidelines.
+	    bindPreferenceSummaryToValue(this.findPreference("color_scheme"));
+	}
+    }
+
+    /**
+     * This fragment shows caching preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

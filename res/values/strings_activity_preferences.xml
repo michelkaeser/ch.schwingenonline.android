@@ -2,6 +2,18 @@
 
 	<string name="title_activity_preferences">Einstellungen</string>
 	<string name="pref_header_general">Allgemein</string>
+	<string name="pref_header_design">Design</string>
+	<string name="pref_title_color_scheme">Farbschema</string>
+
+	<string-array name="pref_color_scheme_titles">
+		<item>Holo Dark</item>
+		<item>Holo Light</item>
+	</string-array>
+	<string-array name="pref_color_scheme_values">
+		<item>holo_dark</item>
+		<item>holo_light</item>
+	</string-array>
+
 	<string name="pref_header_caching">Caching</string>
 	<string name="pref_title_cache_lifetime">Cache Lebensdauer</string>
 

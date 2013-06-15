@@ -1,0 +1,129 @@
+$green: #b5d31e
+$green-dark: #99bf1c
+
+.holo-light
+	h3,
+	h4
+		color: #000
+	a
+		color: $green
+		&[class*="btn"]
+			color: #fff
+	hr
+		background-color: #ccc
+
+	[class*="btn"]
+		background: #222
+		&:hover,
+		&.hover,
+		&:focus,
+		&.focused
+			background: #3e611d
+			-webkit-box-shadow: inset 0 0 1px 2pt #58802e,0 2px 3px rgba(0, 0, 0, 0.5)
+			box-shadow: inset 0 0 1px 2pt #58802e,0 2px 3px rgba(0, 0, 0, 0.5)
+
+	.action-bar
+		background: $green
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $green), color-stop(100%, $green-dark))
+		background: -webkit-linear-gradient(top, $green 0%, $green-dark 100%)
+		background: linear-gradient(to bottom, $green 0%, $green-dark 100%)
+		border-bottom-color: #66770E
+	.action
+		&:active
+			background-color: rgba($green, 0.6)
+		[class*="icon-"]
+			color: #fff
+	.action-overflow-icon
+		i
+			&,
+			&::before,
+			&::after
+				background: #fff
+	.chevron
+		&::before,
+		&::after
+			background-color: #fff
+
+	.tab-fixed
+		background-color: #111
+		ul.tab-inner
+			li
+				&:active
+					background-color: rgba($green, 0.6)
+				a
+					&::after
+						background-color: #000
+				&.active
+					a
+						border-bottom-color: $green
+
+	.content
+		background-color: #fff
+		color: #333
+
+	.spinner
+		background-color: #111
+		li
+			&:hover,
+			&:active
+				background-color: rgba($green, 0.6)
+
+	.list
+		> li
+			border-top-color: #151515
+			&.list-divider
+				border-bottom-color: #151515
+				color: #111
+	.list-item-single-line
+		a
+			color: #111
+	.list-item-multi-line
+		h3
+			color: #000
+		p
+			color: #333
+
+	.input-text
+		border-bottom-color: #ccc
+		color: #333
+		&:focus
+			border-bottom-color: $green-dark
+
+	.top-divider,
+	label
+		border-bottom-color: #151515
+		color: #111
+
+	#sidr
+		background: #f5f5f5
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6
+			color: $green
+		border-right-color: #ebebeb
+	.sidr
+		ul
+			border-top-color: #ccc
+			li
+				border-top-color: #ebebeb
+				border-bottom-color: #ccc
+				&:hover,
+				&.active,
+				&.sidr-class-active
+					border-top-color: #ebebeb
+					a
+						-webkit-box-shadow: inset 0 0 15px 3px #ebebeb
+						box-shadow: inset 0 0 15px 3px #ebebeb
+				a,
+				span
+					color: #000
+
+	.athlete-table
+		tr
+			&:nth-child(2n+1)
+				color: #000
+				td
+					border-top-color: #ccc

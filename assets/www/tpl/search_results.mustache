@@ -1,7 +1,7 @@
 {{> error }}
 
 <ul class="list">
-	<li class="list-divider">Suchergebnisse</li>
+	{^ pulled }}<li class="list-divider">Suchergebnisse</li>{{/ pulled }}
 	{{# posts }}
 		<li class="list-item-multi-line">
 			<h3><a data-routing="post.id" data-identifier="{{ id }}" data-tab="news" data-tpl="post" data-sidepanel="inherit">{{{ title }}}</a></h3>

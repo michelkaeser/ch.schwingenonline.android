@@ -762,8 +762,8 @@ function load_preferences() {
  * @since 2.7.0
  */
 function showPreferencesActivity() {
-	_preferences.show("ch.schwingenonline.app.PreferencesActivity", function() {
-		// success
+	_preferences.show("ch.schwingenonline.app.PreferencesActivity", function(json) {
+		//alert("Success! " + JSON.stringify(json));
     }, function(error) {
 		//alert("Error! " + JSON.stringify(error));
 	});

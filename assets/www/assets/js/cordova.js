@@ -50,12 +50,11 @@ function onDeviceReady() {
         function(callback) {
             setTimeout(function() {
                 _preferences = cordova.require('cordova/plugin/applicationpreferences');
-                apply_preferences();
-
                 return callback(null);
             }, 0);
         }
     ], function(err, results) {
+        apply_preferences();
         init_app();
         init_gestures();
     });

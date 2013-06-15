@@ -745,6 +745,8 @@ function updateUI(rqst, callback) {
  * which contains all the preferences.
  *
  * @since 2.7.1
+ *
+ * @param prefs {JSON} preferences object
  */
 function applyPreferences(prefs) {
 	if (prefs == null) {

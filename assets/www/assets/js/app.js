@@ -739,6 +739,38 @@ function update_ui(rqst, callback) {
 ******************************************************************************/
 
 /**
+ * Applies the stored app preferences.
+ * In order to get all the properties you can call the load method.
+ * The success callback of the load method will be called with a JSONObject
+ * which contains all the preferences.
+ *
+ * @since 2.7.1
+ */
+function apply_preferences(prefs) {
+	if (prefs == null) {
+		_preferences.load(function(prefs) {
+			var color_scheme = prefs.color_scheme;
+
+			if (color_scheme == 'holo_light') {
+				$('body').addClass('holo-light');
+			} else {
+				$('body').removeClass('holo-light');
+			}
+	    }, function(error) {
+			//alert("Error! " + JSON.stringify(error));
+		});
+	} else {
+		var color_scheme = prefs.color_scheme;
+
+		if (color_scheme == 'holo_light') {
+			$('body').addClass('holo-light');
+		} else {
+			$('body').removeClass('holo-light');
+		}
+	}
+}
+
+/**
  * Shows the preferences activity.
  * The preferences are bridged to native library using Cordova plugin.
  * See: https://github.com/macdonst/AppPreferences for more information.
@@ -746,8 +778,8 @@ function update_ui(rqst, callback) {
  * @since 2.7.0
  */
 function showPreferencesActivity() {
-	_preferences.show("ch.schwingenonline.app.PreferencesActivity", function() {
-		// success
+	_preferences.show("ch.schwingenonline.app.PreferencesActivity", function(prefs) {
+		apply_preferences(prefs);
     }, function(error) {
 		//alert("Error! " + JSON.stringify(error));
 	});

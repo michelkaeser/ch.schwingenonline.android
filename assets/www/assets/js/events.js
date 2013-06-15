@@ -25,10 +25,10 @@ $(document).on('click', 'a[data-routing]', function(e) {
 
     async.waterfall([
         function(callback) {
-            process_click($this, callback);
+            processClick($this, callback);
         },
         function(callback) {
-        	wait_for_images(callback);
+        	waitForImages(callback);
         }
     ], function (err, result) {
         _iscroll.refresh();
@@ -147,12 +147,12 @@ function onPullUpRelease() {
 
     async.waterfall([
         function(callback) {
-            get_data(rqst, callback);
+            getData(rqst, callback);
         },
         function(arg1, callback) {
             arg1.pulled = true;
 
-            render_tpl(rqst.tpl, arg1, '#mustache', true, callback);
+            renderTPL(rqst.tpl, arg1, '#mustache', true, callback);
         }
     ], function (err, result) {
         _iscroll.refresh();

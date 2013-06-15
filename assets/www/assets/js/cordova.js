@@ -39,13 +39,13 @@ function onDeviceReady() {
             }, 0);
         },
         function(callback) {
-            load_routing(callback);
+            loadRouting(callback);
         },
         function(callback) {
-            load_sidepanels(callback);
+            loadSidepanels(callback);
         },
         function(callback) {
-            load_templates(callback);
+            loadTemplates(callback);
         },
         function(callback) {
             setTimeout(function() {
@@ -54,9 +54,9 @@ function onDeviceReady() {
             }, 0);
         }
     ], function(err, results) {
-        apply_preferences();
-        init_app();
-        init_gestures();
+        applyPreferences();
+        initApp();
+        initGestures();
     });
 }
 

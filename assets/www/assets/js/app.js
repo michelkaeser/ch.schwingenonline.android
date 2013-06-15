@@ -130,7 +130,7 @@ var _data = {};
  *   -> when the routing.json file has been loaded
  * @sets _routing
  */
-function load_routing(callback) {
+function loadRouting(callback) {
     $.ajax({
 	    url: 'routing.json',
 	    dataType: 'json',
@@ -157,7 +157,7 @@ function load_routing(callback) {
  *   -> when the sidepanels.json file has been loaded
  * @sets _sidepanels
  */
-function load_sidepanels(callback) {
+function loadSidepanels(callback) {
     $.ajax({
 	    url: 'sidepanels.json',
 	    dataType: 'json',
@@ -184,7 +184,7 @@ function load_sidepanels(callback) {
  *   -> when the templates have been loaded
  * @sets _tpl
  */
-function load_templates(callback) {
+function loadTemplates(callback) {
     var templates = [
     	'athlete',
     	'athletes',
@@ -231,10 +231,10 @@ function load_templates(callback) {
  *
  * @triggers init_scroller()
  */
-function init_app() {
+function initApp() {
 	setTimeout(function() {
-		validate_cache();
-		init_scroller(true);
+		validateCache();
+		initScroller(true);
 		$('#sidr').sidr();
 		$('#news').find('.tab').click();
 	}, 500);
@@ -255,7 +255,7 @@ function init_app() {
  * @triggers onScrollerMove()
  * @triggers onScrollerEnd()
  */
-function init_scroller(use_puller) {
+function initScroller(use_puller) {
 	var puller = {};
 
 	puller.dom = $('#pullUp');
@@ -312,7 +312,7 @@ function init_scroller(use_puller) {
  * @triggers process_puller()
  * @sets _data.puller
  */
-function process_click(dom, callback) {
+function processClick(dom, callback) {
 	var rqst = {};
 	var data = dom.data();
 
@@ -349,7 +349,7 @@ function process_click(dom, callback) {
 	if (rqst.routing.substring(0, 8) == "function") {
 		var fn = rqst.routing.replace("function.", "");
 
-		fn = str_to_function(fn);
+		fn = strToFunction(fn);
 		window[fn.fn](fn.args);
 
 		return callback(null);
@@ -359,10 +359,10 @@ function process_click(dom, callback) {
 		// display half-finished results
 		async.parallel([
 		    function(callback) {
-		        update_ui(rqst, callback);
+		        updateUI(rqst, callback);
 		    },
 		    function(callback) {
-		    	process_sidepanel(rqst.sidepanel, callback);
+		    	processSidepanel(rqst.sidepanel, callback);
 		    },
 		    function(callback) {
 		    	// the puller should not be visible until the content has loaded
@@ -370,10 +370,10 @@ function process_click(dom, callback) {
 		    	// proceeding with it
 		    	async.waterfall([
 		    	    function(callback) {
-		    	        process_content(rqst, callback);
+		    	        processContent(rqst, callback);
 		    	    },
 		    	    function(callback) {
-		    	        process_puller(rqst, callback);
+		    	        processPuller(rqst, callback);
 		    	    }
 		    	], function (err, result) {
 		    		callback(null);
@@ -399,14 +399,14 @@ function process_click(dom, callback) {
  * @returns callback {Function} callback function
  *   -> when the content has been processed
  */
-function process_content(rqst, callback) {
+function processContent(rqst, callback) {
 	setTimeout(function() {
 		// internal views don't reply on external data
 		// -> render directly
 		if (rqst.routing.substring(0, 8) == "internal") {
 			async.waterfall([
 			    function(callback) {
-			        render_tpl(rqst.tpl, '', '#mustache', callback);
+			        renderTPL(rqst.tpl, '', '#mustache', callback);
 			    }
 			], function (err, result) {
 				return callback(null);
@@ -414,10 +414,10 @@ function process_content(rqst, callback) {
 		} else {
 			async.waterfall([
 			    function(callback) {
-			        get_data(rqst, callback);
+			        getData(rqst, callback);
 			    },
 			    function(arg1, callback) {
-			        render_tpl(rqst.tpl, arg1, '#mustache', callback);
+			        renderTPL(rqst.tpl, arg1, '#mustache', callback);
 			    }
 			], function (err, result) {
 				return callback(null);
@@ -442,7 +442,7 @@ function process_content(rqst, callback) {
  *   -> when the puller has been processed
  * @sets _puller
  */
-function process_puller(rqst, callback) {
+function processPuller(rqst, callback) {
 	setTimeout(function() {
 		var status = rqst.puller.status;
 		var puller = $('#pullUp');
@@ -475,7 +475,7 @@ function process_puller(rqst, callback) {
 			break;
 		}
 
-		init_scroller(status === "true");
+		initScroller(status === "true");
 
 		return callback(null);
 	}, 0);
@@ -498,7 +498,7 @@ function process_puller(rqst, callback) {
  * @triggers get_data()
  * @triggers render_tpl()
  */
-function process_sidepanel(sidepanel, callback) {
+function processSidepanel(sidepanel, callback) {
 	setTimeout(function() {
 		var status = sidepanel.status;
 
@@ -508,10 +508,10 @@ function process_sidepanel(sidepanel, callback) {
 
 				async.waterfall([
 				    function(callback) {
-				        get_data(json, callback);
+				        getData(json, callback);
 				    },
 				    function(arg1, callback) {
-				        render_tpl(json.tpl, arg1, '#sidr', callback);
+				        renderTPL(json.tpl, arg1, '#sidr', callback);
 				    }
 				], function (err, result) {
 					$('#sidr').removeClass('deactivated');
@@ -550,7 +550,7 @@ function process_sidepanel(sidepanel, callback) {
  * @sets _storage
  * @triggers fetch_json()
  */
-function get_data(rqst, callback) {
+function getData(rqst, callback) {
 	var uri = rqst.routing;
 	var identifier = rqst.identifier;
 
@@ -564,11 +564,11 @@ function get_data(rqst, callback) {
 		var json = $.parseJSON(storage);
 		return callback(null, json);
 	} else {
-		var source = get_source(rqst, true);
+		var source = getSource(rqst, true);
 
 		async.waterfall([
 		    function(callback) {
-		        fetch_json(source, callback);
+		        fetchJSON(source, callback);
 		    }
 		], function (err, result) {
 			var string = JSON.stringify(result);
@@ -589,7 +589,7 @@ function get_data(rqst, callback) {
  * @param mst {String} error message to display
  * @return err {JSON} error object
  */
-function get_error(msg) {
+function getError(msg) {
 	var err = $.parseJSON('{"error": "true", "error_msg": "' + msg + '"}');
 
 	return err;
@@ -609,7 +609,7 @@ function get_error(msg) {
  * @param append_callback {Boolean} appends &callback=? if true
  * @return source {String} combined source URL
  */
-function get_source(rqst, append_callback) {
+function getSource(rqst, append_callback) {
 	var api = _base + _api;
 	var route = rqst.routing.split('.');
 	var base = route[0];
@@ -646,7 +646,7 @@ function get_source(rqst, append_callback) {
  * @return callback {Function} callback function
  *   -> when the data has been fetched
  */
-function fetch_json(url, callback) {
+function fetchJSON(url, callback) {
 	var api = url;
 
 	$.ajax({
@@ -660,7 +660,7 @@ function fetch_json(url, callback) {
 		return callback(null, data);
 	})
 	.fail(function(xhr, status, error) {
-		var data = get_error("Der Server lieferte keine Daten.");
+		var data = getError("Der Server lieferte keine Daten.");
 		return callback(null, data);
 	});
 }
@@ -683,7 +683,7 @@ function fetch_json(url, callback) {
  * @return callback {Function} callback function
  *   -> when the template has been rendered
  */
-function render_tpl(tpl, data, dom, append, callback) {
+function renderTPL(tpl, data, dom, append, callback) {
 	setTimeout(function () {
 		var output = Mustache.to_html(_tpl[tpl], data, {
 			'error': _tpl['error']
@@ -715,7 +715,7 @@ function render_tpl(tpl, data, dom, append, callback) {
  * @return callback {Function} callback function
  *   -> when the UI has been updated
  */
-function update_ui(rqst, callback) {
+function updateUI(rqst, callback) {
 	setTimeout(function() {
 		$.sidr('close');
 
@@ -746,7 +746,7 @@ function update_ui(rqst, callback) {
  *
  * @since 2.7.1
  */
-function apply_preferences(prefs) {
+function applyPreferences(prefs) {
 	if (prefs == null) {
 		_preferences.load(function(prefs) {
 			var color_scheme = prefs.color_scheme;
@@ -779,7 +779,7 @@ function apply_preferences(prefs) {
  */
 function showPreferencesActivity() {
 	_preferences.show("ch.schwingenonline.app.PreferencesActivity", function(prefs) {
-		apply_preferences(prefs);
+		applyPreferences(prefs);
     }, function(error) {
 		//alert("Error! " + JSON.stringify(error));
 	});
@@ -798,7 +798,7 @@ function showPreferencesActivity() {
  * @param confirm {Boolean} shows confirmation prompt if set
  * @sets _storage
  */
-function clear_cache(confirm) {
+function clearCache(confirm) {
 	if (confirm) {
 		navigator.notification.confirm(
 		    "Möchten Sie den Cache wirklich leeren?",
@@ -825,7 +825,7 @@ function clear_cache(confirm) {
  * @param str {String} function call string
  * @return result {Object} the splitted fn/args
  */
-function str_to_function(str) {
+function strToFunction(str) {
 	var result = {};
 
 	var args_s = str.indexOf("(");
@@ -851,7 +851,7 @@ function str_to_function(str) {
  *
  * @triggers clear_cache()
  */
-function validate_cache() {
+function validateCache() {
 	var time = new Date().getTime();
 	var cache = _storage.getItem('cache_time');
 	var lifetime;
@@ -868,7 +868,7 @@ function validate_cache() {
 		var hours = secs / 360;
 
 		if (hours >= lifetime) {
-			clear_cache(false);
+			clearCache(false);
 			_storage.setItem('cache_time', time);
 		}
 	} else {
@@ -885,7 +885,7 @@ function validate_cache() {
  * @return callback {Function} callback function
  *   -> when the images have been loaded
  */
-function wait_for_images(callback) {
+function waitForImages(callback) {
 	var imgs = $('#mustache').find('img');
 	var length = imgs.length;
 	var counter = 0;

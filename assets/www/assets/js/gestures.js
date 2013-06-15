@@ -14,7 +14,7 @@
  * @see cordova.js\onDeviceReady()
  * @since 2.6.1
  */
-function init_gestures() {
+function initGestures() {
 	var doc = $$('body');
 	var sidr = $('#sidr');
 

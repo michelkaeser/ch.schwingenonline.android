@@ -9,7 +9,7 @@
 		android:defaultValue="1"
 		android:entries="@array/pref_color_scheme_titles"
 		android:entryValues="@array/pref_color_scheme_values"
-		android:key="cache_lifetime"
+		android:key="color_scheme"
 		android:negativeButtonText="@null"
 		android:positiveButtonText="@null"
 		android:title="@string/pref_title_color_scheme" />

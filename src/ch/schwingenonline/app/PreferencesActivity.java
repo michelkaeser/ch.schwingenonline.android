@@ -69,6 +69,8 @@ public class PreferencesActivity extends PreferenceActivity {
 	this.getPreferenceScreen().addPreference(fakeHeader);
 	this.addPreferencesFromResource(R.xml.pref_design);
 
+	bindPreferenceSummaryToValue(this.findPreference("color_scheme"));
+
 	// Add 'data and sync' preferences, and a corresponding header.
 	fakeHeader = new PreferenceCategory(this);
 	fakeHeader.setTitle(R.string.pref_header_caching);
@@ -78,7 +80,6 @@ public class PreferencesActivity extends PreferenceActivity {
 	// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
 	// their values. When their values change, their summaries are updated
 	// to reflect the new value, per the Android Design guidelines.
-	bindPreferenceSummaryToValue(this.findPreference("color_scheme"));
 	bindPreferenceSummaryToValue(this.findPreference("cache_lifetime"));
     }
 

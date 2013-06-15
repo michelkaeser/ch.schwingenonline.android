@@ -6,7 +6,7 @@
 	-->
 	<!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
 	<ListPreference
-		android:defaultValue="1"
+		android:defaultValue="holo_light"
 		android:entries="@array/pref_color_scheme_titles"
 		android:entryValues="@array/pref_color_scheme_values"
 		android:key="color_scheme"

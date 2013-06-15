@@ -780,6 +780,7 @@ function applyPreferences(prefs) {
 function showPreferencesActivity() {
 	_preferences.show("ch.schwingenonline.app.PreferencesActivity", function(prefs) {
 		applyPreferences(prefs);
+		_iscroll.refresh();
     }, function(error) {
 		//alert("Error! " + JSON.stringify(error));
 	});

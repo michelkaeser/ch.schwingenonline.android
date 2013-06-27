@@ -31,14 +31,26 @@
     <preference name="show-splash-screen-spinner" value="false" />
     <preference name="auto-hide-splash-screen" value="true" />
 
-	<plugins>
-    	<plugin name="App" value="org.apache.cordova.App" />
-      <plugin name="Device" value="org.apache.cordova.Device" />
-    	<plugin name="NetworkStatus" value="org.apache.cordova.NetworkManager" />
-    	<plugin name="Storage" value="org.apache.cordova.Storage" />
-    	<plugin name="SplashScreen" value="org.apache.cordova.SplashScreen" />
-      <plugin name="Notification" value="org.apache.cordova.Notification" />
-      <plugin name="applicationPreferences" value="com.simonmacdonald.prefs.AppPreferences" />
-	</plugins>
+    <feature name="App">
+      <param name="android-package" value="org.apache.cordova.App" />
+    </feature>
+    <feature name="Device">
+      <param name="android-package" value="org.apache.cordova.Device" />
+    </feature>
+    <feature name="NetworkStatus">
+      <param name="android-package" value="org.apache.cordova.NetworkManager" />
+    </feature>
+    <feature name="Storage">
+      <param name="android-package" value="org.apache.cordova.Storage" />
+    </feature>
+    <feature name="SplashScreen">
+      <param name="android-package" value="org.apache.cordova.SplashScreen" />
+    </feature>
+    <feature name="Notification">
+      <param name="android-package" value="org.apache.cordova.Notification" />
+    </feature>
+    <feature name="applicationPreferences">
+      <param name="android-package" value="com.simonmacdonald.prefs.AppPreferences" />
+    </feature>
 </cordova>
 

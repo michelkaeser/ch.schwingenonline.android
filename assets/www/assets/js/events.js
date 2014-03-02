@@ -28,14 +28,14 @@ $(document).on('click', 'a[data-routing]', function(e) {
             processClick($this, callback);
         },
         function(callback) {
-        	waitForImages(callback);
+            waitForImages(callback);
         }
     ], function (err, result) {
         _iscroll.refresh();
 
-    	setTimeout(function() {
-    		notification.activityStop();
-    	}, 450);
+        setTimeout(function() {
+            notification.activityStop();
+        }, 450);
     });
 });
 

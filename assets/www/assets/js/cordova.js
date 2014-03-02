@@ -70,8 +70,8 @@ function onDeviceReady() {
  */
 function onMenuKeyDown() {
 	navigator.notification.confirm(
-	    "Möchten Sie die Anwendung wirklich beenden?",
-	    function(btn) {
+        "Möchten Sie die Anwendung wirklich beenden?",
+        function(btn) {
             if (btn === 1) {
                 if (navigator.app){
                     navigator.app.exitApp();
@@ -80,8 +80,8 @@ function onMenuKeyDown() {
                 }
             }
         },
-	    'Beenden',
-	    'Ja,Nein'
+        'Beenden',
+        'Ja,Nein'
 	);
 }
 

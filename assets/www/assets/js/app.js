@@ -132,16 +132,16 @@ var _data = {};
  */
 function loadRouting(callback) {
     $.ajax({
-	    url: 'routing.json',
-	    dataType: 'json',
-	    cache: true
+        url: 'routing.json',
+        dataType: 'json',
+        cache: true
 	})
 	.done(function(data, status, xhr) {
 		_routing = data;
 		return callback(null);
     })
     .fail(function(xhr, status, error) {
-    	return callback(true);
+        return callback(true);
     });
 }
 
@@ -159,16 +159,16 @@ function loadRouting(callback) {
  */
 function loadSidepanels(callback) {
     $.ajax({
-	    url: 'sidepanels.json',
-	    dataType: 'json',
-	    cache: true
+        url: 'sidepanels.json',
+        dataType: 'json',
+        cache: true
 	})
 	.done(function(data, status, xhr) {
 		_sidepanels = data;
 		return callback(null);
     })
     .fail(function(xhr, status, error) {
-    	return callback(true);
+        return callback(true);
     });
 }
 
@@ -186,33 +186,33 @@ function loadSidepanels(callback) {
  */
 function loadTemplates(callback) {
     var templates = [
-    	'athlete',
-    	'athletes',
-    	'categories',
-    	'error',
-    	'events',
-    	'news',
-    	'post',
-    	'search',
-    	'search_results'
+        'athlete',
+        'athletes',
+        'categories',
+        'error',
+        'events',
+        'news',
+        'post',
+        'search',
+    'search_results'
     ];
 
     $.each(templates, function(i, e) {
-    	$.ajax({
-	    	url: 'tpl/' + e + '.mustache',
-	    	dataType: 'html',
-	    	cache: true
-	    })
-	    .done(function(data, status, xhr) {
-	    	_tpl[e] = data;
+        $.ajax({
+          url: 'tpl/' + e + '.mustache',
+            dataType: 'html',
+            cache: true
+        })
+        .done(function(data, status, xhr) {
+            _tpl[e] = data;
 
-	    	if (i == templates.length - 1) {
-	    		return callback(null);
-	    	}
-    	})
-    	.fail(function(xhr, status, error) {
-    		return callback(true);
-    	});
+            if (i == templates.length - 1) {
+                return callback(null);
+            }
+        })
+        .fail(function(xhr, status, error) {
+            return callback(true);
+        });
     });
 }
 
@@ -358,27 +358,27 @@ function processClick(dom, callback) {
 		// however, all need to finish before we can process -> otherwise we would
 		// display half-finished results
 		async.parallel([
-		    function(callback) {
-		        updateUI(rqst, callback);
-		    },
-		    function(callback) {
-		    	processSidepanel(rqst.sidepanel, callback);
-		    },
-		    function(callback) {
-		    	// the puller should not be visible until the content has loaded
-		    	// therefor we need to wait for process_content before
-		    	// proceeding with it
-		    	async.waterfall([
-		    	    function(callback) {
-		    	        processContent(rqst, callback);
-		    	    },
-		    	    function(callback) {
-		    	        processPuller(rqst, callback);
-		    	    }
-		    	], function (err, result) {
-		    		callback(null);
-		    	});
-		    }
+            function(callback) {
+                updateUI(rqst, callback);
+            },
+            function(callback) {
+                processSidepanel(rqst.sidepanel, callback);
+            },
+            function(callback) {
+                // the puller should not be visible until the content has loaded
+                // therefor we need to wait for process_content before
+                // proceeding with it
+                async.waterfall([
+                    function(callback) {
+                        processContent(rqst, callback);
+                    },
+                    function(callback) {
+                        processPuller(rqst, callback);
+                    }
+                ], function (err, result) {
+                    callback(null);
+                });
+            }
 		], function(err, results) {
 			return callback(null);
 		});
@@ -405,20 +405,20 @@ function processContent(rqst, callback) {
 		// -> render directly
 		if (rqst.routing.substring(0, 8) == "internal") {
 			async.waterfall([
-			    function(callback) {
-			        renderTPL(rqst.tpl, '', '#mustache', callback);
-			    }
+                function(callback) {
+                    renderTPL(rqst.tpl, '', '#mustache', callback);
+                }
 			], function (err, result) {
 				return callback(null);
 			});
 		} else {
 			async.waterfall([
-			    function(callback) {
-			        getData(rqst, callback);
-			    },
-			    function(arg1, callback) {
-			        renderTPL(rqst.tpl, arg1, '#mustache', callback);
-			    }
+                function(callback) {
+                    getData(rqst, callback);
+                },
+                function(arg1, callback) {
+                    renderTPL(rqst.tpl, arg1, '#mustache', callback);
+                }
 			], function (err, result) {
 				return callback(null);
 			});
@@ -507,22 +507,20 @@ function processSidepanel(sidepanel, callback) {
 				var json = _sidepanels[sidepanel.obj];
 
 				async.waterfall([
-				    function(callback) {
-				        getData(json, callback);
-				    },
-				    function(arg1, callback) {
-				        renderTPL(json.tpl, arg1, '#sidr', callback);
-				    }
+                    function(callback) {
+                        getData(json, callback);
+                    },
+                    function(arg1, callback) {
+                        renderTPL(json.tpl, arg1, '#sidr', callback);
+                    }
 				], function (err, result) {
 					$('#sidr').removeClass('deactivated');
 				});
 
 				return callback(null);
-			break;
 			case "false":
 				$('#sidr').addClass('deactivated');
 				return callback(null);
-			break;
 			default:
 				return callback(true);
 		}
@@ -567,9 +565,9 @@ function getData(rqst, callback) {
 		var source = getSource(rqst, true);
 
 		async.waterfall([
-		    function(callback) {
-		        fetchJSON(source, callback);
-		    }
+            function(callback) {
+                fetchJSON(source, callback);
+            }
 		], function (err, result) {
 			var string = JSON.stringify(result);
 			_storage.setItem(uri, string);
@@ -749,7 +747,7 @@ function updateUI(rqst, callback) {
  * @param prefs {JSON} preferences object
  */
 function applyPreferences(prefs) {
-	if (prefs == null) {
+	if (prefs === null) {
 		_preferences.load(function(prefs) {
 			var color_scheme = prefs.color_scheme;
 
@@ -758,7 +756,7 @@ function applyPreferences(prefs) {
 			} else {
 				$('body').removeClass('holo-light');
 			}
-	    }, function(error) {
+        }, function(error) {
 			//alert("Error! " + JSON.stringify(error));
 		});
 	} else {
@@ -804,14 +802,14 @@ function showPreferencesActivity() {
 function clearCache(confirm) {
 	if (confirm) {
 		navigator.notification.confirm(
-		    "Möchten Sie den Cache wirklich leeren?",
-		    function(btn) {
-		        if (btn === 1) {
-			        _storage.clear();
-		        }
-		    },
-		    'Cache leeren',
-		    'Ja,Nein'
+            "Möchten Sie den Cache wirklich leeren?",
+            function(btn) {
+                if (btn === 1) {
+                    _storage.clear();
+                }
+            },
+            'Cache leeren',
+            'Ja,Nein'
 		);
 	} else {
 		_storage.clear();
